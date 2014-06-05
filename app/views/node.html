@@ -1,0 +1,178 @@
+<!-- Author: Alejandro Galue <agalue@opennms.org> -->
+
+<div>
+
+  <!-- Breadcrumb Bar -->
+
+  <ol class="breadcrumb">
+    <li><a ng-href="#/requisitions">Requisitions</a></li>
+    <li><a ng-href="#/requisition/{{foreignSource}}">{{ foreignSource }}</a></li>
+    <li class="active">{{ foreignId }}</li>
+  </ol>
+
+  <!-- Navigation Bar -->
+
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#node-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">Node {{ node['node-label'] }}</div>
+      </div>
+      <div class="collapse navbar-collapse" id="node-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a ng-href="#/requisition/{{foreignSource}}">
+            <span class="glyphicon glyphicon-remove"></span> Return
+          </a></li>
+          <li><a ng-click="save()" ng-disabled="nodeForm.$invalid">
+            <span class="glyphicon glyphicon-save"></span> Save
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Form/TabPanel -->
+
+  <form name="nodeForm">
+    <tabset justified="true">
+
+      <!-- Basic Information Tab -->
+
+      <tab heading="Basic Information">
+        <br/>
+        <div class="form-group">
+          <label for="foreignId">Foreign ID</label>
+          <input class="form-control" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node['foreign-id']" required/>
+          <div class="alert alert-danger" ng-show="nodeForm.foreignId.$error.required">The foreign source is required, it cannot be null!</div>
+        </div>
+        <div class="form-group">
+          <label for="nodeLabel">Node Label</label>
+          <input class="form-control" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node['node-label']" required/>
+          <div class="alert alert-danger" ng-show="nodeForm.nodeLabel.$error.required">The node label is required, it cannot be null!</div>
+        </div>
+        <div class="form-group">
+          <label for="nodeLabel">Building</label>
+          <input class="form-control" id="building" name="building" placeholder="Building" ng-model="node['building']"/>
+        </div>
+        <div class="form-group">
+          <label for="nodeLabel">City</label>
+          <input class="form-control" id="city" name="city" placeholder="City" ng-model="node['city']"/>
+        </div>
+      </tab>
+
+      <!-- Path Outage Tab -->
+
+      <tab heading="Path Outage">
+        <br/>
+        <div class="form-group">
+          <label for="nodeLabel">Parent Foreign Source</label>
+          <input class="form-control" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node['parent-foreign-source']"/>
+        </div>
+        <div class="form-group">
+          <label for="nodeLabel">Parent Foreign ID</label>
+          <input class="form-control" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node['parent-foreign-id']"/>
+        </div>
+        <div class="form-group">
+          <label for="nodeLabel">Parent Foreign Label</label>
+          <input class="form-control" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node['parent-foreign-']"/>
+        </div>
+      </tab>
+
+      <!-- Interfaces Tab -->
+
+      <tab heading="Interfaces">
+        <a ng-click="addInterface()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Interface</a>
+        <br/>
+        <div class="table-responsive">
+          <table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>IP Address</th>
+                <th>Description</th>
+                <th>SNMP Primary</th>
+                <th>Services</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="intf in node['interface']">
+                <td>{{ intf['ip-addr'] }}</td>
+                <td>{{ intf['descr'] }}</td>
+                <td>{{ intf['snmp-primary'] }}</td>
+                <td>
+                  <div ng-hide="intf['monitored-service'].length > 0">[No services]</div>
+                  <div ng-repeat="service in intf['monitored-service']">
+                    <p>{{ service['service-name'] }}</p>
+                  </div>
+                </td>
+                <td>
+                  <span class="pull-right">
+                    <a class="btn btn-default btn-xs" tooltip="Edit the interface" ng-click="editInterface($index)">
+                      <span class="glyphicon glyphicon-pencil"/>
+                    </a>
+                    <a class="btn btn-default btn-xs" tooltip="Remove the interface" ng-click="removeInterface($index)">
+                      <span class="glyphicon glyphicon-remove"/>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+
+      <!-- Assets Tab -->
+
+      <tab heading="Assets">
+        <a ng-click="addAsset()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Asset</a>
+        <br/>
+        <div class="table-responsive">
+          <table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="asset in node.asset">
+                <th>{{asset.name}}</th>
+                <td>{{asset.value}}</td>
+                <td>
+                  <span class="pull-right">
+                    <a class="btn btn-default btn-xs" tooltip="Edit the asset" ng-click="editAsset($index)">
+                      <span class="glyphicon glyphicon-pencil"/>
+                    </a>
+                    <a class="btn btn-default btn-xs" tooltip="Remove the asset" ng-click="removeAsset($index)">
+                      <span class="glyphicon glyphicon-remove"/>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+
+      <!-- Categories Tab -->
+
+      <tab heading="Categories">
+        <a ng-click="addCategory()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Category</a>
+        <br/>
+        <div class="form-group" ng-repeat="category in node.category">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Category Name" ng-model="category.name" required/>
+            <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeCategory($index)"/>
+          </div>
+        </div>
+      </tab>
+
+    </tabset>
+  </form>
+</div>

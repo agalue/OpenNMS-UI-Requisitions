@@ -1,0 +1,78 @@
+<!-- Author: Alejandro Galue <agalue@opennms.org> -->
+
+<div>
+
+  <!-- Breadcrumb Bar -->
+
+  <ol class="breadcrumb">
+    <li><a href="#/requisitions">Requisitions</a></li>
+    <li class="active">{{ requisition['foreign-source'] }}</li>
+  </ol>
+
+  <!-- Navigation Bar -->
+
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#requisition-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand">{{ requisition['foreign-source'] }} ({{ requisition.node.length }} nodes)</div>
+      </div>
+      <div class="collapse navbar-collapse" id="requisition-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a tooltip="Return to requisitions list" ng-href="#/requisitions">
+            <span class="glyphicon glyphicon-remove"/> Return
+          </a></li>
+          <li><a tooltip="Edit foreign source definition" ng-href="#/foreignSource/{{ foreignSource }}">
+            <span class="glyphicon glyphicon-edit"/> Edit Definition
+          </a></li>
+          <li><a tooltip="Add a new node to the requisition" ng-href="#/node/{{ foreignSource }}/__new__">
+            <span class="glyphicon glyphicon-plus"/> Add
+          </a></li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="input-group">
+            <span class="input-group-addon glyphicon glyphicon-search"/>
+            <input type="text" class="form-control" placeholder="Search/Filter" ng-model="reqFilter">
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th>Node Label</th>
+          <th>Foreign ID</th>
+          <th>Building</th>
+          <th>City</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="node in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
+          <td>{{ node['node-label'] }}</td>
+          <td>{{ node['foreign-id'] }}</td>
+          <td>{{ node['building'] }}</td>
+          <td>{{ node['city'] }}</td>
+          <td>
+            <a class="btn btn-default btn-xs" tooltip="Edit the {{ node['node-label'] }} Node" ng-href="#/node/{{requisition['foreign-source']}}/{{node['foreign-id']}}">
+              <span class="glyphicon glyphicon-pencil"/>
+            </a>
+            <a class="btn btn-default btn-xs" tooltip="Remove the {{ node['node-label'] }} Node" ng-click="deleteNode(node)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <pagination total-items="totalItems" num-pages="numPages" ng-model="currentPage" max-size="maxSize" boundary-links="true" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-show="filteredNodes.length > pageSize"></pagination>
+  </div>
+</div>

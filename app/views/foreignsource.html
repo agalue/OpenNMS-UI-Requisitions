@@ -1,0 +1,141 @@
+<!-- Author: Alejandro Galue <agalue@opennms.org> -->
+
+<div>
+
+  <!-- Breadcrumb Bar -->
+
+  <ol class="breadcrumb">
+    <li><a ng-href="#/requisitions">Requisitions</a></li>
+    <li class="active">{{ foreignSource }}</li>
+  </ol>
+
+  <!-- Navigation Bar -->
+
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#node-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="navbar-brand hidden-xs">Foreign Source Definition ({{ foreignSource }})</div>
+        <div class="navbar-brand visible-xs">FS Definition</div>
+      </div>
+      <div class="collapse navbar-collapse" id="node-navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-hide="foreignSource == 'default'"><a ng-href="#/requisition/{{foreignSource}}">
+            <span class="glyphicon glyphicon-remove"></span> Return
+          </a></li>
+          <li ng-show="foreignSource == 'default'"><a ng-href="#/requisitions">
+            <span class="glyphicon glyphicon-remove"></span> Return
+          </a></li>
+          <li><a ng-click="save()" ng-disabled="fsForm.$invalid">
+            <span class="glyphicon glyphicon-save"></span> Save
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Form/TabPanel -->
+
+  <form name="fsForm">
+
+    <div class="form-group">
+      <table style="table table-condensed">
+        <tbody>
+          <tr><th>Last Modified:&nbsp;</th><td>{{ foreignSourceDef['date-stamp'] | date:'dd-MM-yy hh:mm:ss' }}</td></tr>
+          <tr><th>Scan Interval:&nbsp;</th><td><input id="scanInterval" name="scanInterval" class="input-xs" placeholder="Scan Interval" ng-model="foreignSourceDef['scan-interval']" required/></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <tabset>
+
+      <!-- Detectors Tab -->
+
+      <tab heading="Detectors">
+        <a ng-click="addDetector()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Detector</a>
+        <br/>
+        <div class="table-responsive">
+          <table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Parameters</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="detector in foreignSourceDef.detectors">
+                <td>{{ detector.name }}</td>
+                <td>{{ detector.class }}</td>
+                <td>
+                  <div ng-hide="detector.parameter.length > 0">[No parameters]</div>
+                  <div ng-repeat="parm in detector.parameter">
+                    <p><b>{{ parm.key }} : </b> {{ parm.value }}</p>
+                  </div>
+                </td>
+                <td>
+                  <span class="pull-right">
+                    <a class="btn btn-default btn-xs" tooltip="Edit the detector" ng-click="editDetector($index)">
+                      <span class="glyphicon glyphicon-pencil"/>
+                    </a>
+                    <a class="btn btn-default btn-xs" tooltip="Remove the detector" ng-click="removeDetector($index)">
+                      <span class="glyphicon glyphicon-remove"/>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+
+      <!-- Policies Tab -->
+
+      <tab heading="Policies">
+        <a ng-click="addPolicy()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Policy</a>
+        <br/>
+        <div class="table-responsive">
+          <table class="table table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Parameters</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="policy in foreignSourceDef.policies">
+                <td>{{ policy.name }}</td>
+                <td>{{ policy.class }}</td>
+                <td>
+                  <div ng-hide="policy.parameter.length > 0">[No parameters]</div>
+                  <div ng-repeat="parm in policy.parameter">
+                    <p><b>{{ parm.key }} : </b> {{ parm.value }}</p>
+                  </div>
+                </td>
+                <td>
+                  <span class="pull-right">
+                    <a class="btn btn-default btn-xs" tooltip="Edit the deetctor" ng-click="editPolicy($index)">
+                      <span class="glyphicon glyphicon-pencil"/>
+                    </a>
+                    <a class="btn btn-default btn-xs" tooltip="Remove the detector" ng-click="removePolicy($index)">
+                      <span class="glyphicon glyphicon-remove"/>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+
+    </tabset>
+  </form>
+</div>

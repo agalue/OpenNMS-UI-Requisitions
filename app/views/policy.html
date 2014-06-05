@@ -1,0 +1,36 @@
+<!-- Author: Alejandro Galue <agalue@opennms.org> -->
+
+<div class="modal-header">
+  <h3>Policy</h3>
+</div>
+
+<div class="modal-body">
+  <form name="policyForm">
+    <div class="form-group">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input class="form-control" id="name" name="name" placeholder="Name" ng-model="policy.name" required/>
+      </div>
+      <div class="form-group">
+        <label for="descr">Class</label>
+        <input class="form-control" id="descr" name="descr" placeholder="Description" ng-model="policy.class" required/>
+      </div>
+      <label>Parameter</label>
+      <a class="btn btn-default btn-xs" tooltip="Add a new parameter" ng-click="addParameter()">
+        <span class="glyphicon glyphicon-plus"></span>
+      </a>
+      <div class="form-group" ng-repeat="parameter in policy.parameter">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Parameter Name" ng-model="parameter.key" required>
+          <input type="text" class="form-control" placeholder="Parameter Value" ng-model="parameter.value" required>
+          <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeParameter($index)"/>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="save()" ng-disabled="policyForm.$invalid">Save</button>
+  <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>
