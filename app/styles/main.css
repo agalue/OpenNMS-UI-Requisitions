@@ -77,3 +77,8 @@ body {
     border-bottom: 0;
   }
 }
+
+/* Custom Validation */
+input.ng-invalid {
+  border: 1px solid red;
+}
