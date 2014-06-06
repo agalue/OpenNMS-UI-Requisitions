@@ -3,36 +3,33 @@
   'use strict';
 
   angular.module('onms-requisitions', [
-    'ui.router',
+    'ngRoute',
     'ui.bootstrap',
     'ngAnimate',
     'angular-growl',
     'angular-loading-bar'
     ])
 
-  .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/requisitions");
-
-    $stateProvider
-    .state('requisitions', {
-      url: '/requisitions',
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider
+    .when('/requisitions', {
       templateUrl: 'views/requisitions.html',
       controller: 'RequisitionsController'
     })
-    .state('requisition', {
-      url: '/requisition/:foreignSource',
+    .when('/requisition/:foreignSource', {
       templateUrl: 'views/requisition.html',
       controller: 'RequisitionController'
     })
-    .state('foreignSource', {
-      url: '/foreignSource/:foreignSource',
+    .when('/foreignSource/:foreignSource', {
       templateUrl: 'views/foreignsource.html',
       controller: 'ForeignSourceController'
     })
-    .state('node', {
-      url: '/node/:foreignSource/:foreignId',
+    .when('/node/:foreignSource/:foreignId', {
       templateUrl: 'views/node.html',
       controller: 'NodeController'
+    })
+    .otherwise({
+      redirectTo: '/requisitions'
     });
   }])
 

@@ -7,9 +7,9 @@
 
   angular.module('onms-requisitions')
 
-  .controller('ForeignSourceController', ['$scope', '$http', '$stateParams', '$modal', 'growl', function($scope, $http, $stateParams, $modal, growl) {
+  .controller('ForeignSourceController', ['$scope', '$http', '$routeParams', '$modal', 'growl', function($scope, $http, $routeParams, $modal, growl) {
 
-    $scope.foreignSource = $stateParams.foreignSource;
+    $scope.foreignSource = $routeParams.foreignSource;
     $scope.foreignSourceDef = {};
     var foreignSourceUrl = '/opennms/rest/foreignSources/';
 
@@ -19,7 +19,7 @@
       $modal.open({
         backdrop: true,
         controller: 'PolicyController',
-        templateUrl: 'views/modal-policy.html',
+        templateUrl: 'views/policy.html',
         resolve: {
           policy: function() { return angular.copy(policyToEdit) }
         }
@@ -47,7 +47,7 @@
       $modal.open({
         backdrop: true,
         controller: 'DetectorController',
-        templateUrl: 'views/modal-detector.html',
+        templateUrl: 'views/detector.html',
         resolve: {
           detector: function() { return angular.copy(detectorToEdit) }
         }
@@ -82,7 +82,7 @@
 
     // Refresh the local node from the server
     $scope.refresh = function() {
-      $http.get(foreignSourceUrl + $stateParams.foreignSource)
+      $http.get(foreignSourceUrl + $routeParams.foreignSource)
       .success(function(data) {
         $scope.foreignSourceDef = data;
       })

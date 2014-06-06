@@ -7,12 +7,12 @@
 
   angular.module('onms-requisitions')
 
-  .controller('NodeController', ['$scope', '$http', '$stateParams', '$modal', 'growl', function($scope, $http, $stateParams, $modal, growl) {
+  .controller('NodeController', ['$scope', '$http', '$routeParams', '$modal', 'growl', function($scope, $http, $routeParams, $modal, growl) {
 
-    var nodeUrl = '/opennms/rest/requisitions/' + $stateParams.foreignSource + '/nodes/';
+    var nodeUrl = '/opennms/rest/requisitions/' + $routeParams.foreignSource + '/nodes/';
 
-    $scope.foreignSource = $stateParams.foreignSource;
-    $scope.foreignId = $stateParams.foreignId;
+    $scope.foreignSource = $routeParams.foreignSource;
+    $scope.foreignId = $routeParams.foreignId;
     $scope.node = {};
 
     // Shows the dialog for add/edit an asset field
@@ -22,7 +22,7 @@
       var modalInstance = $modal.open({
         backdrop: true,
         controller: 'AssetController',
-        templateUrl: 'views/modal-asset.html',
+        templateUrl: 'views/asset.html',
         resolve: {
           asset: function() { return angular.copy(assetToEdit) }
         }
@@ -55,7 +55,7 @@
       var modalInstance = $modal.open({
         backdrop: true,
         controller: 'InterfaceController',
-        templateUrl: 'views/modal-interface.html',
+        templateUrl: 'views/interface.html',
         resolve: {
           intf: function() { return angular.copy(intfToEdit) }
         }
@@ -104,7 +104,7 @@
 
     // Refresh the local node from the server
     $scope.refresh = function() {
-      $http.get(nodeUrl + $stateParams.foreignId)
+      $http.get(nodeUrl + $routeParams.foreignId)
       .success(function(data) {
         $scope.node = data;
       })
@@ -114,7 +114,7 @@
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
-    if ($stateParams.foreignId != '__new__') {
+    if ($routeParams.foreignId != '__new__') {
       $scope.refresh();
     } else {
       $scope.node = { 'interface': [], 'asset': [], 'category': [] };
