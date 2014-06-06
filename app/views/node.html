@@ -25,8 +25,12 @@
       </div>
       <div class="collapse navbar-collapse" id="node-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><a ng-href="#/requisition/{{foreignSource}}"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-          <li ng-class="{disabled: nodeForm.$invalid}"><a ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</a></li>
+          <li><a ng-href="#/requisition/{{foreignSource}}">
+            <span class="glyphicon glyphicon-remove"></span> Return
+          </a></li>
+          <li><a ng-click="save()" ng-disabled="nodeForm.$invalid">
+            <span class="glyphicon glyphicon-save"></span> Save
+          </a></li>
         </ul>
       </div>
     </div>
@@ -42,19 +46,21 @@
       <tab heading="Basic Information">
         <br/>
         <div class="form-group">
-          <label classs="control-label" for="foreignId">Foreign ID</label>
+          <label for="foreignId">Foreign ID</label>
           <input class="form-control" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node['foreign-id']" required/>
+          <div class="alert alert-danger" ng-show="nodeForm.foreignId.$error.required">The foreign source is required, it cannot be null!</div>
         </div>
         <div class="form-group">
-          <label classs="control-label" for="nodeLabel">Node Label</label>
+          <label for="nodeLabel">Node Label</label>
           <input class="form-control" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node['node-label']" required/>
+          <div class="alert alert-danger" ng-show="nodeForm.nodeLabel.$error.required">The node label is required, it cannot be null!</div>
         </div>
         <div class="form-group">
-          <label classs="control-label" for="building">Building</label>
+          <label for="nodeLabel">Building</label>
           <input class="form-control" id="building" name="building" placeholder="Building" ng-model="node['building']"/>
         </div>
         <div class="form-group">
-          <label classs="control-label" for="city">City</label>
+          <label for="nodeLabel">City</label>
           <input class="form-control" id="city" name="city" placeholder="City" ng-model="node['city']"/>
         </div>
       </tab>
@@ -64,15 +70,15 @@
       <tab heading="Path Outage">
         <br/>
         <div class="form-group">
-          <label class="control-label" for="parentForeignSource">Parent Foreign Source</label>
+          <label for="nodeLabel">Parent Foreign Source</label>
           <input class="form-control" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node['parent-foreign-source']"/>
         </div>
-        <div class="form-group" ng-disabled="node['parent-foreign-id'] != null">
-          <label class="control-label" for="parentForeignId">Parent Foreign ID</label>
+        <div class="form-group">
+          <label for="nodeLabel">Parent Foreign ID</label>
           <input class="form-control" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node['parent-foreign-id']"/>
         </div>
-        <div class="form-group" ng-disabled="node['parent-foreign-id'] != null">
-          <label class="control-label" for="parentForeignLabel">Parent Foreign Label</label>
+        <div class="form-group">
+          <label for="nodeLabel">Parent Foreign Label</label>
           <input class="form-control" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node['parent-foreign-']"/>
         </div>
       </tab>
