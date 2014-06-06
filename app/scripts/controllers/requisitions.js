@@ -25,17 +25,17 @@
 
     // Resets the default set of detectors and policies
     $scope.resetDefaultForeignSource = function() {
-      growl.addWarnMessage("Not implemented yet."); // FIXME
-    }
+      growl.addWarnMessage('Cannot reset default foreign source. Not implemented yet.'); // FIXME
+    };
 
     // Clones the detectors and policies of a specific requisition
     $scope.cloneForeignSource = function(requisition) {
-      growl.addWarnMessage("Not implemented yet."); // FIXME
-    }
+      growl.addWarnMessage('Cannot clone foreign source ' + requisition['foreign-source'] + '. Not implemented yet.'); // FIXME
+    };
 
     // Adds a new requisition on the server
     $scope.addRequisition = function() {
-      var foreignSource = prompt("Please enter the name for the new requisition");
+      var foreignSource = window.prompt('Please enter the name for the new requisition'); // TODO Beautify prompt
       if (foreignSource) {
         $http.post('/opennms/rest/requisitions', { 'foreign-source': foreignSource })
         .success(function() {
@@ -44,7 +44,7 @@
         })
         .error(function() {
           growl.addErrorMessage('Cannot create the requisition' + foreignSource);
-        })
+        });
       }
     };
 
@@ -61,7 +61,7 @@
 
     // Removes all the nodes form the requisition on the server
     $scope.removeAllNodes = function(requisition) {
-      requisition['node'] = [];
+      requisition.node = [];
       $http.post('/opennms/rest/requisitions/', requisition)
       .success(function() {
         growl.addSuccessMessage('All the nodes from ' + requisition['foreign-source'] + ' have been removed');
@@ -77,7 +77,7 @@
       .success(function() {
         var index = -1;
         for (var i=0; i < $scope.requisitions['model-import'].length; i++) {
-          if (requisition['foreign-source'] == $scope.requisitions['model-import'][i]['foreign-source']) {
+          if (requisition['foreign-source'] === $scope.requisitions['model-import'][i]['foreign-source']) {
             index = i;
             break;
           }

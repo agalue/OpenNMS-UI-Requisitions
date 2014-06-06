@@ -24,7 +24,7 @@
         controller: 'AssetController',
         templateUrl: 'views/asset.html',
         resolve: {
-          asset: function() { return angular.copy(assetToEdit) }
+          asset: function() { return angular.copy(assetToEdit); }
         }
       });
 
@@ -46,7 +46,7 @@
     $scope.addAsset = function() {
       $scope.node.asset.push({ name: '', value: '' });
       $scope.editAsset($scope.node.asset.length - 1, true);
-    }
+    };
 
     // Shows the dialog for add/edit an interface
     $scope.editInterface = function(index, isNew) {
@@ -57,7 +57,7 @@
         controller: 'InterfaceController',
         templateUrl: 'views/interface.html',
         resolve: {
-          intf: function() { return angular.copy(intfToEdit) }
+          intf: function() { return angular.copy(intfToEdit); }
         }
       });
 
@@ -89,12 +89,12 @@
     // Adds a category from the local node
     $scope.addCategory = function() {
       $scope.node.category.push({ 'name': '' });
-    }
+    };
 
     // Saves the local node on the server
     $scope.save = function() {
       $http.post(nodeUrl, $scope.node)
-      .success(function(data) {
+      .success(function() {
         growl.addSuccessMessage('The node ' + $scope.node['node-label'] + ' has been saved.');
       })
       .error(function() {
@@ -114,7 +114,7 @@
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
-    if ($routeParams.foreignId != '__new__') {
+    if ($routeParams.foreignId !== '__new__') {
       $scope.refresh();
     } else {
       $scope.node = { 'interface': [], 'asset': [], 'category': [] };

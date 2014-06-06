@@ -8,7 +8,7 @@
     'ngAnimate',
     'angular-growl',
     'angular-loading-bar'
-    ])
+  ])
 
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider

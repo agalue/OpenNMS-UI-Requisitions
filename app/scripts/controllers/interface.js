@@ -30,7 +30,7 @@
 
     $scope.removeService = function(index) {
       $scope.intf['monitored-service'].splice(index, 1);
-    }
+    };
 
   }]);
 

@@ -25,7 +25,7 @@
 
     $scope.removeParameter = function(index) {
       $scope.detector.parameter.splice(index, 1);
-    }
+    };
 
   }]);
 

@@ -25,7 +25,7 @@
 
     $scope.removeParameter = function(index) {
       $scope.policy.parameter.splice(index, 1);
-    }
+    };
 
   }]);
 

@@ -11,7 +11,7 @@
         return input.length < start ? input : input.slice(start);
       }
       return [];
-    }
+    };
   });
 
 }());

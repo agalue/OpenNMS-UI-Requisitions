@@ -21,7 +21,7 @@
         controller: 'PolicyController',
         templateUrl: 'views/policy.html',
         resolve: {
-          policy: function() { return angular.copy(policyToEdit) }
+          policy: function() { return angular.copy(policyToEdit); }
         }
       }).result.then(function(result) {
         angular.copy(result, policyToEdit);
@@ -49,7 +49,7 @@
         controller: 'DetectorController',
         templateUrl: 'views/detector.html',
         resolve: {
-          detector: function() { return angular.copy(detectorToEdit) }
+          detector: function() { return angular.copy(detectorToEdit); }
         }
       }).result.then(function(result) {
         angular.copy(result, detectorToEdit);
@@ -72,7 +72,7 @@
     // Saves the local foreign source on the server
     $scope.save = function() {
       $http.post(foreignSourceUrl, $scope.foreignSourceDef)
-      .success(function(data) {
+      .success(function() {
         growl.addSuccessMessage('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
       })
       .error(function() {

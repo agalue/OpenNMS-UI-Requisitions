@@ -20,7 +20,7 @@
     $scope.$watch('reqFilter', function() {
       $scope.currentPage = 1;
       $scope.filteredNodes = $filter('filter')($scope.requisition.node, $scope.reqFilter);
-      $scope.totalItems = $scope.filteredNodes.length
+      $scope.totalItems = $scope.filteredNodes.length;
       $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
     });
 
@@ -48,7 +48,7 @@
       .error(function() {
         growl.addErrorMessage('Cannot retrieve the requisition ' + $routeParams.foreignSource);
       });
-    }
+    };
 
     // Initializes the requisition page
     $scope.refresh();
