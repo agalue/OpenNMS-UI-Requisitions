@@ -7,9 +7,9 @@
 
   angular.module('onms-requisitions')
 
-  .controller('RequisitionController', ['$scope', '$http', '$filter', '$routeParams', 'growl', function($scope, $http, $filter, $routeParams, growl) {
+  .controller('RequisitionController', ['$scope', '$http', '$filter', '$stateParams', 'growl', function($scope, $http, $filter, $stateParams, growl) {
 
-    $scope.foreignSource = $routeParams.foreignSource;
+    $scope.foreignSource = $stateParams.foreignSource;
     $scope.requisition = { node: [] };
     $scope.filteredNodes = [];
     $scope.pageSize = 10;
@@ -38,7 +38,7 @@
 
     // Refresh the local requisition from the server
     $scope.refresh = function() {
-      $http.get('/opennms/rest/requisitions/' + $routeParams.foreignSource).success(function(data) {
+      $http.get('/opennms/rest/requisitions/' + $stateParams.foreignSource).success(function(data) {
         $scope.currentPage = 1;
         $scope.requisition = data;
         $scope.totalItems = data.node.length;
@@ -46,7 +46,7 @@
         $scope.filteredNodes = data.node;
       })
       .error(function() {
-        growl.addErrorMessage('Cannot retrieve the requisition ' + $routeParams.foreignSource);
+        growl.addErrorMessage('Cannot retrieve the requisition ' + $stateParams.foreignSource);
       });
     }
 
