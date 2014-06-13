@@ -4,8 +4,8 @@
 
   angular.module('onms-requisitions', [
     'ngRoute',
-    'ui.bootstrap',
     'ngAnimate',
+    'ui.bootstrap',
     'angular-growl',
     'angular-loading-bar'
   ])

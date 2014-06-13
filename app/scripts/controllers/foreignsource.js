@@ -7,11 +7,10 @@
 
   angular.module('onms-requisitions')
 
-  .controller('ForeignSourceController', ['$scope', '$http', '$routeParams', '$modal', 'growl', function($scope, $http, $routeParams, $modal, growl) {
+  .controller('ForeignSourceController', ['$scope', '$routeParams', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $modal, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.foreignSourceDef = {};
-    var foreignSourceUrl = '/opennms/rest/foreignSources/';
 
     $scope.editPolicy = function(index, isNew) {
       var policyToEdit = $scope.foreignSourceDef.policies[index];
@@ -71,28 +70,33 @@
 
     // Saves the local foreign source on the server
     $scope.save = function() {
-      $http.post(foreignSourceUrl, $scope.foreignSourceDef)
-      .success(function() {
-        growl.addSuccessMessage('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
-      })
-      .error(function() {
-        growl.addErrorMessage('Cannot save the definition of the requisition ' + $scope.foreignSource + ' on the server.');
-      });
+      RequisitionsService.saveForeignSourceDefinition($scope.foreignSourceDef).then(
+        function() { // success
+          growl.addSuccessMessage('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
+        },
+        function() { // error
+          growl.addErrorMessage('Cannot save the definition of the requisition ' + $scope.foreignSource + ' on the server.');
+        }
+      );
     };
 
     // Refresh the local node from the server
     $scope.refresh = function() {
-      $http.get(foreignSourceUrl + $routeParams.foreignSource)
-      .success(function(data) {
-        $scope.foreignSourceDef = data;
-      })
-      .error(function() {
-        growl.addErrorMessage('Cannot retrieve the policies and detectors from the server.');
-      });
+      growl.addInfoMessage('Retrieving definition for requisition ' + $scope.foreignSource + '...');
+      RequisitionsService.getForeignSourceDefinition($scope.foreignSource).then(
+        function(data) { // success
+          $scope.foreignSourceDef = data;
+        },
+        function() { // error
+          growl.addErrorMessage('Cannot retrieve the policies and detectors from the server.');
+        }
+      );
     };
 
     // Initialize the page
-    $scope.refresh();
+    if ($scope.foreignSource) {
+      $scope.refresh();
+    }
   }]);
 
 }());

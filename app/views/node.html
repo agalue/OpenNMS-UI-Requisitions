@@ -43,19 +43,19 @@
         <br/>
         <div class="form-group">
           <label classs="control-label" for="foreignId">Foreign ID</label>
-          <input class="form-control" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node['foreign-id']" required/>
+          <input class="form-control" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node.foreignId" required/>
         </div>
         <div class="form-group">
           <label classs="control-label" for="nodeLabel">Node Label</label>
-          <input class="form-control" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node['node-label']" required/>
+          <input class="form-control" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node.nodeLabel" required/>
         </div>
         <div class="form-group">
           <label classs="control-label" for="building">Building</label>
-          <input class="form-control" id="building" name="building" placeholder="Building" ng-model="node['building']"/>
+          <input class="form-control" id="building" name="building" placeholder="Building" ng-model="node.building"/>
         </div>
         <div class="form-group">
           <label classs="control-label" for="city">City</label>
-          <input class="form-control" id="city" name="city" placeholder="City" ng-model="node['city']"/>
+          <input class="form-control" id="city" name="city" placeholder="City" ng-model="node.city"/>
         </div>
       </tab>
 
@@ -65,15 +65,15 @@
         <br/>
         <div class="form-group">
           <label class="control-label" for="parentForeignSource">Parent Foreign Source</label>
-          <input class="form-control" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node['parent-foreign-source']"/>
+          <input class="form-control" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node.parentForeignSource"/>
         </div>
-        <div class="form-group" ng-disabled="node['parent-foreign-id'] != null">
+        <div class="form-group" ng-disabled="node.parentForeignLabel != null">
           <label class="control-label" for="parentForeignId">Parent Foreign ID</label>
-          <input class="form-control" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node['parent-foreign-id']"/>
+          <input class="form-control" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node.parentForeignId"/>
         </div>
-        <div class="form-group" ng-disabled="node['parent-foreign-id'] != null">
+        <div class="form-group" ng-disabled="node.parentForeignId != null">
           <label class="control-label" for="parentForeignLabel">Parent Foreign Label</label>
-          <input class="form-control" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node['parent-foreign-']"/>
+          <input class="form-control" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node.parentForeignLabel"/>
         </div>
       </tab>
 
@@ -95,13 +95,13 @@
             </thead>
             <tbody>
               <tr ng-repeat="intf in node['interface']">
-                <td>{{ intf['ip-addr'] }}</td>
-                <td>{{ intf['descr'] }}</td>
-                <td>{{ intf['snmp-primary'] }}</td>
+                <td>{{ intf.ipAddress }}</td>
+                <td>{{ intf.description }}</td>
+                <td>{{ intf.snmpPrimary }}</td>
                 <td>
-                  <div ng-hide="intf['monitored-service'].length > 0">[No services]</div>
-                  <div ng-repeat="service in intf['monitored-service']">
-                    <p>{{ service['service-name'] }}</p>
+                  <div ng-hide="intf.services.length > 0">[No services]</div>
+                  <div ng-repeat="service in intf.services">
+                    <p>{{ service }}</p>
                   </div>
                 </td>
                 <td>
@@ -135,9 +135,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="asset in node.asset">
-                <th>{{asset.name}}</th>
-                <td>{{asset.value}}</td>
+              <tr ng-repeat="(assetKey, assetValue) in node.assets">
+                <th>{{assetKey}}</th>
+                <td>{{assetValue}}</td>
                 <td>
                   <span class="pull-right">
                     <a class="btn btn-default btn-xs" tooltip="Edit the asset" ng-click="editAsset($index)">
@@ -159,9 +159,9 @@
       <tab heading="Categories">
         <a ng-click="addCategory()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Category</a>
         <br/>
-        <div class="form-group" ng-repeat="category in node.category">
+        <div class="form-group" ng-repeat="category in node.categories">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Category Name" ng-model="category.name" required/>
+            <input type="text" class="form-control" placeholder="Category Name" ng-model="category" required/>
             <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeCategory($index)"/>
           </div>
         </div>

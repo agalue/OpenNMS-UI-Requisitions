@@ -7,50 +7,47 @@
 
   angular.module('onms-requisitions')
 
-  .controller('NodeController', ['$scope', '$http', '$routeParams', '$modal', 'growl', function($scope, $http, $routeParams, $modal, growl) {
-
-    var nodeUrl = '/opennms/rest/requisitions/' + $routeParams.foreignSource + '/nodes/';
+  .controller('NodeController', ['$scope', '$routeParams', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $modal, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.foreignId = $routeParams.foreignId;
     $scope.node = {};
 
     // Shows the dialog for add/edit an asset field
-    $scope.editAsset = function(index, isNew) {
-      var assetToEdit = $scope.node.asset[index];
+    $scope.editAsset = function(assetKey, isNew) {
+      var assetToEdit = { key: assetKey, value: assetKey != '' ? $scope.node.assets[assetKey] : '' };
 
       var modalInstance = $modal.open({
         backdrop: true,
         controller: 'AssetController',
         templateUrl: 'views/asset.html',
         resolve: {
-          asset: function() { return angular.copy(assetToEdit); }
+          asset: function() { return assetToEdit; }
         }
       });
 
       modalInstance.result.then(function(result) {
-        angular.copy(result, assetToEdit);
+        $scope.node.assets[result.key] = result.value;
       }, function() {
         if (isNew) {
-          $scope.node.asset.pop();
+          $scope.node.assets.pop();
         }
       });
     };
 
     // Removes an asset from the local node
     $scope.removeAsset = function(index) {
-      $scope.node.asset.splice(index, 1);
+      $scope.node.assets.splice(index, 1);
     };
 
     // Adds an asset to the local node
     $scope.addAsset = function() {
-      $scope.node.asset.push({ name: '', value: '' });
-      $scope.editAsset($scope.node.asset.length - 1, true);
+      $scope.editAsset('', true);
     };
 
     // Shows the dialog for add/edit an interface
     $scope.editInterface = function(index, isNew) {
-      var intfToEdit = $scope.node.interface[index];
+      var intfToEdit = $scope.node.interfaces[index];
 
       var modalInstance = $modal.open({
         backdrop: true,
@@ -65,56 +62,60 @@
         angular.copy(result, intfToEdit);
       }, function() {
         if (isNew) {
-          $scope.node.interface.pop();
+          $scope.node.interfaces.pop();
         }
       });
     };
 
     // Removes an interface from the local node
     $scope.removeInterface = function(index) {
-      $scope.node.interface.splice(index, 1);
+      $scope.node.interfaces.splice(index, 1);
     };
 
     // Adds an interface to the local node
     $scope.addInterface = function() {
-      $scope.node.interface.push({ 'ip-addr': '', 'descr': '', 'snmp-primary': '', 'monitored-service': [] });
-      $scope.editInterface($scope.node.interface.length - 1, true);
+      $scope.node.interfaces.push({ ipAddress: '', description: '', snmpPrimary: '', services: [] });
+      $scope.editInterface($scope.node.interfaces.length - 1, true);
     };
 
     // Removes a category from the local node
     $scope.removeCategory = function(index) {
-      $scope.node.category.splice(index, 1);
+      $scope.node.categories.splice(index, 1);
     };
 
     // Adds a category from the local node
     $scope.addCategory = function() {
-      $scope.node.category.push({ 'name': '' });
+      $scope.node.categories.push('');
     };
 
     // Saves the local node on the server
     $scope.save = function() {
-      $http.post(nodeUrl, $scope.node)
-      .success(function() {
-        growl.addSuccessMessage('The node ' + $scope.node['node-label'] + ' has been saved.');
-      })
-      .error(function() {
-        growl.addErrorMessage('Cannot save the node ' + $scope.node['node-label'] + ' on the server.');
-      });
+      RequisitionsService.saveNode($scope.node).then(
+        function() { // success
+          $scope.node.deployed = false;
+          growl.addSuccessMessage('The node ' + $scope.node.nodeLabel + ' has been saved.');
+        },
+        function() { // error
+          growl.addErrorMessage('Cannot save the node ' + $scope.node.nodeLabel + ' on the server.');
+        }
+      );
     };
 
     // Refresh the local node from the server
     $scope.refresh = function() {
-      $http.get(nodeUrl + $routeParams.foreignId)
-      .success(function(data) {
-        $scope.node = data;
-      })
-      .error(function() {
-        growl.addErrorMessage('Cannot retrieve the nodes from the server.');
-      });
+      growl.addInfoMessage('Retrieving node ' + $scope.foreignId + ' from requisition ' + $scope.foreignSource + '...');
+      RequisitionsService.getNode($scope.foreignSource, $scope.foreignId).then(
+        function(node) { // success
+          $scope.node = node;
+        },
+        function() { // error
+          growl.addErrorMessage('Cannot retrieve the nodes from the server.');
+        }
+      );
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
-    if ($routeParams.foreignId !== '__new__') {
+    if ($scope.foreignId !== '__new__') {
       $scope.refresh();
     } else {
       $scope.node = { 'interface': [], 'asset': [], 'category': [] };

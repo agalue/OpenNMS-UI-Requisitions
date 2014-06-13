@@ -25,11 +25,11 @@
     };
 
     $scope.addService = function() {
-      $scope.intf['monitored-service'].push({ 'service-name': ''});
+      $scope.intf.services.push('');
     };
 
     $scope.removeService = function(index) {
-      $scope.intf['monitored-service'].splice(index, 1);
+      $scope.intf.services.splice(index, 1);
     };
 
   }]);

@@ -8,23 +8,23 @@
   <form name="intfForm">
     <div class="form-group">
       <label class="control-label" for="ipAddress">IP Address</label>
-      <input class="form-control" id="ipAddress" name="ipAddress" placeholder="IP Address" ng-model="intf['ip-addr']" required/>
+      <input class="form-control" id="ipAddress" name="ipAddress" placeholder="IP Address" ng-model="intf.ipAddress" required/>
     </div>
     <div class="form-group">
       <label class="control-label" for="descr">Description</label>
-      <input class="form-control" id="descr" name="descr" placeholder="Description" ng-model="intf['descr']"/>
+      <input class="form-control" id="descr" name="descr" placeholder="Description" ng-model="intf.description"/>
     </div>
     <div class="form-group">
       <label class="control-label" for="snmpPrimary">SNMP Primary</label>
-      <input class="form-control" id="snmpPrimary" name="snmpPrimary" ng-model="intf['snmp-primary']" typeahead-editable="false" typeahead="a.id as a.title for a in snmpPrimaryFields | filter:$viewValue | limitTo:3" required>
+      <input class="form-control" id="snmpPrimary" name="snmpPrimary" ng-model="intf.snmpPrimary" typeahead-editable="false" typeahead="a.id as a.title for a in snmpPrimaryFields | filter:$viewValue | limitTo:3" required>
     </div>
     <label>Services</label>
     <a class="btn btn-default btn-xs" tooltip="Add a new service" ng-click="addService()">
       <span class="glyphicon glyphicon-plus"></span>
     </a>
-    <div class="form-group" ng-repeat="service in intf['monitored-service']">
+    <div class="form-group" ng-repeat="service in intf.services">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Service Name" ng-model="service['service-name']" required>
+        <input type="text" class="form-control" placeholder="Service Name" ng-model="service" required>
         <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeService($index)"/>
       </div>
     </div>

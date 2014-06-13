@@ -1,5 +1,3 @@
-/* global moment: true */
-
 /**
 * @ngdoc object
 * @name RequisitionNode

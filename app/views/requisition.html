@@ -6,7 +6,7 @@
 
   <ol class="breadcrumb">
     <li><a href="#/requisitions">Requisitions</a></li>
-    <li class="active">{{ requisition['foreign-source'] }}</li>
+    <li class="active">{{ requisition.foreignSource }}</li>
   </ol>
 
   <!-- Navigation Bar -->
@@ -20,7 +20,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <div class="navbar-brand">{{ requisition['foreign-source'] }} ({{ requisition.node.length }} nodes)</div>
+        <div class="navbar-brand">{{ requisition.foreignSource }} ({{ requisition.nodesCount() }} nodes)</div>
       </div>
       <div class="collapse navbar-collapse" id="requisition-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -50,16 +50,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="node in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
-          <td>{{ node['node-label'] }}</td>
-          <td>{{ node['foreign-id'] }}</td>
-          <td>{{ node['building'] }}</td>
-          <td>{{ node['city'] }}</td>
+        <tr ng-repeat="(foreignId, node) in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
+          <td>{{ node.nodeLabel }}</td>
+          <td>{{ node.foreignId }}</td>
+          <td>{{ node.building }}</td>
+          <td>{{ node.city }}</td>
           <td>
-            <a class="btn btn-default btn-xs" tooltip="Edit the {{ node['node-label'] }} Node" ng-href="#/node/{{requisition['foreign-source']}}/{{node['foreign-id']}}">
+            <a class="btn btn-default btn-xs" tooltip="Edit the {{ node.nodeLabel }} Node" ng-href="#/node/{{node.foreignSource}}/{{node.foreignId}}">
               <span class="glyphicon glyphicon-pencil"/>
             </a>
-            <a class="btn btn-default btn-xs" tooltip="Remove the {{ node['node-label'] }} Node" ng-click="deleteNode(node)">
+            <a class="btn btn-default btn-xs" tooltip="Remove the {{ node.nodeLabel }} Node" ng-click="deleteNode(node)">
               <span class="glyphicon glyphicon-remove"></span>
             </a>
           </td>

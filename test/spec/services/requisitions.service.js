@@ -129,8 +129,23 @@ describe('Service: RequisitionsService', function () {
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  // Testing getRequisitions
+  // Testing getRequisition
 
+  it('getRequisition', function() {
+    var req = pendingRequisitions['model-import'][0];
+    var fs  = req['foreign-source'];
+    var requisitionUrl = requisitionsService.internal.requisitionsUrl + '/' + fs;
+    $httpBackend.expect('GET', requisitionUrl).respond(req);
+
+    requisitionsService.getRequisition(fs).then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.nodesCount()).toBe(3);
+    });
+
+    $httpBackend.flush();
+  });
+
+  // Testing getRequisitions
   it('getRequisitions', function() {
     var requisitionsUrl = requisitionsService.internal.requisitionsUrl;
     $httpBackend.expect('GET', requisitionsUrl).respond(pendingRequisitions);
@@ -138,7 +153,7 @@ describe('Service: RequisitionsService', function () {
 
     requisitionsService.getRequisitions().then(function(data) {
       expect(data).not.toBe(null);
-      expect(data.requisitions).not.toBe(null);
+      expect(data.requisitionsCount()).toBe(3);
       expect(data.requisitions['test-network'].deployed).toBe(false);
       expect(data.requisitions['test-network'].nodesCount()).toBe(3);
       expect(data.requisitions['test-network'].nodes['1001'].deployed).toBe(true);  // unmodified
@@ -155,7 +170,7 @@ describe('Service: RequisitionsService', function () {
 
   it('synchronizeRequisition', function() {
     var foreignSource = 'test-requisition';
-    var importUrl = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/import';
+    var importUrl = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/import?rescanExisting=false';
     $httpBackend.expect('PUT', importUrl).respond({});
 
     requisitionsService.synchronizeRequisition(foreignSource);
@@ -177,14 +192,25 @@ describe('Service: RequisitionsService', function () {
     $httpBackend.flush();
   });
 
-  // Testing deleteRequisition
+  // Testing deleteRequisition (pending)
 
-  it('deleteRequisition', function() {
+  it('deleteRequisition::pending', function() {
     var foreignSource = 'test-requisition';
     var deleteUrl = requisitionsService.internal.requisitionsUrl + '/' + foreignSource;
     $httpBackend.expect('DELETE', deleteUrl).respond({});
 
     requisitionsService.deleteRequisition(foreignSource);
+    $httpBackend.flush();
+  });
+
+  // Testing deleteRequisition (deployed)
+
+  it('deleteRequisition::deployed', function() {
+    var foreignSource = 'test-requisition';
+    var deleteUrl = requisitionsService.internal.requisitionsUrl + '/deployed/' + foreignSource;
+    $httpBackend.expect('DELETE', deleteUrl).respond({});
+
+    requisitionsService.deleteRequisition(foreignSource, true);
     $httpBackend.flush();
   });
 
@@ -196,6 +222,24 @@ describe('Service: RequisitionsService', function () {
     $httpBackend.expect('POST', saveUrl, requisition).respond({});
 
     requisitionsService.removeAllNodesFromRequisition('test-requisition');
+    $httpBackend.flush();
+  });
+
+  // Testing getNode
+
+  it('getNode', function() {
+    var req  = pendingRequisitions['model-import'][0];
+    var node = req['node'][0];
+    var fs   = req['foreign-source'];
+    var fid  = node['foreign-id'];
+    var nodeUrl = requisitionsService.internal.requisitionsUrl + '/' + fs + '/nodes/' + fid;
+    $httpBackend.expect('GET', nodeUrl).respond(node);
+
+    requisitionsService.getNode(fs, fid).then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.nodeLabel).toBe('testing-server');
+    });
+
     $httpBackend.flush();
   });
 

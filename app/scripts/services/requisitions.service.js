@@ -1,3 +1,5 @@
+/*global RequisitionsData:true,Requisition:true,RequisitionNode:true */
+
 // http://jsfiddle.net/zMjVp/
 
 (function() {
@@ -16,10 +18,11 @@
 
     $log.debug('Initializing RequisitionsService');
 
-    var requisitionsService = new Object();
-    requisitionsService.internal = new Object();
+    var requisitionsService = {};
+    requisitionsService.internal = {};
 
-    requisitionsService.internal.requisitionsUrl = "/opennms/rest/requisitions";
+    requisitionsService.internal.requisitionsUrl   = '/opennms/rest/requisitions';
+    requisitionsService.internal.foreignSourcesUrl = '/opennms/rest/foreignSources';
 
     /**
     * @description (Internal) Merges the deployed and pending requisitions obtained from OpenNMS into a single object.
@@ -31,43 +34,37 @@
     * @returns {Object} the combined data.
     * @private
     */
-    requisitionsService.internal.mergeData = function(results) {
+    requisitionsService.internal.mergeRequisitions = function(results) {
       var pendingRequisitions  = results[0].data;
       var deployedRequisitions = results[1].data;
-      var combinedData = {
-        status: {
-          deployed: 0,
-          pending: 0
-        },
-        requisitions: {}
-      };
+      var requisitionsData = new RequisitionsData();
 
       // Assumes the deployed nodes are going to be added first and then the pending nodes.
-      var addRequisition = function(req, deployed) {
+      var mergeRequisition = function(req, deployed) {
         var requisition = new Requisition(req, deployed);
-        combinedData['status'][deployed ? 'deployed' : 'pending']++;
-        var existing = combinedData.requisitions[requisition.foreignSource];
+        requisitionsData['status'][deployed ? 'deployed' : 'pending']++;
+        var existing = requisitionsData.requisitions[requisition.foreignSource];
         if (existing == null) {
-          $log.debug('Adding ' + (deployed ? 'deployed' : 'pending') + ' requisition ' + requisition.foreignSource + '.');
-          combinedData.requisitions[requisition.foreignSource] = requisition;
+          $log.debug('mergeRequisition: adding ' + (deployed ? 'deployed' : 'pending') + ' requisition ' + requisition.foreignSource + '.');
+          requisitionsData.requisitions[requisition.foreignSource] = requisition;
         } else {
           existing.deployed = false; // temporary set to false to compare the requisitions.
           if (angular.equals(existing, requisition)) { // the requisition was not modified.
             existing.deployed = true; // restoring the deployed flag.
-            $log.debug('The foreignSource ' + requisition.foreignSource + ' has not been modified.');            
+            $log.debug('mergeRequisition: the foreignSource ' + requisition.foreignSource + ' has not been modified.');
           } else { // the requisition was modified
-            $log.debug('The foreignSource ' + requisition.foreignSource + ' has been modified.');
+            $log.debug('mergeRequisition: the foreignSource ' + requisition.foreignSource + ' has been modified.');
             for (var foreignId in requisition.nodes) {
               if (existing.nodes[foreignId] == null) { // new node
-                $log.debug('The foreignId ' + foreignId + ' is new, adding it to ' + requisition.foreignSource + '.');
+                $log.debug('mergeRequisition: the foreignId ' + foreignId + ' is new, adding it to ' + requisition.foreignSource + '.');
                 existing.nodes[foreignId] = requisition.nodes[foreignId];
               } else { // modified node ?
                 existing.nodes[foreignId].deployed = false; // temporary set to false to compare the nodes.
                 if (angular.equals(existing.nodes[foreignId], requisition.nodes[foreignId])) { // ummodified node.
-                  $log.debug('The foreignId ' + foreignId + ' has not been modified on ' + requisition.foreignSource + '.');
+                  $log.debug('mergeRequisition: the foreignId ' + foreignId + ' has not been modified on ' + requisition.foreignSource + '.');
                   existing.nodes[foreignId].deployed = true; // restoring the deployed flag.
                 } else { // modified node
-                  $log.debug('The foreignId ' + foreignId + ' was modified, replacing it into ' + requisition.foreignSource + '.');
+                  $log.debug('mergeRequisition: the foreignId ' + foreignId + ' was modified, replacing it into ' + requisition.foreignSource + '.');
                   existing.nodes[foreignId] = requisition.nodes[foreignId];
                 }
               }
@@ -76,17 +73,17 @@
         }
       };
 
-      $log.debug('Processing deployed requisitions');
+      $log.debug('mergeRequisitions: processing deployed requisitions');
       angular.forEach(deployedRequisitions['model-import'], function(r) {
-        addRequisition(r, true);
+        mergeRequisition(r, true);
       });
 
-      $log.debug('Processing pending requisitions');
+      $log.debug('mergeRequisitions: processing pending requisitions');
       angular.forEach(pendingRequisitions['model-import'], function(r) {
-        addRequisition(r, false);
+        mergeRequisition(r, false);
       });
 
-      return combinedData;
+      return requisitionsData;
     };
 
     /**
@@ -99,26 +96,52 @@
     */
     requisitionsService.getRequisitions = function() {
       var pendingUrl  = requisitionsService.internal.requisitionsUrl;
-      var deployedUrl = requisitionsService.internal.requisitionsUrl + "/deployed";
+      var deployedUrl = requisitionsService.internal.requisitionsUrl + '/deployed';
 
       $log.debug('getRequisitions: retrieving pending and deployed requisitions.');
       var deferredPending  = $http.get(pendingUrl);
       var deferredDeployed = $http.get(deployedUrl);
 
-      $log.debug('getRequisitions: combining pending and deployed requisitions.');
+      $log.debug('getRequisitions: merging pending and deployed requisitions.');
       var deferredResults = $q.defer();
       $q.all([ deferredPending, deferredDeployed ])
       .then(function(results) {
-        var combinedData = requisitionsService.internal.mergeData(results);
-        $log.debug('getRequisitions: combined requisitions');
-        deferredResults.resolve(combinedData); 
+        var requisitionsData = requisitionsService.internal.mergeRequisitions(results);
+        $log.debug('getRequisitions: merged pending and deployed requisitions.');
+        deferredResults.resolve(requisitionsData);
       }, function(message) {
         var status = 'cannot merge the requisitions. ' + message;
         $log.error('getRequisitions: ' + status);
-        defferedResults.reject(status);
+        deferredResults.reject(status);
       });
 
       return deferredResults.promise;
+    };
+
+    /**
+    * @description Request a sepcific requisition from OpenNMS.
+    *
+    * @name RequisitionService:getRequisition
+    * @ngdoc method
+    * @param {string} The requisition's name (a.k.a. foreignSource)
+    * @methodOf RequisitionService
+    * @returns {*} a handler function.
+    */
+    requisitionsService.getRequisition = function(foreignSource) {
+      var url  = requisitionsService.internal.requisitionsUrl + '/' + foreignSource;
+      var deferred = $q.defer();
+      $log.debug('getRequisition: getting requisition ' + foreignSource);
+      $http.get(url)
+      .success(function(data) {
+        var requisition = new Requisition(data);
+        $log.debug('getRequisition: got requisition ' + foreignSource);
+        deferred.resolve(requisition);
+      })
+      .error(function(data, status) {
+        $log.error('getRequisition: GET ' + url + ' failed:', data, status);
+        deferred.reject(status);
+      });
+      return deferred.promise;
     };
 
     /**
@@ -130,13 +153,14 @@
     * @ngdoc method
     * @methodOf RequisitionService
     * @param {string} The requisition's name (a.k.a. foreignSource)
+    * @param {boolean} Flag for to scan existing nodes
     * @returns {*} a handler function.
     */
-    requisitionsService.synchronizeRequisition = function(foreignSource) {
+    requisitionsService.synchronizeRequisition = function(foreignSource, rescanExisting) {
       var url = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/import';
       var deferred = $q.defer();
       $log.debug('synchronizeRequisition: synchronizing requisition ' + foreignSource);
-      $http.put(url)
+      $http({ method: 'PUT', url: url, params: { rescanExisting: rescanExisting ? 'true' : 'false' }})
       .success(function(data) {
         $log.debug('synchronizeRequisition: synchronized requisition ' + foreignSource);
         deferred.resolve(data);
@@ -182,22 +206,23 @@
     * @name RequisitionService:deleteRequisition
     * @ngdoc method
     * @methodOf RequisitionService
-    * @param {string} The requisition's name (a.k.a. foreignSource)
+    * @param {string}  The requisition's name (a.k.a. foreignSource)
+    * @param {boolean} true, if the requisition is deployed
     * @returns {*} a handler function.
     */
-    requisitionsService.deleteRequisition = function(foreignSource) {
+    requisitionsService.deleteRequisition = function(foreignSource, deployed) {
       var deferred = $q.defer();
-      var url = requisitionsService.internal.requisitionsUrl + '/' + foreignSource;
-      $log.debug('deleteRequisition: deleting requisition ' + foreignSource);
+      var url = requisitionsService.internal.requisitionsUrl + (deployed ? '/deployed/' : '/') + foreignSource;
+      $log.debug('deleteRequisition: deleting ' + (deployed ? 'deployed' : 'pending') + ' requisition ' + foreignSource);
       $http.delete(url)
       .success(function(data) {
-        $log.debug('deleteRequisition: deleted requisition ' + foreignSource);
+        $log.debug('deleteRequisition: deleted ' + (deployed ? 'deployed' : 'pending')+ ' requisition ' + foreignSource);
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('addRequisition: DELETE ' + url + ' failed:', data, status);
         deferred.reject(status);
       });
-      return deferred.promise;            
+      return deferred.promise;
     };
 
     /**
@@ -225,7 +250,34 @@
         $log.error('removeAllNodesFromRequisition: POST ' + url + ' failed:', data, status);
         deferred.reject(status);
       });
-      return deferred.promise;            
+      return deferred.promise;
+    };
+
+    /**
+    * @description Request a sepcific node from a requisition from OpenNMS.
+    *
+    * @name RequisitionService:getNode
+    * @ngdoc method
+    * @param {string} The requisition's name (a.k.a. foreignSource)
+    * @param {string} The foreignId of the node
+    * @methodOf RequisitionService
+    * @returns {*} a handler function.
+    */
+    requisitionsService.getNode = function(foreignSource, foreignId) {
+      var url  = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/nodes/' + foreignId;
+      var deferred = $q.defer();
+      $log.debug('getRequisition: getting node ' + foreignId + '@' + foreignSource);
+      $http.get(url)
+      .success(function(data) {
+        var node = new RequisitionNode(foreignSource, data);
+        $log.debug('getNode: got node ' + foreignId + '@' + foreignSource);
+        deferred.resolve(node);
+      })
+      .error(function(data, status) {
+        $log.error('getNode: GET ' + url + ' failed:', data, status);
+        deferred.reject(status);
+      });
+      return deferred.promise;
     };
 
     /**
@@ -280,6 +332,56 @@
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('deleteNode: DELETE ' + url + ' failed:', data, status);
+        deferred.reject(status);
+      });
+      return deferred.promise;
+    };
+
+    /**
+    * @description Request a foreign source definition from OpenNMS for a given requisition.
+    *
+    * @name RequisitionService:getForeignSourceDefinition
+    * @ngdoc method
+    * @param {string} The requisition's name (a.k.a. foreignSource), use 'default' for the default foreign source.
+    * @methodOf RequisitionService
+    * @returns {*} a handler function.
+    */
+    requisitionsService.getForeignSourceDefinition = function(foreignSource) {
+      var url = requisitionsService.internal.foreignSourcesUrl + '/' + foreignSource;
+      var deferred = $q.defer();
+      $log.debug('getForeignSourceDefinition: getting definition for requisition ' + foreignSource);
+      $http.get(url)
+      .success(function(data) {
+        $log.debug('getForeignSourceDefinition: got definition for requisition ' + foreignSource);
+        deferred.resolve(data);
+      })
+      .error(function(data, status) {
+        $log.error('getForeignSourceDefinition: GET ' + url + ' failed:', data, status);
+        deferred.reject(status);
+      });
+      return deferred.promise;
+    };
+
+    /**
+    * @description Updates the foreign source definition on the OpenNMS server for a given requisition.
+    * The foreign source definition contains the set of policies and detectors, as well as the scan frequency.
+    *
+    * @name RequisitionService:saveForeignSourceDefinition
+    * @ngdoc method
+    * @methodOf RequisitionService
+    * @param {Object} The requisition foreign source Object
+    * @returns {*} a handler function.
+    */
+    requisitionsService.saveForeignSourceDefinition = function(foreignSourceDef) {
+      var url = requisitionsService.internal.foreignSourcesUrl;
+      var deferred = $q.defer();
+      $log.debug('saveForeignSourceDefinition: saving definition for requisition ' + foreignSourceDef['foreign-source']);
+      $http.post(url, foreignSourceDef)
+      .success(function(data) {
+        $log.debug('saveForeignSourceDefinition: saved definition for requisition ' + foreignSourceDef['foreign-source']);
+        deferred.resolve(data);
+      }).error(function(data, status) {
+        $log.error('saveForeignSourceDefinition: POST ' + url + ' failed:', data, status);
         deferred.reject(status);
       });
       return deferred.promise;
