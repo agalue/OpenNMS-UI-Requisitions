@@ -24,7 +24,7 @@
     </a>
     <div class="form-group" ng-repeat="service in intf.services">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Service Name" ng-model="service" required>
+        <input type="text" class="form-control" placeholder="Service Name" ng-model="service.name" required>
         <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeService($index)"/>
       </div>
     </div>

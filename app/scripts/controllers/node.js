@@ -15,7 +15,7 @@
 
     // Shows the dialog for add/edit an asset field
     $scope.editAsset = function(index, isNew) {
-      var assetToEdit = $scope.node.asset[index];
+      var assetToEdit = $scope.node.assets[index];
 
       var modalInstance = $modal.open({
         backdrop: true,
@@ -30,20 +30,20 @@
         angular.copy(result, assetToEdit);
       }, function() {
         if (isNew) {
-          $scope.node.asset.pop();
+          $scope.node.assets.pop();
         }
       });
     };
 
     // Removes an asset from the local node
     $scope.removeAsset = function(index) {
-      $scope.node.asset.splice(index, 1);
+      $scope.node.assets.splice(index, 1);
     };
 
     // Adds an asset to the local node
     $scope.addAsset = function() {
-      $scope.node.asset.push({ name: '', value: '' });
-      $scope.editAsset($scope.node.asset.length - 1, true);
+      $scope.node.assets.push({ name: '', value: '' });
+      $scope.editAsset($scope.node.assets.length - 1, true);
     };
 
     // Shows the dialog for add/edit an interface
@@ -86,7 +86,7 @@
 
     // Adds a category from the local node
     $scope.addCategory = function() {
-      $scope.node.categories.push('');
+      $scope.node.categories.push({ name: '' });
     };
 
     // Saves the local node on the server
@@ -116,10 +116,10 @@
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
-    if ($scope.foreignId !== '__new__') {
-      $scope.refresh();
+    if ($scope.foreignId == '__new__') {
+      $scope.node = new RequisitionNode($scope.foreignSource, {});
     } else {
-      $scope.node = { 'interface': [], 'asset': [], 'category': [] };
+      $scope.refresh();
     }
   }]);
 

@@ -35,7 +35,7 @@ function RequisitionNode(foreignSource, node, isDeployed) {
     };
 
     angular.forEach(intf['monitored-service'], function(svc) {
-      interfaceObject.services.push(svc['service-name']);
+      interfaceObject.services.push({ name: svc['service-name'] });
     });
 
     self.interfaces.push(interfaceObject);
@@ -45,8 +45,8 @@ function RequisitionNode(foreignSource, node, isDeployed) {
     self.assets.push(asset);
   });
 
-  angular.forEach(node['category'], function(cat) {
-    self.categories.push(cat['name']);
+  angular.forEach(node['category'], function(category) {
+    self.categories.push(category);
   });
 
   self.getOnmsRequisitionNode = function() {
@@ -68,9 +68,9 @@ function RequisitionNode(foreignSource, node, isDeployed) {
         'status': intf.status === 'managed' ? '1' : '3',
         'monitored-service': []
       };
-      angular.forEach(intf.services, function(svc) {
+      angular.forEach(intf.services, function(service) {
         interfaceObject['monitored-service'].push({
-          'service-name': svc
+          'service-name': service.name
         });
       });
 
@@ -82,7 +82,7 @@ function RequisitionNode(foreignSource, node, isDeployed) {
     });
 
     angular.forEach(this.categories, function(category) {
-      nodeObject['category'].push({ 'name' : category });
+      nodeObject['category'].push(category);
     });
 
     return nodeObject;

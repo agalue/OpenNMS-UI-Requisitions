@@ -6,8 +6,8 @@
 
   <ol class="breadcrumb">
     <li><a ng-href="#/requisitions">Requisitions</a></li>
-    <li><a ng-href="#/requisition/{{foreignSource}}">{{ foreignSource }}</a></li>
-    <li class="active">{{ foreignId }}</li>
+    <li><a ng-href="#/requisition/{{foreignSource}}">{{ node.foreignSource }}</a></li>
+    <li class="active">{{ node.foreignId }}</li>
   </ol>
 
   <!-- Navigation Bar -->
@@ -94,14 +94,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="intf in node['interface']">
+              <tr ng-repeat="intf in node.interfaces">
                 <td>{{ intf.ipAddress }}</td>
                 <td>{{ intf.description }}</td>
                 <td>{{ intf.snmpPrimary }}</td>
                 <td>
                   <div ng-hide="intf.services.length > 0">[No services]</div>
                   <div ng-repeat="service in intf.services">
-                    <p>{{ service }}</p>
+                    <p>{{ service.name }}</p>
                   </div>
                 </td>
                 <td>
@@ -135,9 +135,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="(assetKey, assetValue) in node.assets">
-                <th>{{assetKey}}</th>
-                <td>{{assetValue}}</td>
+              <tr ng-repeat="asset in node.assets">
+                <th>{{asset.name}}</th>
+                <td>{{asset.value}}</td>
                 <td>
                   <span class="pull-right">
                     <a class="btn btn-default btn-xs" tooltip="Edit the asset" ng-click="editAsset($index)">
@@ -161,7 +161,7 @@
         <br/>
         <div class="form-group" ng-repeat="category in node.categories">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Category Name" ng-model="category" required/>
+            <input type="text" class="form-control" placeholder="Category Name" ng-model="category.name" required/>
             <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeCategory($index)"/>
           </div>
         </div>

@@ -18,6 +18,20 @@
     $scope.maxSize = 5;
     $scope.totalItems = 0;
 
+    // Requests the synchronization/import of a requisition on the server
+    // FIXME Implement rescanExisting on the view
+    $scope.synchronize = function(rescanExisting) {
+      RequisitionsService.synchronizeRequisition($scope.foreignSource, rescanExisting).then(
+        function() { // success
+          $scope.requisition.setDeployed(true);
+          growl.addSuccessMessage('The import operation has been started for ' + $scope.foreignSource);
+        },
+        function() { // error
+          growl.addErrorMessage('Cannot request the import of ' + $scope.foreignSource);
+        }
+      );
+    };
+
     // Deletes a node from the requisition on the server and refresh the local nodes list
     $scope.deleteNode = function(node) {
       RequisitionsService.deleteNode(node).then(

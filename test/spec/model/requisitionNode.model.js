@@ -13,6 +13,8 @@ describe('Model: RequisitionsNode', function () {
       'status': '1',
       'monitored-service': [{
         'service-name': 'ICMP'
+      },{
+        'service-name': 'SNMP'
       }]
     }],
     'asset': [{
@@ -30,9 +32,12 @@ describe('Model: RequisitionsNode', function () {
   it('verify object translation', function () {
     var reqNode = new RequisitionNode('test-requisition', onmsNode, false);
     expect(reqNode).not.toBe(null);
-    expect(reqNode.categories[0]).toBe('Servers');
+    expect(reqNode.categories.length).toBe(1);
+    expect(reqNode.categories[0].name).toBe('Servers');
     expect(reqNode.interfaces.length).toBe(1);
     expect(reqNode.interfaces[0].ipAddress).toBe('10.0.0.1');
+    expect(reqNode.interfaces[0].services.length).toBe(2);
+    expect(reqNode.interfaces[0].services[0].name).toBe('ICMP');
     expect(reqNode.assets[1].value).toBe('Pittsboro');
     var genNode = reqNode.getOnmsRequisitionNode();
     expect(genNode).not.toBe(null);

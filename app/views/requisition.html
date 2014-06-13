@@ -26,6 +26,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a ng-href="#/requisitions"><span class="glyphicon glyphicon-remove"/> Return</a></li>
           <li><a ng-href="#/foreignSource/{{ foreignSource }}"><span class="glyphicon glyphicon-edit"/> Edit Definition</a></li>
+          <li><a ng-click="synchronize()"><span class="glyphicon glyphicon-refresh"/> Synchronize</a></li>
           <li><a ng-href="#/node/{{ foreignSource }}/__new__"><span class="glyphicon glyphicon-plus"/> Add</a></li>
         </ul>
         <form class="navbar-form navbar-left" role="search">
@@ -50,7 +51,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="node in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
+        <tr ng-class="{danger: !node.deployed}" ng-repeat="node in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
           <td>{{ node.nodeLabel }}</td>
           <td>{{ node.foreignId }}</td>
           <td>{{ node.building }}</td>
