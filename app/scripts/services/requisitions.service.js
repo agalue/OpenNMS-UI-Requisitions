@@ -61,6 +61,7 @@
               if (existingNodeIndex < 0) { // new node
                 $log.debug('mergeRequisition: the foreignId ' + currentNode.foreignId + ' is new, adding it to ' + requisition.foreignSource + '.');
                 existingReq.nodes.push(currentNode);
+                currentNode.deployed ? existingReq.nodesInDatabase++ : existingReq.nodesDefined++;
               } else { // modified node ?
                 var existingNode = existingReq.nodes[existingNodeIndex];
                 existingNode.deployed = false; // temporary set to false to compare the nodes.
@@ -74,6 +75,9 @@
               }
             }
           }
+          if (existingReq.nodesInDatabase === existingReq.nodesDefined) {
+            existingReq.dsployed = true;
+          }
         }
       };
 
@@ -86,7 +90,6 @@
       angular.forEach(pendingRequisitions['model-import'], function(r) {
         mergeRequisition(r, false);
       });
-
 
       return requisitionsData;
     };

@@ -1,3 +1,5 @@
+/*global RequisitionInterface:true */
+
 /**
 * @ngdoc object
 * @name RequisitionNode
@@ -26,19 +28,7 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   self.assets = [];
 
   angular.forEach(node['interface'], function(intf) {
-    var interfaceObject = {
-      ipAddress: intf['ip-addr'],
-      description: intf['descr'],
-      snmpPrimary: intf['snmp-primary'],
-      status: intf['status'] === '1' ? 'managed' : 'unmanaged',
-      services: []
-    };
-
-    angular.forEach(intf['monitored-service'], function(svc) {
-      interfaceObject.services.push({ name: svc['service-name'] });
-    });
-
-    self.interfaces.push(interfaceObject);
+    self.interfaces.push(new RequisitionInterface(intf));
   });
 
   angular.forEach(node['asset'], function(asset) {
@@ -48,6 +38,26 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   angular.forEach(node['category'], function(category) {
     self.categories.push(category);
   });
+
+  self.addNewInterface = function() {
+    this.interfaces.push(new RequisitionInterface({}));
+    return this.interfaces.length - 1;
+  };
+
+  self.addNewAsset = function() {
+    this.assets.add({
+      name: '',
+      value: ''
+    });
+    return this.assets.length -1;
+  };
+
+  self.addNewCategory = function() {
+    this.categories.add({
+      name: ''
+    });
+    return this.categories.length -1;
+  };
 
   self.getOnmsRequisitionNode = function() {
     var nodeObject = {

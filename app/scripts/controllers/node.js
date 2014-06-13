@@ -42,8 +42,7 @@
 
     // Adds an asset to the local node
     $scope.addAsset = function() {
-      $scope.node.assets.push({ name: '', value: '' });
-      $scope.editAsset($scope.node.assets.length - 1, true);
+      $scope.editAsset($scope.node.addNewAsset(), true);
     };
 
     // Shows the dialog for add/edit an interface
@@ -75,8 +74,7 @@
 
     // Adds an interface to the local node
     $scope.addInterface = function() {
-      $scope.node.interfaces.push({ ipAddress: '', description: '', snmpPrimary: '', services: [] });
-      $scope.editInterface($scope.node.interfaces.length - 1, true);
+      $scope.editInterface($scope.node.addNewInterface(), true);
     };
 
     // Removes a category from the local node
@@ -86,7 +84,7 @@
 
     // Adds a category from the local node
     $scope.addCategory = function() {
-      $scope.node.categories.push({ name: '' });
+      $scope.node.addNewCategory();
     };
 
     // Saves the local node on the server
