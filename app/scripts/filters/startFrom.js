@@ -2,7 +2,7 @@
 
   'use strict';
 
-  angular.module('onms-requisitions', [])
+  angular.module('onms-requisitions')
 
   .filter('startFrom', function() {
     return function(input, start) {
