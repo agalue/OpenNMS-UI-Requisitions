@@ -30,6 +30,10 @@ describe('Model: RequisitionsNode', function () {
   it('verify object translation', function () {
     var reqNode = new RequisitionNode('test-requisition', onmsNode, false);
     expect(reqNode).not.toBe(null);
+    expect(reqNode.categories[0]).toBe('Servers');
+    expect(reqNode.interfaces.length).toBe(1);
+    expect(reqNode.interfaces[0].ipAddress).toBe('10.0.0.1');
+    expect(reqNode.assets[1].value).toBe('Pittsboro');
     var genNode = reqNode.getOnmsRequisitionNode();
     expect(genNode).not.toBe(null);
     expect(genNode).toEqual(onmsNode);

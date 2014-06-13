@@ -19,36 +19,35 @@ function Requisition(requisition, isDeployed) {
   self.lastImport = requisition['last-import'];
   self.nodesInDatabase = 0;
   self.nodesDefined = 0;
-  self.nodes = {};
+  self.nodes = [];
 
   angular.forEach(requisition.node, function(node) {
     var requisitionNode = new RequisitionNode(self.foreignSource, node, isDeployed);
-    self.nodes[requisitionNode.foreignId] = requisitionNode;
+    self.nodes.push(requisitionNode);
   });
 
-  self.nodesCount = function() {
-    var count = 0;
-    for (var key in this.nodes) {
-      if (this.nodes.hasOwnProperty(key)) {
-        count++;
+  self.indexOf = function(foreignId) {
+    for(var i = 0; i < this.nodes.length; i++) {
+      if (this.nodes[i].foreignId === foreignId) {
+        return i;
       }
     }
-    return count;
+    return -1;
   };
 
   self.updateStats = function() {
     if (this.deployed) {
-      this.nodesInDatabase = this.nodesDefined = self.nodesCount();
+      this.nodesInDatabase = this.nodesDefined = this.nodes.length;
     } else {
-      this.nodesDefined = self.nodesCount();
+      this.nodesDefined = this.nodes.length;
     }
   };
 
   self.setDeployed = function(deployed) {
     this.deployed = deployed;
-    for (var foreignId in this.nodes) {
-      this.nodes[foreignId].deployed = deployed;
-    }
+    angular.forEach(this.nodes, function(node) {
+      node.deployed = deployed;
+    });
     this.updateStats();
   };
 

@@ -42,7 +42,7 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   });
 
   angular.forEach(node['asset'], function(asset) {
-    self.assets[asset['name']] = asset['value'];
+    self.assets.push(asset);
   });
 
   angular.forEach(node['category'], function(cat) {
@@ -77,12 +77,9 @@ function RequisitionNode(foreignSource, node, isDeployed) {
       nodeObject['interface'].push(interfaceObject);
     });
 
-    for (var assetName in this.assets) {
-      nodeObject['asset'].push({
-        'name': assetName,
-        'value': this.assets[assetName]
-      });
-    }
+    angular.forEach(this.assets, function(asset) {
+      nodeObject['asset'].push(asset);
+    });
 
     angular.forEach(this.categories, function(category) {
       nodeObject['category'].push({ 'name' : category });

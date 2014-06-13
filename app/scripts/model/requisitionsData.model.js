@@ -14,16 +14,15 @@ function RequisitionsData() {
     pending: 0
   };
 
-  self.requisitions = {};
+  self.requisitions = [];
 
-  self.requisitionsCount = function() {
-    var count = 0;
-    for (var key in this.requisitions) {
-      if (this.requisitions.hasOwnProperty(key)) {
-        count++;
+  self.indexOf = function(foreignSource) {
+    for(var i = 0; i < this.requisitions.length; i++) {
+      if (this.requisitions[i].foreignSource === foreignSource) {
+        return i;
       }
     }
-    return count;
+    return -1;
   };
 
   self.className = 'RequisitionsData';

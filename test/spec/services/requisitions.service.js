@@ -139,7 +139,7 @@ describe('Service: RequisitionsService', function () {
 
     requisitionsService.getRequisition(fs).then(function(data) {
       expect(data).not.toBe(null);
-      expect(data.nodesCount()).toBe(3);
+      expect(data.nodes.length).toBe(3);
     });
 
     $httpBackend.flush();
@@ -153,14 +153,19 @@ describe('Service: RequisitionsService', function () {
 
     requisitionsService.getRequisitions().then(function(data) {
       expect(data).not.toBe(null);
-      expect(data.requisitionsCount()).toBe(3);
-      expect(data.requisitions['test-network'].deployed).toBe(false);
-      expect(data.requisitions['test-network'].nodesCount()).toBe(3);
-      expect(data.requisitions['test-network'].nodes['1001'].deployed).toBe(true);  // unmodified
-      expect(data.requisitions['test-network'].nodes['1002'].deployed).toBe(false); // new
-      expect(data.requisitions['test-network'].nodes['1003'].deployed).toBe(false); // modified
-      expect(data.requisitions['test-monitoring'].deployed).toBe(true);
-      expect(data.requisitions['test-monitoring'].nodesCount()).toBe(1);
+      expect(data.requisitions.length).toBe(3);
+      expect(data.requisitions[0].foreignSource).toBe('test-network');
+      expect(data.requisitions[0].deployed).toBe(false);
+      expect(data.requisitions[0].nodes.length).toBe(3);
+      expect(data.requisitions[0].nodes[0].foreignId).toBe('1001');
+      expect(data.requisitions[0].nodes[0].deployed).toBe(true);  // unmodified
+      expect(data.requisitions[0].nodes[1].foreignId).toBe('1003');
+      expect(data.requisitions[0].nodes[1].deployed).toBe(false); // modified
+      expect(data.requisitions[0].nodes[2].foreignId).toBe('1002');
+      expect(data.requisitions[0].nodes[2].deployed).toBe(false); // new
+      expect(data.requisitions[1].foreignSource).toBe('test-monitoring');
+      expect(data.requisitions[1].deployed).toBe(true);
+      expect(data.requisitions[1].nodes.length).toBe(1);
     });
 
     $httpBackend.flush();

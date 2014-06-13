@@ -35,10 +35,10 @@ describe('Model: Requisitions', function () {
   it('verify object generation', function () {
     var req = new Requisition(onmsRequisition, false);
     expect(req).not.toBe(null);
-    expect(req.nodesCount()).toBe(1);
     expect(req.nodesDefined).toBe(1);
     expect(req.nodesInDatabase).toBe(0);
-    expect(req.nodes['1001'].nodeLabel).toBe('testing-node');
+    expect(req.nodes.length).toBe(1);
+    expect(req.nodes[0].nodeLabel).toBe('testing-node');
   });
 
 });

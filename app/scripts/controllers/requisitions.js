@@ -9,20 +9,19 @@
 
   .controller('RequisitionsController', ['$scope', '$filter', 'RequisitionsService', 'growl', function($scope, $filter, RequisitionsService, growl) {
 
-    $scope.requisitions = {};
-    $scope.filteredRequisitions = {};
+    $scope.requisitions = [];
+    $scope.filteredRequisitions = [];
     $scope.pageSize = 10;
     $scope.maxSize = 5;
     $scope.totalItems = 0;
 
-    $scope.countFilteredRequisitions = function() {
-      var count = 0;
-      for (var key in $scope.filteredRequisitions) {
-        if ($scope.filteredRequisitions.hasOwnProperty(key)) {
-          count++;
+    $scope.indexOfRequisition = function(foreignSource) {
+      for(var i = 0; i < $scope.requisitions.length; i++) {
+        if ($scope.requisitions[i].foreignSource === foreignSource) {
+          return i;
         }
       }
-      return count;
+      return -1;
     };
 
     // Resets the default set of detectors and policies
@@ -41,7 +40,7 @@
       if (foreignSource) {
         RequisitionsService.addRequisition(foreignSource).then(
           function(requisition) { // success
-            $scope.requisitions[foreignSource] = requisition;
+            $scope.requisitions.push(requisition);
             growl.addSuccessMessage('The requisition ' + foreignSource + ' has been created.');
           }, // error
           function() {
@@ -52,10 +51,12 @@
     };
 
     // Requests the synchronization/import of a requisition on the server
-    $scope.synchronize = function(foreignSource) {
-      RequisitionsService.synchronizeRequisition(foreignSource).then(
+    // FIXME Implement rescanExisting on the view
+    $scope.synchronize = function(foreignSource, rescanExisting) {
+      RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
         function() { // success
-          $scope.requisitions[foreignSource].setDeployed(true);
+          var idx = $scope.indexOfRequisition(foreignSource);
+          $scope.requisitions[idx].setDeployed(true);
           growl.addSuccessMessage('The import operation has been started for ' + foreignSource);
         },
         function() { // error
@@ -68,7 +69,8 @@
     $scope.removeAllNodes = function(foreignSource) {
       RequisitionsService.removeAllNodesFromRequisition(foreignSource).then(
         function() { // success
-          $scope.requisitions[foreignSource].setDeployed(false);
+          var idx = $scope.indexOfRequisition(foreignSource);
+          $scope.requisitions[idx].setDeployed(false);
           growl.addSuccessMessage('All the nodes from ' + foreignSource + ' have been removed');
         },
         function() { // error
@@ -81,7 +83,8 @@
     $scope.deleteRequisition = function(foreignSource) {
       RequisitionsService.deleteRequisition(foreignSource).then(
         function() { // success
-          delete $scope.requisitions[foreignSource];
+          var idx = $scope.indexOfRequisition(foreignSource);
+          $scope.requisitions.splice(idx, 1);
           growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
         },
         function() { // error
@@ -97,7 +100,7 @@
         function(data) { // success
           $scope.currentPage = 1;
           $scope.requisitions = data.requisitions;
-          $scope.totalItems = data.requisitionsCount();
+          $scope.totalItems = data.requisitions.length;
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
         },
@@ -111,12 +114,12 @@
     $scope.$watch('reqFilter', function() {
       $scope.currentPage = 1;
       $scope.filteredRequisitions = $filter('filter')($scope.requisitions, $scope.reqFilter);
-      $scope.totalItems = $scope.countFilteredRequisitions();
+      $scope.totalItems = $scope.filteredRequisitions.length;
       $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
     });
 
     // Initializes the requisitions page
-    if ($scope.countFilteredRequisitions() == 0) {
+    if ($scope.filteredRequisitions.length == 0) {
       $scope.refresh();
     }
 

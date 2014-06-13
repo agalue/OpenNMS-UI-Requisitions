@@ -14,35 +14,36 @@
     $scope.node = {};
 
     // Shows the dialog for add/edit an asset field
-    $scope.editAsset = function(assetKey, isNew) {
-      var assetToEdit = { key: assetKey, value: assetKey != '' ? $scope.node.assets[assetKey] : '' };
+    $scope.editAsset = function(index, isNew) {
+      var assetToEdit = $scope.node.asset[index];
 
       var modalInstance = $modal.open({
         backdrop: true,
         controller: 'AssetController',
         templateUrl: 'views/asset.html',
         resolve: {
-          asset: function() { return assetToEdit; }
+          asset: function() { return angular.copy(assetToEdit); }
         }
       });
 
       modalInstance.result.then(function(result) {
-        $scope.node.assets[result.key] = result.value;
+        angular.copy(result, assetToEdit);
       }, function() {
         if (isNew) {
-          $scope.node.assets.pop();
+          $scope.node.asset.pop();
         }
       });
     };
 
     // Removes an asset from the local node
     $scope.removeAsset = function(index) {
-      $scope.node.assets.splice(index, 1);
+      $scope.node.asset.splice(index, 1);
     };
 
     // Adds an asset to the local node
     $scope.addAsset = function() {
-      $scope.editAsset('', true);
+      $scope.node.asset.push({ name: '', value: '' });
+      $scope.editAsset($scope.node.asset.length - 1, true);
     };
 
     // Shows the dialog for add/edit an interface

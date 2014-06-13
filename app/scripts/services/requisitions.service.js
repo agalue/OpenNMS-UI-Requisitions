@@ -42,30 +42,34 @@
       // Assumes the deployed nodes are going to be added first and then the pending nodes.
       var mergeRequisition = function(req, deployed) {
         var requisition = new Requisition(req, deployed);
-        requisitionsData['status'][deployed ? 'deployed' : 'pending']++;
-        var existing = requisitionsData.requisitions[requisition.foreignSource];
-        if (existing == null) {
+        requisitionsData.status[deployed ? 'deployed' : 'pending']++;
+        var existingReqIndex = requisitionsData.indexOf(requisition.foreignSource);
+        if (existingReqIndex < 0) {
           $log.debug('mergeRequisition: adding ' + (deployed ? 'deployed' : 'pending') + ' requisition ' + requisition.foreignSource + '.');
-          requisitionsData.requisitions[requisition.foreignSource] = requisition;
+          requisitionsData.requisitions.push(requisition);
         } else {
-          existing.deployed = false; // temporary set to false to compare the requisitions.
-          if (angular.equals(existing, requisition)) { // the requisition was not modified.
-            existing.deployed = true; // restoring the deployed flag.
+          var existingReq = requisitionsData.requisitions[existingReqIndex];
+          existingReq.deployed = false; // temporary set to false to compare the requisitions.
+          if (angular.equals(existingReq, requisition)) { // the requisition was not modified.
+            existingReq.deployed = true; // restoring the deployed flag.
             $log.debug('mergeRequisition: the foreignSource ' + requisition.foreignSource + ' has not been modified.');
           } else { // the requisition was modified
             $log.debug('mergeRequisition: the foreignSource ' + requisition.foreignSource + ' has been modified.');
-            for (var foreignId in requisition.nodes) {
-              if (existing.nodes[foreignId] == null) { // new node
-                $log.debug('mergeRequisition: the foreignId ' + foreignId + ' is new, adding it to ' + requisition.foreignSource + '.');
-                existing.nodes[foreignId] = requisition.nodes[foreignId];
+            for (var idx = 0; idx < requisition.nodes.length; idx++) {
+              var currentNode = requisition.nodes[idx];
+              var existingNodeIndex = existingReq.indexOf(currentNode.foreignId);
+              if (existingNodeIndex < 0) { // new node
+                $log.debug('mergeRequisition: the foreignId ' + currentNode.foreignId + ' is new, adding it to ' + requisition.foreignSource + '.');
+                existingReq.nodes.push(currentNode);
               } else { // modified node ?
-                existing.nodes[foreignId].deployed = false; // temporary set to false to compare the nodes.
-                if (angular.equals(existing.nodes[foreignId], requisition.nodes[foreignId])) { // ummodified node.
-                  $log.debug('mergeRequisition: the foreignId ' + foreignId + ' has not been modified on ' + requisition.foreignSource + '.');
-                  existing.nodes[foreignId].deployed = true; // restoring the deployed flag.
+                var existingNode = existingReq.nodes[existingNodeIndex];
+                existingNode.deployed = false; // temporary set to false to compare the nodes.
+                if (angular.equals(existingNode, currentNode)) { // ummodified node.
+                  $log.debug('mergeRequisition: the foreignId ' + currentNode.foreignId + ' has not been modified on ' + requisition.foreignSource + '.');
+                  existingNode.deployed = true; // restoring the deployed flag.
                 } else { // modified node
-                  $log.debug('mergeRequisition: the foreignId ' + foreignId + ' was modified, replacing it into ' + requisition.foreignSource + '.');
-                  existing.nodes[foreignId] = requisition.nodes[foreignId];
+                  $log.debug('mergeRequisition: the foreignId ' + currentNode.foreignId + ' was modified, replacing it into ' + requisition.foreignSource + '.');
+                  existingReq.nodes[existingNodeIndex] = currentNode;
                 }
               }
             }
@@ -82,6 +86,7 @@
       angular.forEach(pendingRequisitions['model-import'], function(r) {
         mergeRequisition(r, false);
       });
+
 
       return requisitionsData;
     };

@@ -13,7 +13,7 @@
 
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.requisition = new Requisition({});
-    $scope.filteredNodes = {};
+    $scope.filteredNodes = [];
     $scope.pageSize = 10;
     $scope.maxSize = 5;
     $scope.totalItems = 0;
@@ -38,7 +38,7 @@
         function(requisition) { // success
           $scope.currentPage = 1;
           $scope.requisition = requisition;
-          $scope.totalItems = requisition.nodesCount();
+          $scope.totalItems = requisition.nodes.length;
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredNodes = requisition.nodes;
         },
@@ -52,13 +52,7 @@
     $scope.$watch('reqFilter', function() {
       $scope.currentPage = 1;
       $scope.filteredNodes = $filter('filter')($scope.requisition.nodes, $scope.reqFilter);
-      var count = 0;
-      for (var key in $scope.filteredNodes) {
-        if ($scope.filteredNodes.hasOwnProperty(key)) {
-          count++;
-        }
-      }
-      $scope.totalItems = count;
+      $scope.totalItems = $scope.filteredNodes.length;
       $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
     });
 
