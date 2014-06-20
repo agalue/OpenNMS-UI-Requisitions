@@ -18,6 +18,10 @@
     $scope.maxSize = 5;
     $scope.totalItems = 0;
 
+    $scope.errorHandler = function(message) {
+      growl.addErrorMessage(message);
+    };
+
     // Requests the synchronization/import of a requisition on the server
     // FIXME Implement rescanExisting on the view
     $scope.synchronize = function(rescanExisting) {
@@ -26,9 +30,7 @@
           $scope.requisition.setDeployed(true);
           growl.addSuccessMessage('The import operation has been started for ' + $scope.foreignSource);
         },
-        function() { // error
-          growl.addErrorMessage('Cannot request the import of ' + $scope.foreignSource);
-        }
+        $scope.errorHandler
       );
     };
 
@@ -39,9 +41,7 @@
           $scope.refresh(); // FIXME
           growl.addSuccessMessage('The node ' + node.nodeLabel + 'has been deleted.');
         },
-        function() { // error
-          growl.addErrorMessage('Cannot delete the node' + node.nodeLabel);
-        }
+        $scope.errorHandler
       );
     };
 
@@ -56,9 +56,7 @@
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredNodes = requisition.nodes;
         },
-        function() { // error
-          growl.addErrorMessage('Cannot retrieve the requisition ' + $scope.foreignSource);
-        }
+        $scope.errorHandler
       );
     };
 

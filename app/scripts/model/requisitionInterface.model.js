@@ -20,8 +20,8 @@ function RequisitionInterface(intf) {
   });
 
   self.addNewService = function() {
-    this.services.push({ name: '' });
-    return this.services.length - 1;
+    self.services.push({ name: '' });
+    return self.services.length - 1;
   };
 
   self.className = 'RequisitionInterface';

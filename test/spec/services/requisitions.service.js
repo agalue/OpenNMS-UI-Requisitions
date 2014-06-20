@@ -129,29 +129,13 @@ describe('Service: RequisitionsService', function () {
     $httpBackend.verifyNoOutstandingRequest();
   });
 
-  // Testing getRequisition
-
-  it('getRequisition', function() {
-    var req = pendingRequisitions['model-import'][0];
-    var fs  = req['foreign-source'];
-    var requisitionUrl = requisitionsService.internal.requisitionsUrl + '/' + fs;
-    $httpBackend.expect('GET', requisitionUrl).respond(req);
-
-    requisitionsService.getRequisition(fs).then(function(data) {
-      expect(data).not.toBe(null);
-      expect(data.nodes.length).toBe(3);
-    });
-
-    $httpBackend.flush();
-  });
-
   // Testing getRequisitions
   it('getRequisitions', function() {
     var requisitionsUrl = requisitionsService.internal.requisitionsUrl;
     $httpBackend.expect('GET', requisitionsUrl).respond(pendingRequisitions);
     $httpBackend.expect('GET', requisitionsUrl + '/deployed').respond(deployedRequisitions);
 
-    requisitionsService.getRequisitions().then(function(data) {
+    var handlerFn = function(data) {
       expect(data).not.toBe(null);
       expect(data.requisitions.length).toBe(3);
       expect(data.requisitions[0].foreignSource).toBe('test-network');
@@ -166,7 +150,42 @@ describe('Service: RequisitionsService', function () {
       expect(data.requisitions[1].foreignSource).toBe('test-monitoring');
       expect(data.requisitions[1].deployed).toBe(true);
       expect(data.requisitions[1].nodes.length).toBe(1);
-    });
+    };
+
+    requisitionsService.getRequisitions().then(handlerFn);
+
+    $httpBackend.flush();
+
+    expect(requisitionsService.internal.getCachedRequisitionsData()).not.toBe(null);
+
+    // The following calls should use internal cache
+
+    requisitionsService.getRequisitions().then(handlerFn);
+    requisitionsService.getRequisition('test-network').then(function(r) {
+      expect(r).not.toBe(null);
+      expect(r.foreignSource).toBe('test-network');
+    })
+    requisitionsService.getNode('test-network', '1001').then(function(n) {
+      expect(n).not.toBe(null);
+      expect(n.foreignId).toBe('1001');
+    })
+
+  });
+
+  // Testing getRequisition
+
+  it('getRequisition', function() {
+    var req = pendingRequisitions['model-import'][0];
+    var fs  = req['foreign-source'];
+    var requisitionUrl = requisitionsService.internal.requisitionsUrl + '/' + fs;
+    $httpBackend.expect('GET', requisitionUrl).respond(req);
+
+    var handlerFn = function(data) {
+      expect(data).not.toBe(null);
+      expect(data.nodes.length).toBe(3);
+    };
+
+    requisitionsService.getRequisition(fs).then(handlerFn);
 
     $httpBackend.flush();
   });
@@ -240,10 +259,12 @@ describe('Service: RequisitionsService', function () {
     var nodeUrl = requisitionsService.internal.requisitionsUrl + '/' + fs + '/nodes/' + fid;
     $httpBackend.expect('GET', nodeUrl).respond(node);
 
-    requisitionsService.getNode(fs, fid).then(function(data) {
+    var handlerFn = function(data) {
       expect(data).not.toBe(null);
       expect(data.nodeLabel).toBe('testing-server');
-    });
+    };
+
+    requisitionsService.getNode(fs, fid).then(handlerFn);
 
     $httpBackend.flush();
   });

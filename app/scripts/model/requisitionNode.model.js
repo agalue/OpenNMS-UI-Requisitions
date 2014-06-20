@@ -40,37 +40,37 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   });
 
   self.addNewInterface = function() {
-    this.interfaces.push(new RequisitionInterface({}));
-    return this.interfaces.length - 1;
+    self.interfaces.push(new RequisitionInterface({}));
+    return self.interfaces.length - 1;
   };
 
   self.addNewAsset = function() {
-    this.assets.add({
+    self.assets.push({
       name: '',
       value: ''
     });
-    return this.assets.length -1;
+    return self.assets.length -1;
   };
 
   self.addNewCategory = function() {
-    this.categories.add({
+    self.categories.push({
       name: ''
     });
-    return this.categories.length -1;
+    return self.categories.length -1;
   };
 
   self.getOnmsRequisitionNode = function() {
     var nodeObject = {
-      'foreign-id': this.foreignId,
-      'node-label': this.nodeLabel,
-      'city': this.city,
-      'building': this.building,
+      'foreign-id': self.foreignId,
+      'node-label': self.nodeLabel,
+      'city': self.city,
+      'building': self.building,
       'interface': [],
       'asset': [],
       'category': []
     };
 
-    angular.forEach(this.interfaces, function(intf) {
+    angular.forEach(self.interfaces, function(intf) {
       var interfaceObject = {
         'ip-addr': intf.ipAddress,
         'descr': intf.description,
@@ -87,11 +87,11 @@ function RequisitionNode(foreignSource, node, isDeployed) {
       nodeObject['interface'].push(interfaceObject);
     });
 
-    angular.forEach(this.assets, function(asset) {
+    angular.forEach(self.assets, function(asset) {
       nodeObject['asset'].push(asset);
     });
 
-    angular.forEach(this.categories, function(category) {
+    angular.forEach(self.categories, function(category) {
       nodeObject['category'].push(category);
     });
 

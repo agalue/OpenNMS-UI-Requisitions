@@ -15,6 +15,10 @@
     $scope.maxSize = 5;
     $scope.totalItems = 0;
 
+    $scope.errorHandler = function(message) {
+      growl.addErrorMessage(message);
+    };
+
     $scope.indexOfRequisition = function(foreignSource) {
       for(var i = 0; i < $scope.requisitions.length; i++) {
         if ($scope.requisitions[i].foreignSource === foreignSource) {
@@ -42,10 +46,8 @@
           function(requisition) { // success
             $scope.requisitions.push(requisition);
             growl.addSuccessMessage('The requisition ' + foreignSource + ' has been created.');
-          }, // error
-          function() {
-            growl.addErrorMessage('Cannot create the requisition' + foreignSource);
-          }
+          },
+          $scope.errorHandler
         );
       }
     };
@@ -59,9 +61,7 @@
           $scope.requisitions[idx].setDeployed(true);
           growl.addSuccessMessage('The import operation has been started for ' + foreignSource);
         },
-        function() { // error
-          growl.addErrorMessage('Cannot request the import of ' + foreignSource);
-        }
+        $scope.errorHandler
       );
     };
 
@@ -73,9 +73,7 @@
           $scope.requisitions[idx].setDeployed(false);
           growl.addSuccessMessage('All the nodes from ' + foreignSource + ' have been removed');
         },
-        function() { // error
-          growl.addErrorMessage('Cannot remove all the nodes from ' + foreignSource);
-        }
+        $scope.errorHandler
       );
     };
 
@@ -87,9 +85,7 @@
           $scope.requisitions.splice(idx, 1);
           growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
         },
-        function() { // error
-          growl.addErrorMessage('Cannot delete the requisition ' + foreignSource);
-        }
+        $scope.errorHandler
       );
     };
 
@@ -104,9 +100,7 @@
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
         },
-        function() { // error
-          growl.addErrorMessage('Cannot retrieve the configured requisitions');
-        }
+        $scope.errorHandler
       );
     };
 

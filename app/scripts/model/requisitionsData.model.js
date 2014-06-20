@@ -17,8 +17,8 @@ function RequisitionsData() {
   self.requisitions = [];
 
   self.indexOf = function(foreignSource) {
-    for(var i = 0; i < this.requisitions.length; i++) {
-      if (this.requisitions[i].foreignSource === foreignSource) {
+    for(var i = 0; i < self.requisitions.length; i++) {
+      if (self.requisitions[i].foreignSource === foreignSource) {
         return i;
       }
     }

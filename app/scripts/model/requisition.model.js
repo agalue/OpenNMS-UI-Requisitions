@@ -27,8 +27,8 @@ function Requisition(requisition, isDeployed) {
   });
 
   self.indexOf = function(foreignId) {
-    for(var i = 0; i < this.nodes.length; i++) {
-      if (this.nodes[i].foreignId === foreignId) {
+    for(var i = 0; i < self.nodes.length; i++) {
+      if (self.nodes[i].foreignId === foreignId) {
         return i;
       }
     }
@@ -36,19 +36,19 @@ function Requisition(requisition, isDeployed) {
   };
 
   self.updateStats = function() {
-    if (this.deployed) {
-      this.nodesInDatabase = this.nodesDefined = this.nodes.length;
+    if (self.deployed) {
+      self.nodesInDatabase = self.nodesDefined = self.nodes.length;
     } else {
-      this.nodesDefined = this.nodes.length;
+      self.nodesDefined = self.nodes.length;
     }
   };
 
   self.setDeployed = function(deployed) {
-    this.deployed = deployed;
-    angular.forEach(this.nodes, function(node) {
+    self.deployed = deployed;
+    angular.forEach(self.nodes, function(node) {
       node.deployed = deployed;
     });
-    this.updateStats();
+    self.updateStats();
   };
 
   self.updateStats();

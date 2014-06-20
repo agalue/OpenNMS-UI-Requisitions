@@ -13,6 +13,10 @@
     $scope.foreignId = $routeParams.foreignId;
     $scope.node = {};
 
+    $scope.errorHandler = function(message) {
+      growl.addErrorMessage(message);
+    };
+
     // Shows the dialog for add/edit an asset field
     $scope.editAsset = function(index, isNew) {
       var assetToEdit = $scope.node.assets[index];
@@ -94,9 +98,7 @@
           $scope.node.deployed = false;
           growl.addSuccessMessage('The node ' + $scope.node.nodeLabel + ' has been saved.');
         },
-        function() { // error
-          growl.addErrorMessage('Cannot save the node ' + $scope.node.nodeLabel + ' on the server.');
-        }
+        $scope.errorHandler 
       );
     };
 
@@ -107,9 +109,7 @@
         function(node) { // success
           $scope.node = node;
         },
-        function() { // error
-          growl.addErrorMessage('Cannot retrieve the nodes from the server.');
-        }
+        $scope.errorHandler 
       );
     };
 

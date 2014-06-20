@@ -12,6 +12,10 @@
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.foreignSourceDef = {};
 
+    $scope.errorHandler = function(message) {
+      growl.addErrorMessage(message);
+    };
+
     $scope.editPolicy = function(index, isNew) {
       var policyToEdit = $scope.foreignSourceDef.policies[index];
 
@@ -74,9 +78,7 @@
         function() { // success
           growl.addSuccessMessage('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
         },
-        function() { // error
-          growl.addErrorMessage('Cannot save the definition of the requisition ' + $scope.foreignSource + ' on the server.');
-        }
+        $scope.errorHandler
       );
     };
 
@@ -87,9 +89,7 @@
         function(data) { // success
           $scope.foreignSourceDef = data;
         },
-        function() { // error
-          growl.addErrorMessage('Cannot retrieve the policies and detectors from the server.');
-        }
+        $scope.errorHandler
       );
     };
 
