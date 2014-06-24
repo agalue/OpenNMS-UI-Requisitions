@@ -89,3 +89,6 @@ input.ng-invalid {
 .navbar-nav li:hover {
     cursor: pointer;
 }
+span .input-group-addon {
+    cursor: pointer;
+}

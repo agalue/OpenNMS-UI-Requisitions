@@ -25,7 +25,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="requisitions-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><a ng-href="#/foreignSource/default"><span class="glyphicon glyphicon-edit"/> Edit Default</a></li>
+          <li><a ng-href="#/requisitions/default/foreignSource"><span class="glyphicon glyphicon-edit"/> Edit Default</a></li>
           <li><a ng-click="resetDefaultForeignSource()"><span class="glyphicon glyphicon-retweet"/> Reset Default</a></li>
           <li><a ng-click="refresh()"><span class="glyphicon glyphicon-refresh"/> Refresh</a></li>
           <li><a ng-click="addRequisition()"><span class="glyphicon glyphicon-plus"/> Add</a></li>
@@ -60,22 +60,22 @@
           <td>{{ requisition.nodesDefined }}</td>
           <td>{{ requisition.nodesInDatabase }}</td>
           <td>
-            <a class="btn btn-default btn-xs" tooltip="Edit the {{ requisition.foreignSource }} Requisition" ng-href="#/requisition/{{requisition.foreignSource}}">
+            <a class="btn btn-default btn-xs" tooltip="Edit the {{requisition.foreignSource}} Requisition" ng-href="#/requisitions/{{requisition.foreignSource}}">
               <span class="glyphicon glyphicon-pencil"></span>
             </a>
-            <a class="btn btn-default btn-xs" tooltip="Edit detectors and policies of the {{ requisition.foreignSource }} Requisition" ng-href="#/foreignSource/{{requisition.foreignSource}}">
+            <a class="btn btn-default btn-xs" tooltip="Edit detectors and policies of the {{requisition.foreignSource}} Requisition" ng-href="#/requisitions/{{requisition.foreignSource}}/foreignSource">
               <span class="glyphicon glyphicon-edit"></span>
             </a>
-            <a class="btn btn-default btn-xs" tooltip="Clone the set detectors and policies of the {{ requisition.foreignSource }} Requisition" ng-click="cloneForeignSource(requisition.foreignSource)">
+            <a class="btn btn-default btn-xs" tooltip="Clone the set detectors and policies of the {{requisition.foreignSource}} Requisition" ng-click="cloneForeignSource(requisition.foreignSource)">
               <span class="glyphicon glyphicon-link"></span>
             </a>
-            <a class="btn btn-default btn-xs" tooltip="Synchronize the {{ requisition.foreignSource }} Requisition" ng-click="synchronize(requisition.foreignSource)">
+            <a class="btn btn-default btn-xs" tooltip="Synchronize the {{requisition.foreignSource}} Requisition" ng-click="synchronize(requisition.foreignSource)">
               <span class="glyphicon glyphicon-refresh"></span>
             </a>
-            <a class="btn btn-default btn-xs" tooltip="Remove all nodes from the {{ requisition.foreignSource }} Requisition" ng-click="removeAllNodes(requisition.foreignSource)" ng-show="requisition.nodes.length > 0">
+            <a class="btn btn-default btn-xs" tooltip="Remove all nodes from the {{requisition.foreignSource}} Requisition" ng-click="removeAllNodes(requisition.foreignSource)" ng-show="requisition.nodes.length > 0">
               <span class="glyphicon glyphicon-remove-circle"></span>
             </a>
-            <a class="btn btn-default btn-xs" tooltip="Remove the {{ requisition.foreignSource }} Requisition" ng-click="deleteRequisition(requisition.foreignSource)" ng-hide="requisition.nodes.length > 0">
+            <a class="btn btn-default btn-xs" tooltip="Remove the {{requisition.foreignSource}} Requisition" ng-click="deleteRequisition(requisition.foreignSource)" ng-hide="requisition.nodes.length > 0">
               <span class="glyphicon glyphicon-remove"></span>
             </a>
           </td>

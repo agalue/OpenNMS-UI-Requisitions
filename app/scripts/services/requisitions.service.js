@@ -275,6 +275,16 @@
     */
     requisitionsService.synchronizeRequisition = function(foreignSource, rescanExisting) {
       var deferred = $q.defer();
+
+      var requisitionsData = requisitionsService.internal.getCachedRequisitionsData();
+      if (requisitionsData != null) {
+        var reqIdx = requisitionsData.indexOf(foreignSource);
+        if (reqIdx < 0) {
+            deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
+            return deferred.promise;
+        }
+      }
+
       var url = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/import';
       $log.debug('synchronizeRequisition: synchronizing requisition ' + foreignSource);
       $http({ method: 'PUT', url: url, params: { rescanExisting: rescanExisting ? 'true' : 'false' }})
@@ -346,10 +356,18 @@
     requisitionsService.deleteRequisition = function(foreignSource, deployed) {
       var deferred = $q.defer();
 
-      var req = requisitionsService.internal.getCachedRequisition(foreignSource);
-      if (req != null && req.nodes.length > 0) {
-        deferred.reject('The foreignSource ' + foreignSource + ' contains nodes, it cannot be deleted.');
-        return deferred.promise;
+      var requisitionsData = requisitionsService.internal.getCachedRequisitionsData();
+      if (requisitionsData != null) {
+        var reqIdx = requisitionsData.indexOf(foreignSource);
+        if (reqIdx < 0) {
+            deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
+            return deferred.promise;
+        }
+        var req = requisitionsData.requisitions[reqIdx];
+        if (req.nodes.length > 0) {
+          deferred.reject('The foreignSource ' + foreignSource + ' contains nodes, it cannot be deleted.');
+          return deferred.promise;
+        }
       }
 
       var url = requisitionsService.internal.requisitionsUrl + (deployed ? '/deployed/' : '/') + foreignSource;
@@ -357,6 +375,9 @@
       $http.delete(url)
       .success(function(data) {
         $log.debug('deleteRequisition: deleted ' + (deployed ? 'deployed' : 'pending')+ ' requisition ' + foreignSource);
+        if (requisitionsData != null) {
+          requisitionsData.requisitions.splice(reqIdx, 1);
+        }
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('addRequisition: DELETE ' + url + ' failed:', data, status);
@@ -379,6 +400,16 @@
     */
     requisitionsService.removeAllNodesFromRequisition = function(foreignSource) {
       var deferred = $q.defer();
+
+      var requisitionsData = requisitionsService.internal.getCachedRequisitionsData();
+      if (requisitionsData != null) {
+        var reqIdx = requisitionsData.indexOf(foreignSource);
+        if (reqIdx < 0) {
+            deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
+            return deferred.promise;
+        }
+      }
+
       var requisition = {'model-import': foreignSource, node: []};
       var url = requisitionsService.internal.requisitionsUrl;
       $log.debug('removeAllNodesFromRequisition: removing nodes from requisition ' + foreignSource);
@@ -388,6 +419,7 @@
         var req = requisitionsService.internal.getCachedRequisition(foreignSource);
         if (req != null) {
           req.nodes = [];
+          req.nodesDefined = 0;
         }
         deferred.resolve(data);
       }).error(function(data, status) {
@@ -452,11 +484,12 @@
       $http.post(url, requisitionNode)
       .success(function(data) {
         $log.debug('saveNode: saved node ' + node.nodeLabel + ' on requisition ' + node.foreignSource);
-        node.deployed = false;
-        var n = requisitionsService.internal.getCachedNode(node.foreignSource, node.foreignId);
-        if (n != null) {
-          node.deployed = false;
+        var r = requisitionsService.internal.getCachedRequisition(node.foreignSource);
+        if (r != null && r.indexOf(node.foreignId) < 0) {
+          r.nodes.push(node);
+          r.nodesDefined++;
         }
+        node.deployed = false;
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('saveNode: POST ' + url + ' failed:', data, status);
@@ -488,8 +521,9 @@
         if (r != null) {
           var idx = r.indexOf(node.foreignId);
           if (idx > -1) {
-            r.deployed = false;
             r.nodes.splice(idx, 1);
+            r.nodesDefined--;
+            r.deployed = false;
           }
         }
         deferred.resolve(data);

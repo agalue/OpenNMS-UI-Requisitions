@@ -2,13 +2,19 @@
 
 describe('Controller: InterfaceController', function () {
 
-  var scope, controllerFactory, mockModalInstance, intf = { ipAddress: '10.0.0.1' };
+  var scope, controllerFactory, mockModalInstance;
+
+  var foreignSource = 'test-requisition';
+  var foreignId = '1001';
+  var node = new RequisitionNode(foreignSource, { 'foreign-id': foreignId });
+  node.addNewInterface();
+  node.interfaces[0].ipAddress = '10.0.0.1';
 
   function createController() {
     return controllerFactory('InterfaceController', {
       $scope: scope,
       $modalInstance: mockModalInstance,
-      intf: intf
+      intf: node.interfaces[0]
     });
   };
 
@@ -31,8 +37,12 @@ describe('Controller: InterfaceController', function () {
   it('test controller', function() {
     createController();
     scope.$digest();
-    expect(scope.intf.ipAddress).toBe(intf.ipAddress);
+    expect(scope.intf.ipAddress).toBe(node.interfaces[0].ipAddress);
     expect(scope.snmpPrimaryFields[0].title).toBe('Primary');
+    scope.addService();
+    expect(scope.intf.services.length).toBe(1);
+    scope.removeService(0);
+    expect(scope.intf.services.length).toBe(0);
   });
 
 });

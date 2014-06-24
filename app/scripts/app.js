@@ -16,15 +16,15 @@
       templateUrl: 'views/requisitions.html',
       controller: 'RequisitionsController'
     })
-    .when('/requisition/:foreignSource', {
+    .when('/requisitions/:foreignSource', {
       templateUrl: 'views/requisition.html',
       controller: 'RequisitionController'
     })
-    .when('/foreignSource/:foreignSource', {
+    .when('/requisitions/:foreignSource/foreignSource', {
       templateUrl: 'views/foreignsource.html',
       controller: 'ForeignSourceController'
     })
-    .when('/node/:foreignSource/:foreignId', {
+    .when('/requisitions/:foreignSource/nodes/:foreignId', {
       templateUrl: 'views/node.html',
       controller: 'NodeController'
     })
@@ -34,7 +34,7 @@
   }])
 
   .config(['growlProvider', function(growlProvider) {
-    growlProvider.globalTimeToLive(5000);
+    growlProvider.globalTimeToLive(3000);
   }])
 
   .config(['$tooltipProvider', function($tooltipProvider) {

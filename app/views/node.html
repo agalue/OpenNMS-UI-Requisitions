@@ -6,7 +6,7 @@
 
   <ol class="breadcrumb">
     <li><a ng-href="#/requisitions">Requisitions</a></li>
-    <li><a ng-href="#/requisition/{{foreignSource}}">{{ node.foreignSource }}</a></li>
+    <li><a ng-href="#/requisitions/{{foreignSource}}">{{ node.foreignSource }}</a></li>
     <li class="active">{{ node.foreignId }}</li>
   </ol>
 
@@ -25,7 +25,7 @@
       </div>
       <div class="collapse navbar-collapse" id="node-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><a ng-href="#/requisition/{{foreignSource}}"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
+          <li><a ng-href="#/requisitions/{{foreignSource}}"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
           <li ng-class="{disabled: nodeForm.$invalid}"><a ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</a></li>
         </ul>
       </div>
@@ -159,8 +159,8 @@
       <tab heading="Categories">
         <a ng-click="addCategory()" class="btn"><span class="glyphicon glyphicon-plus"/> Add Category</a>
         <br/>
-        <div class="form-group" ng-repeat="category in node.categories">
-          <div class="input-group">
+        <div class="form-group">
+          <div class="input-group" ng-repeat="category in node.categories">
             <input type="text" class="form-control" placeholder="Category Name" ng-model="category.name" required/>
             <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeCategory($index)"/>
           </div>
