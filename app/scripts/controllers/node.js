@@ -1,3 +1,5 @@
+/*global RequisitionNode:true */
+
 // Controller for the node page (add/edit the nodes on a specific requisition)
 // Author: Alejandro Galue <agalue@opennms.org>
 
@@ -98,7 +100,7 @@
           $scope.node.deployed = false;
           growl.addSuccessMessage('The node ' + $scope.node.nodeLabel + ' has been saved.');
         },
-        $scope.errorHandler 
+        $scope.errorHandler
       );
     };
 
@@ -109,7 +111,7 @@
         function(node) { // success
           $scope.node = node;
         },
-        $scope.errorHandler 
+        $scope.errorHandler
       );
     };
 

@@ -23,7 +23,7 @@
 
     requisitionsService.internal.requisitionsUrl   = '/opennms/rest/requisitions';
     requisitionsService.internal.foreignSourcesUrl = '/opennms/rest/foreignSources';
-    requisitionsService.internal.cache = $cacheFactory('RequisitionsService')
+    requisitionsService.internal.cache = $cacheFactory('RequisitionsService');
 
     /**
     * @description (Internal) Gets the requisitions data from the internal cache
@@ -35,7 +35,7 @@
     * @private
     */
     requisitionsService.internal.getCachedRequisitionsData = function() {
-        return requisitionsService.internal.cache.get('requisitionsData');
+      return requisitionsService.internal.cache.get('requisitionsData');
     };
 
     /**
@@ -60,7 +60,7 @@
     */
     requisitionsService.clearRequisitionsCache = function() {
       requisitionsService.internal.cache.removeAll();
-    }
+    };
 
     /**
     * @description (Internal) Merges an OpenNMS requisition into the requisitionsData object.
@@ -95,7 +95,7 @@
             if (existingNodeIndex < 0) { // new node
               $log.debug('mergeRequisition: the foreignId ' + currentNode.foreignId + ' is new, adding it to ' + requisition.foreignSource + '.');
               existingReq.nodes.push(currentNode);
-              currentNode.deployed ? existingReq.nodesInDatabase++ : existingReq.nodesDefined++;
+              if (currentNode.deployed) { existingReq.nodesInDatabase++; } else { existingReq.nodesDefined++; }
             } else { // modified node ?
               var existingNode = existingReq.nodes[existingNodeIndex];
               existingNode.deployed = false; // temporary set to false to compare the nodes.
@@ -460,7 +460,7 @@
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('saveNode: POST ' + url + ' failed:', data, status);
-        deferred.reject('Cannot save node ' + foreignId + ' on requisition ' + foreignSource + '. ' + status);
+        deferred.reject('Cannot save node ' + node.foreignId + ' on requisition ' + node.foreignSource + '. ' + status);
       });
       return deferred.promise;
     };
@@ -495,7 +495,7 @@
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('deleteNode: DELETE ' + url + ' failed:', data, status);
-        deferred.reject('Cannot delete node ' + foreignId + ' from requisition ' + foreignSource + '. ' + status);
+        deferred.reject('Cannot delete node ' + node.foreignId + ' from requisition ' + node.foreignSource + '. ' + status);
       });
       return deferred.promise;
     };
@@ -537,11 +537,12 @@
     */
     requisitionsService.saveForeignSourceDefinition = function(foreignSourceDef) {
       var deferred = $q.defer();
+      var foreignSource = foreignSourceDef['foreign-source'];
       var url = requisitionsService.internal.foreignSourcesUrl;
-      $log.debug('saveForeignSourceDefinition: saving definition for requisition ' + foreignSourceDef['foreign-source']);
+      $log.debug('saveForeignSourceDefinition: saving definition for requisition ' + foreignSource);
       $http.post(url, foreignSourceDef)
       .success(function(data) {
-        $log.debug('saveForeignSourceDefinition: saved definition for requisition ' + foreignSourceDef['foreign-source']);
+        $log.debug('saveForeignSourceDefinition: saved definition for requisition ' + foreignSource);
         deferred.resolve(data);
       }).error(function(data, status) {
         $log.error('saveForeignSourceDefinition: POST ' + url + ' failed:', data, status);
