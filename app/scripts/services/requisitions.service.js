@@ -280,8 +280,8 @@
       if (requisitionsData != null) {
         var reqIdx = requisitionsData.indexOf(foreignSource);
         if (reqIdx < 0) {
-            deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
-            return deferred.promise;
+          deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
+          return deferred.promise;
         }
       }
 
@@ -360,8 +360,8 @@
       if (requisitionsData != null) {
         var reqIdx = requisitionsData.indexOf(foreignSource);
         if (reqIdx < 0) {
-            deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
-            return deferred.promise;
+          deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
+          return deferred.promise;
         }
         var req = requisitionsData.requisitions[reqIdx];
         if (req.nodes.length > 0) {
@@ -405,8 +405,8 @@
       if (requisitionsData != null) {
         var reqIdx = requisitionsData.indexOf(foreignSource);
         if (reqIdx < 0) {
-            deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
-            return deferred.promise;
+          deferred.reject('The foreignSource ' + foreignSource + ' does not exist.');
+          return deferred.promise;
         }
       }
 

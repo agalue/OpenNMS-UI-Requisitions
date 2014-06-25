@@ -15,10 +15,12 @@
     $scope.maxSize = 5;
     $scope.totalItems = 0;
 
+    // Common error handling
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message);
     };
 
+    // Return the index of a requisition
     $scope.indexOfRequisition = function(foreignSource) {
       for(var i = 0; i < $scope.requisitions.length; i++) {
         if ($scope.requisitions[i].foreignSource === foreignSource) {
@@ -90,8 +92,15 @@
     };
 
     // Refresh the local requisitions list from the server
-    $scope.refresh = function() {
-      growl.addInfoMessage('Retrieving requisitions...');
+    $scope.refreshRequisitions = function() {
+      growl.addInfoMessage('Refreshing requisitions...');
+      RequisitionsService.clearRequisitionsCache();
+      $scope.initializeRequisitions();
+    };
+
+    // Initialize the local requisitions list
+    $scope.initializeRequisitions = function() {
+      growl.addInfoMessage('Initializing requisitions...');
       RequisitionsService.getRequisitions().then(
         function(data) { // success
           $scope.currentPage = 1;
@@ -114,7 +123,7 @@
 
     // Initializes the requisitions page
     if ($scope.filteredRequisitions.length == 0) {
-      $scope.refresh();
+      $scope.initializeRequisitions();
     }
 
   }]);

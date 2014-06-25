@@ -18,6 +18,7 @@
     $scope.maxSize = 5;
     $scope.totalItems = 0;
 
+    // Common error handling
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message);
     };
@@ -45,8 +46,8 @@
       );
     };
 
-    // Refresh the local requisition from the server
-    $scope.refresh = function() {
+    // Initialize the local requisition from the server
+    $scope.initializeRequisition = function() {
       growl.addInfoMessage('Retrieving requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getRequisition($scope.foreignSource).then(
         function(requisition) { // success
@@ -70,7 +71,7 @@
 
     // Initializes the requisition page
     if ($scope.foreignSource) {
-      $scope.refresh();
+      $scope.initializeRequisition();
     }
 
   }]);

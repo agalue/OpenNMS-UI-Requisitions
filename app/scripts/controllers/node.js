@@ -24,7 +24,7 @@
       var assetToEdit = $scope.node.assets[index];
 
       var modalInstance = $modal.open({
-        backdrop: true,
+        backdrop: 'static',
         controller: 'AssetController',
         templateUrl: 'views/asset.html',
         resolve: {
@@ -56,7 +56,7 @@
       var intfToEdit = $scope.node.interfaces[index];
 
       var modalInstance = $modal.open({
-        backdrop: true,
+        backdrop: 'static',
         controller: 'InterfaceController',
         templateUrl: 'views/interface.html',
         resolve: {

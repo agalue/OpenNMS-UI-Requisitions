@@ -25,7 +25,7 @@
     };
 
     $scope.addService = function() {
-      $scope.intf.addNewService();
+      $scope.intf.services.push({ name: '' });
     };
 
     $scope.removeService = function(index) {

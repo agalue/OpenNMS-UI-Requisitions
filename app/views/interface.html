@@ -22,8 +22,8 @@
     <a class="btn btn-default btn-xs" tooltip="Add a new service" ng-click="addService()">
       <span class="glyphicon glyphicon-plus"></span>
     </a>
-    <div class="form-group">
-      <div class="input-group" ng-repeat="service in intf.services">
+    <div class="form-group" ng-repeat="service in intf.services">
+      <div class="input-group">
         <input type="text" class="form-control" placeholder="Service Name" ng-model="service.name" required>
         <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeService($index)"/>
       </div>
