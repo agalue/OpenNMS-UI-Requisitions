@@ -363,7 +363,7 @@ describe('Service: RequisitionsService', function () {
 
     initializeCache();
 
-    var requisition = {'model-import': 'test-network', node: []};
+    var requisition = {'foreign-source': 'test-network', node: []};
     var saveUrl = requisitionsService.internal.requisitionsUrl;
     $httpBackend.expect('POST', saveUrl, requisition).respond({});
 

@@ -109,7 +109,9 @@
     $scope.deleteRequisition = function(foreignSource) {
       bootbox.confirm("Are you sure you want to remove the requisition " + foreignSource + "?", function(ok) {
         if (ok) {
-          RequisitionsService.deleteRequisition(foreignSource).then(
+          var idx = $scope.indexOfRequisition(foreignSource);
+          var deployed = requisitions[idx].deployed;
+          RequisitionsService.deleteRequisition(foreignSource, deployed).then(
             function() { // success
               growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
             },
