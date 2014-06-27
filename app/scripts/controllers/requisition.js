@@ -67,7 +67,7 @@
         if (ok) {
           RequisitionsService.deleteNode(node).then(
             function() { // success
-              growl.addSuccessMessage('The node ' + node.nodeLabel + 'has been deleted.');
+              growl.addSuccessMessage('The node ' + node.nodeLabel + ' has been deleted.');
             },
             $scope.errorHandler
           );

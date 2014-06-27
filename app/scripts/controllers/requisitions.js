@@ -14,6 +14,7 @@
     $scope.pageSize = 10;
     $scope.maxSize = 5;
     $scope.totalItems = 0;
+    $scope.loading = true;
 
     // Common error handling
     $scope.errorHandler = function(message) {
@@ -122,6 +123,7 @@
     $scope.refreshRequisitions = function() {
       growl.addInfoMessage('Refreshing requisitions...');
       RequisitionsService.clearRequisitionsCache();
+      $scope.loading = true;
       $scope.initializeRequisitions();
     };
 
@@ -135,6 +137,7 @@
           $scope.totalItems = data.requisitions.length;
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
+          $scope.loading = false;
         },
         $scope.errorHandler
       );

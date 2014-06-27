@@ -39,7 +39,14 @@
     </div>
   </nav>
 
-  <div class="table-responsive">
+  <div class="jumbotron" ng-show="requisition.nodes.length == 0">
+    <div class="container">
+      <h1>There are no nodes on the Requisitions</h1>
+      <p>Please click on the 'Add' button, to start adding nodes into this requisition.</p>
+    </div>
+  </div>
+
+  <div class="table-responsive" ng-show="requisition.nodes.length > 0">
     <table class="table table-striped table-condensed table-hover">
       <thead>
         <tr>

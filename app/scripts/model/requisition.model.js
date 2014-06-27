@@ -37,7 +37,7 @@ function Requisition(requisition, isDeployed) {
 
   self.updateStats = function() {
     if (self.deployed) {
-      self.nodesInDatabase = self.nodesDefined = self.nodes.length;
+      self.nodesInDatabase = self.nodes.length;
     } else {
       self.nodesDefined = self.nodes.length;
     }

@@ -4,6 +4,7 @@ describe('Service: RequisitionsService', function () {
 
   var deployedRequisitions = {
     'count': 2,
+    'totalCount': 2,
     'model-import': [{
       'foreign-source' : 'test-network',
       'node': [{
@@ -56,6 +57,7 @@ describe('Service: RequisitionsService', function () {
 
   var pendingRequisitions = {
     'count': 2,
+    'totalCount': 2,
     'model-import': [{
       'foreign-source' : 'test-network', // Modified requisition
       'node': [{
@@ -276,10 +278,10 @@ describe('Service: RequisitionsService', function () {
     });
   });
 
-  // Testing deleteRequisition (non empty requisition)
+  // Testing deleteRequisition (deployed requisition with nodes in database)
 
-  it('deleteRequisition::nonEmptyRequisition', function() {
-    console.log('Running tests for deleteRequisition (non empty requisition)');
+  it('deleteRequisition::deployed', function() {
+    console.log('Running tests for deleteRequisition (deployed requisition with nodes in database)');
 
     initializeCache();
 
@@ -287,13 +289,13 @@ describe('Service: RequisitionsService', function () {
     requisitionsService.deleteRequisition(foreignSource).then(function() {
       throw msg;
     }, function(msg) {
-      expect(msg).toBe('The foreignSource ' + foreignSource + ' contains nodes, it cannot be deleted.');
+      expect(msg).toBe('The foreignSource ' + foreignSource + ' contains 2 nodes on the database, it cannot be deleted.');
     });
   });
 
   // Testing deleteRequisition (unknown requisition)
 
-  it('deleteRequisition::unkonwnRequisition', function() {
+  it('deleteRequisition::unkonwn', function() {
     console.log('Running tests for deleteRequisition (unknown requisition)');
 
     initializeCache();
@@ -313,10 +315,9 @@ describe('Service: RequisitionsService', function () {
 
     initializeCache();
 
-    var foreignSource = 'test-network';
+    var foreignSource = 'test-empty';
     var r = requisitionsService.internal.getCachedRequisition(foreignSource);
     expect(r).not.toBe(null);
-    r.nodes = [];
 
     var deleteUrl = requisitionsService.internal.requisitionsUrl + '/' + foreignSource;
     $httpBackend.expect('DELETE', deleteUrl).respond({});
@@ -332,8 +333,8 @@ describe('Service: RequisitionsService', function () {
 
   // Testing deleteRequisition (deployed)
 
-  it('deleteRequisition::deployed', function() {
-    console.log('Running tests for deleteRequisition (deployed)');
+  it('deleteRequisition::deployed-empty', function() {
+    console.log('Running tests for deleteRequisition (deployed after empty it)');
 
     initializeCache();
 
@@ -341,6 +342,7 @@ describe('Service: RequisitionsService', function () {
     var r = requisitionsService.internal.getCachedRequisition(foreignSource);
     expect(r).not.toBe(null);
     r.nodes = [];
+    r.nodesInDatabase = 0;
 
     var deleteUrl = requisitionsService.internal.requisitionsUrl + '/deployed/' + foreignSource;
     $httpBackend.expect('DELETE', deleteUrl).respond({});

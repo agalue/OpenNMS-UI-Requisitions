@@ -82,13 +82,15 @@
         $log.debug('mergeRequisition: adding ' + (deployed ? 'deployed' : 'pending') + ' requisition ' + requisition.foreignSource + '.');
         requisitionsData.requisitions.push(requisition);
       } else {
+        // Because the deployed requisitions are processed first, the existing requisition is considered a deployed requisition.
         var existingReq = requisitionsData.requisitions[existingReqIndex];
         existingReq.deployed = false; // temporary set to false to compare the requisitions.
         if (angular.equals(existingReq, requisition)) { // the requisition was not modified.
           existingReq.deployed = true; // restoring the deployed flag.
-          $log.debug('mergeRequisition: the foreignSource ' + requisition.foreignSource + ' has not been modified.');
+          $log.debug('mergeRequisition: the requisition ' + requisition.foreignSource + ' has not been modified.');
         } else { // the requisition was modified
-          $log.debug('mergeRequisition: the foreignSource ' + requisition.foreignSource + ' has been modified.');
+          $log.debug('mergeRequisition: the requisition ' + requisition.foreignSource + ' has been modified.');
+          existingReq.nodesDefined = requisition.nodes.length; // updating defined nodes (pending nodes)
           for (var idx = 0; idx < requisition.nodes.length; idx++) {
             var currentNode = requisition.nodes[idx];
             var existingNodeIndex = existingReq.indexOf(currentNode.foreignId);
@@ -202,6 +204,7 @@
 
       var requisitionsData = requisitionsService.internal.getCachedRequisitionsData();
       if (requisitionsData != null) {
+        $log.debug('getRequisitions: returning a cached copy of the requisitions data');
         deferredResults.resolve(requisitionsData);
         return deferredResults.promise;
       }
@@ -242,6 +245,7 @@
 
       var requisition = requisitionsService.internal.getCachedRequisition(foreignSource);
       if (requisition != null) {
+        $log.debug('getRequisition: returning a cached copy of ' + foreignSource);
         deferred.resolve(requisition);
         return deferred.promise;
       }
@@ -332,6 +336,7 @@
         $log.debug('addRequisition: added requisition ' + requisition.foreignSource);
         var data = requisitionsService.internal.getCachedRequisitionsData();
         if (data != null) {
+          $log.debug('addRequisition: pushing requisition ' + foreignSource + ' into the internal cache');
           data.requisitions.push(requisition);
         }
         deferred.resolve(requisition);
@@ -364,8 +369,8 @@
           return deferred.promise;
         }
         var req = requisitionsData.requisitions[reqIdx];
-        if (req.nodes.length > 0) {
-          deferred.reject('The foreignSource ' + foreignSource + ' contains nodes, it cannot be deleted.');
+        if (req.nodesInDatabase > 0) {
+          deferred.reject('The foreignSource ' + foreignSource + ' contains ' + req.nodesInDatabase + ' nodes on the database, it cannot be deleted.');
           return deferred.promise;
         }
       }
@@ -376,6 +381,7 @@
       .success(function(data) {
         $log.debug('deleteRequisition: deleted ' + (deployed ? 'deployed' : 'pending')+ ' requisition ' + foreignSource);
         if (requisitionsData != null) {
+          $log.debug('deleteRequisition: removing requisition ' + foreignSource + ' from the internal cache');
           requisitionsData.requisitions.splice(reqIdx, 1);
         }
         deferred.resolve(data);
@@ -418,6 +424,7 @@
         $log.debug('removeAllNodesFromRequisition: removed nodes requisition ' + foreignSource);
         var req = requisitionsService.internal.getCachedRequisition(foreignSource);
         if (req != null) {
+          $log.debug('removeAllNodesFromRequisition: updating requisition ' + foreignSource + ' on the internal cache');
           req.nodes = [];
           req.nodesDefined = 0;
         }
@@ -444,12 +451,13 @@
 
       var node = requisitionsService.internal.getCachedNode(foreignSource, foreignId);
       if (node != null) {
+        $log.debug('getNode: returning a cached copy of ' + foreignId + '@' + foreignSource);
         deferred.resolve(node);
         return deferred.promise;
       }
 
       var url  = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/nodes/' + foreignId;
-      $log.debug('getRequisition: getting node ' + foreignId + '@' + foreignSource);
+      $log.debug('getNode: getting node ' + foreignId + '@' + foreignSource);
       $http.get(url)
       .success(function(data) {
         var node = new RequisitionNode(foreignSource, data);
@@ -486,8 +494,10 @@
         $log.debug('saveNode: saved node ' + node.nodeLabel + ' on requisition ' + node.foreignSource);
         var r = requisitionsService.internal.getCachedRequisition(node.foreignSource);
         if (r != null && r.indexOf(node.foreignId) < 0) {
+          $log.debug('saveNode: adding new node ' + node.foreignId + '@' + node.foreignSource + ' into the internal cache');
           r.nodes.push(node);
           r.nodesDefined++;
+          r.deployed = false;
         }
         node.deployed = false;
         deferred.resolve(data);
@@ -521,6 +531,7 @@
         if (r != null) {
           var idx = r.indexOf(node.foreignId);
           if (idx > -1) {
+            $log.debug('deleteNode: removing node ' + node.foreignId + '@' + node.foreignSource + ' from the internal cache');
             r.nodes.splice(idx, 1);
             r.nodesDefined--;
             r.deployed = false;
