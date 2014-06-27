@@ -14,7 +14,6 @@
     $scope.pageSize = 10;
     $scope.maxSize = 5;
     $scope.totalItems = 0;
-    $scope.loading = true;
 
     // Common error handling
     $scope.errorHandler = function(message) {
@@ -110,7 +109,7 @@
       bootbox.confirm("Are you sure you want to remove the requisition " + foreignSource + "?", function(ok) {
         if (ok) {
           var idx = $scope.indexOfRequisition(foreignSource);
-          var deployed = requisitions[idx].deployed;
+          var deployed = $scope.requisitions[idx].deployed;
           RequisitionsService.deleteRequisition(foreignSource, deployed).then(
             function() { // success
               growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
@@ -125,13 +124,12 @@
     $scope.refreshRequisitions = function() {
       growl.addInfoMessage('Refreshing requisitions...');
       RequisitionsService.clearRequisitionsCache();
-      $scope.loading = true;
+      $scope.requisitions = [];
       $scope.initializeRequisitions();
     };
 
     // Initialize the local requisitions list
     $scope.initializeRequisitions = function() {
-      growl.addInfoMessage('Initializing requisitions...');
       RequisitionsService.getRequisitions().then(
         function(data) { // success
           $scope.currentPage = 1;
@@ -139,7 +137,7 @@
           $scope.totalItems = data.requisitions.length;
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
-          $scope.loading = false;
+          growl.addInfoMessage('Loaded ' + data.requisitions.length + ' requisitions...');
         },
         $scope.errorHandler
       );
