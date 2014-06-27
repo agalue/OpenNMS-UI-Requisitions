@@ -97,7 +97,6 @@
     $scope.save = function() {
       RequisitionsService.saveNode($scope.node).then(
         function() { // success
-          $scope.node.deployed = false;
           growl.addSuccessMessage('The node ' + $scope.node.nodeLabel + ' has been saved.');
         },
         $scope.errorHandler

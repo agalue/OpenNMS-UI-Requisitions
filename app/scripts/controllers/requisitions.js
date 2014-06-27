@@ -42,53 +42,80 @@
 
     // Adds a new requisition on the server
     $scope.addRequisition = function() {
-      var foreignSource = window.prompt('Please enter the name for the new requisition'); // TODO Beautify prompt
-      if (foreignSource) {
-        RequisitionsService.addRequisition(foreignSource).then(
-          function(requisition) { // success
-            $scope.requisitions.push(requisition);
-            growl.addSuccessMessage('The requisition ' + foreignSource + ' has been created.');
-          },
-          $scope.errorHandler
-        );
-      }
+      bootbox.prompt('Please enter the name for the new requisition', function(foreignSource) {
+        if (foreignSource) {
+          RequisitionsService.addRequisition(foreignSource).then(
+            function(requisition) { // success
+              growl.addSuccessMessage('The requisition ' + foreignSource + ' has been created.');
+            },
+            $scope.errorHandler
+          );
+        }
+      });
     };
 
     // Requests the synchronization/import of a requisition on the server
-    // FIXME Implement rescanExisting on the view
-    $scope.synchronize = function(foreignSource, rescanExisting) {
-      RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
-        function() { // success
-          var idx = $scope.indexOfRequisition(foreignSource);
-          $scope.requisitions[idx].setDeployed(true);
-          growl.addSuccessMessage('The import operation has been started for ' + foreignSource);
-        },
-        $scope.errorHandler
-      );
+    $scope.synchronize = function(foreignSource) {
+      var doSynchronize = function(foreignSource, rescanExisting) {
+        RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
+          function() { // success
+            growl.addSuccessMessage('The import operation has been started for ' + foreignSource + ' (rescanExisting? ' + rescanExisting + ')');
+          },
+          $scope.errorHandler
+        );
+      };
+      bootbox.dialog({
+        message: "Do you want to rescan existing nodes ?",
+        title: "Synchronize Requisition " + foreignSource,
+        buttons: {
+          success: {
+            label: "Yes",
+            className: "btn-success",
+            callback: function() {
+              doSynchronize(foreignSource, true);
+            }
+          },
+          danger: {
+            label: "No",
+            className: "btn-danger",
+            callback: function() {
+              doSynchronize(foreignSource, false);
+            }
+          },
+          main: {
+            label: "Cancel",
+            className: "btn-default"
+          }
+        }
+      });
     };
 
     // Removes all the nodes form the requisition on the server
     $scope.removeAllNodes = function(foreignSource) {
-      RequisitionsService.removeAllNodesFromRequisition(foreignSource).then(
-        function() { // success
-          var idx = $scope.indexOfRequisition(foreignSource);
-          $scope.requisitions[idx].setDeployed(false);
-          growl.addSuccessMessage('All the nodes from ' + foreignSource + ' have been removed');
-        },
-        $scope.errorHandler
-      );
+      bootbox.confirm("Are you sure you want to remove all the nodes from " + foreignSource + "?", function(ok) {
+        if (ok) {
+          RequisitionsService.removeAllNodesFromRequisition(foreignSource).then(
+            function() { // success
+              growl.addSuccessMessage('All the nodes from ' + foreignSource + ' have been removed');
+            },
+            $scope.errorHandler
+          );
+        }
+      });
     };
 
     // Remove a requisition on the server
     $scope.deleteRequisition = function(foreignSource) {
-      RequisitionsService.deleteRequisition(foreignSource).then(
-        function() { // success
-          var idx = $scope.indexOfRequisition(foreignSource);
-          $scope.requisitions.splice(idx, 1);
-          growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
-        },
-        $scope.errorHandler
-      );
+      bootbox.confirm("Are you sure you want to remove the requisition " + foreignSource + "?", function(ok) {
+        if (ok) {
+          RequisitionsService.deleteRequisition(foreignSource).then(
+            function() { // success
+              growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
+            },
+            $scope.errorHandler
+          );
+        }
+      });
     };
 
     // Refresh the local requisitions list from the server

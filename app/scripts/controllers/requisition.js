@@ -26,24 +26,53 @@
     // Requests the synchronization/import of a requisition on the server
     // FIXME Implement rescanExisting on the view
     $scope.synchronize = function(rescanExisting) {
-      RequisitionsService.synchronizeRequisition($scope.foreignSource, rescanExisting).then(
-        function() { // success
-          $scope.requisition.setDeployed(true);
-          growl.addSuccessMessage('The import operation has been started for ' + $scope.foreignSource);
-        },
-        $scope.errorHandler
-      );
+      var foreignSource = $scope.foreignSource;
+      var doSynchronize = function(foreignSource, rescanExisting) {
+        RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
+          function() { // success
+            growl.addSuccessMessage('The import operation has been started for ' + foreignSource + ' (rescanExisting? ' + rescanExisting + ')');
+          },
+          $scope.errorHandler
+        );
+      };
+      bootbox.dialog({
+        message: "Do you want to rescan existing nodes ?",
+        title: "Synchronize Requisition " + foreignSource,
+        buttons: {
+          success: {
+            label: "Yes",
+            className: "btn-success",
+            callback: function() {
+              doSynchronize(foreignSource, true);
+            }
+          },
+          danger: {
+            label: "No",
+            className: "btn-danger",
+            callback: function() {
+              doSynchronize(foreignSource, false);
+            }
+          },
+          main: {
+            label: "Cancel",
+            className: "btn-default"
+          }
+        }
+      });
     };
 
     // Deletes a node from the requisition on the server and refresh the local nodes list
     $scope.deleteNode = function(node) {
-      RequisitionsService.deleteNode(node).then(
-        function() { // success
-          $scope.refresh(); // FIXME
-          growl.addSuccessMessage('The node ' + node.nodeLabel + 'has been deleted.');
-        },
-        $scope.errorHandler
-      );
+      bootbox.confirm("Are you sure you want to remove the node " + node.nodeLabel + "?", function(ok) {
+        if (ok) {
+          RequisitionsService.deleteNode(node).then(
+            function() { // success
+              growl.addSuccessMessage('The node ' + node.nodeLabel + 'has been deleted.');
+            },
+            $scope.errorHandler
+          );
+        }
+      });
     };
 
     // Initialize the local requisition from the server
