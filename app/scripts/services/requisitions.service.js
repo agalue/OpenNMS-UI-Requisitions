@@ -258,9 +258,9 @@
         $log.debug('getRequisition: got requisition ' + foreignSource);
         deferred.resolve(requisition);
       })
-      .error(function(data, status) {
-        $log.error('getRequisition: GET ' + url + ' failed:', data, status);
-        deferred.reject('Cannot retrieve the requisition ' + foreignSource + '. ' + status);
+      .error(function(error, status) {
+        $log.error('getRequisition: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve the requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -301,9 +301,9 @@
         }
         deferred.resolve(data);
       })
-      .error(function(data, status) {
-        $log.error('synchronizeRequisition: PUT ' + url + ' failed:', data, status);
-        deferred.reject('Cannot synchronize the requisition ' + foreignSource + '. ' + status);
+      .error(function(error, status) {
+        $log.error('synchronizeRequisition: PUT ' + url + ' failed:', error, status);
+        deferred.reject('Cannot synchronize the requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -340,9 +340,9 @@
           data.requisitions.push(requisition);
         }
         deferred.resolve(requisition);
-      }).error(function(data, status) {
-        $log.error('addRequisition: POST ' + url + ' failed:', data, status);
-        deferred.reject('Cannot add the requisition ' + foreignSource + '. ' + status);
+      }).error(function(error, status) {
+        $log.error('addRequisition: POST ' + url + ' failed:', error, status);
+        deferred.reject('Cannot add the requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -385,9 +385,9 @@
           requisitionsData.requisitions.splice(reqIdx, 1);
         }
         deferred.resolve(data);
-      }).error(function(data, status) {
-        $log.error('addRequisition: DELETE ' + url + ' failed:', data, status);
-        deferred.reject('Cannot delete the requisition ' + foreignSource + '. ' + status);
+      }).error(function(error, status) {
+        $log.error('addRequisition: DELETE ' + url + ' failed:', data, error);
+        deferred.reject('Cannot delete the requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -416,7 +416,7 @@
         }
       }
 
-      var requisition = {'model-import': foreignSource, node: []};
+      var requisition = {'foreign-source': foreignSource, node: []};
       var url = requisitionsService.internal.requisitionsUrl;
       $log.debug('removeAllNodesFromRequisition: removing nodes from requisition ' + foreignSource);
       $http.post(url, requisition)
@@ -429,9 +429,9 @@
           req.nodesDefined = 0;
         }
         deferred.resolve(data);
-      }).error(function(data, status) {
-        $log.error('removeAllNodesFromRequisition: POST ' + url + ' failed:', data, status);
-        deferred.reject('Cannot remove all nodes from requisition ' + foreignSource + '. ' + status);
+      }).error(function(error, status) {
+        $log.error('removeAllNodesFromRequisition: POST ' + url + ' failed:', error, status);
+        deferred.reject('Cannot remove all nodes from requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -464,9 +464,9 @@
         $log.debug('getNode: got node ' + foreignId + '@' + foreignSource);
         deferred.resolve(node);
       })
-      .error(function(data, status) {
-        $log.error('getNode: GET ' + url + ' failed:', data, status);
-        deferred.reject('Cannot retrieve node ' + foreignId + ' from requisition ' + foreignSource + '. ' + status);
+      .error(function(error, status) {
+        $log.error('getNode: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve node ' + foreignId + ' from requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -501,9 +501,9 @@
         }
         node.deployed = false;
         deferred.resolve(data);
-      }).error(function(data, status) {
-        $log.error('saveNode: POST ' + url + ' failed:', data, status);
-        deferred.reject('Cannot save node ' + node.foreignId + ' on requisition ' + node.foreignSource + '. ' + status);
+      }).error(function(error, status) {
+        $log.error('saveNode: POST ' + url + ' failed:', error, status);
+        deferred.reject('Cannot save node ' + node.foreignId + ' on requisition ' + node.foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -538,9 +538,9 @@
           }
         }
         deferred.resolve(data);
-      }).error(function(data, status) {
-        $log.error('deleteNode: DELETE ' + url + ' failed:', data, status);
-        deferred.reject('Cannot delete node ' + node.foreignId + ' from requisition ' + node.foreignSource + '. ' + status);
+      }).error(function(error, status) {
+        $log.error('deleteNode: DELETE ' + url + ' failed:', error, status);
+        deferred.reject('Cannot delete node ' + node.foreignId + ' from requisition ' + node.foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -563,9 +563,9 @@
         $log.debug('getForeignSourceDefinition: got definition for requisition ' + foreignSource);
         deferred.resolve(data);
       })
-      .error(function(data, status) {
-        $log.error('getForeignSourceDefinition: GET ' + url + ' failed:', data, status);
-        deferred.reject('Cannot retrieve foreign source definition (detectors and policies) for requisition ' + foreignSource + '. ' + status);
+      .error(function(error, status) {
+        $log.error('getForeignSourceDefinition: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve foreign source definition (detectors and policies) for requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };
@@ -589,9 +589,9 @@
       .success(function(data) {
         $log.debug('saveForeignSourceDefinition: saved definition for requisition ' + foreignSource);
         deferred.resolve(data);
-      }).error(function(data, status) {
-        $log.error('saveForeignSourceDefinition: POST ' + url + ' failed:', data, status);
-        deferred.reject('Cannot save foreign source definition (detectors and policies) for requisition ' + foreignSource + '. ' + status);
+      }).error(function(error, status) {
+        $log.error('saveForeignSourceDefinition: POST ' + url + ' failed:', error, status);
+        deferred.reject('Cannot save foreign source definition (detectors and policies) for requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;
     };

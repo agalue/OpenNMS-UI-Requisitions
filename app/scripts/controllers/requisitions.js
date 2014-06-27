@@ -18,7 +18,7 @@
 
     // Common error handling
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message);
+      growl.addErrorMessage(message, {ttl: 10000});
     };
 
     // Return the index of a requisition

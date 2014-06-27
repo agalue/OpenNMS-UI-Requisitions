@@ -16,7 +16,7 @@
     $scope.node = {};
 
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message);
+      growl.addErrorMessage(message, {ttl: 10000});
     };
 
     // Shows the dialog for add/edit an asset field

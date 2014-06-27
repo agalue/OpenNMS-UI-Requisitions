@@ -20,7 +20,7 @@
 
     // Common error handling
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message);
+      growl.addErrorMessage(message, {ttl: 10000});
     };
 
     // Requests the synchronization/import of a requisition on the server
