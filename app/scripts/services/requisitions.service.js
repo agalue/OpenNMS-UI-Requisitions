@@ -298,6 +298,7 @@
         if (r != null) {
           $log.debug('synchronizeRequisition: updating deployed status of requisition ' + foreignSource);
           r.setDeployed(true);
+          r.lastImport = Date.now();
         }
         deferred.resolve(data);
       })
@@ -427,6 +428,7 @@
           $log.debug('removeAllNodesFromRequisition: updating requisition ' + foreignSource + ' on the internal cache');
           req.nodes = [];
           req.nodesDefined = 0;
+          req.dateStamp = Date.now();
         }
         deferred.resolve(data);
       }).error(function(error, status) {
@@ -498,6 +500,7 @@
           r.nodes.push(node);
           r.nodesDefined++;
           r.deployed = false;
+          r.dateStamp = Date.now();
         }
         node.deployed = false;
         deferred.resolve(data);
@@ -535,6 +538,7 @@
             r.nodes.splice(idx, 1);
             r.nodesDefined--;
             r.deployed = false;
+            r.dateStamp = Date.now();
           }
         }
         deferred.resolve(data);

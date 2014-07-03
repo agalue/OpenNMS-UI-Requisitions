@@ -15,7 +15,7 @@ function Requisition(requisition, isDeployed) {
 
   self.deployed = isDeployed;
   self.foreignSource = requisition['foreign-source'];
-  self.dateStamp = requisition['date-stamp'];
+  self.dateStamp = requisition['date-stamp'] || Date.now();
   self.lastImport = requisition['last-import'];
   self.nodesInDatabase = 0;
   self.nodesDefined = 0;
