@@ -10,44 +10,47 @@
     <li class="active">{{ node.foreignId }}</li>
   </ol>
 
-  <!-- Navigation Bar -->
+  <form name="nodeForm" novalidate>
 
-  <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#node-navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <div class="navbar-brand">Node {{ node['node-label'] }}</div>
+    <!-- Navigation Bar -->
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#node-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">Node {{ node['node-label'] }}</div>
+        </div>
+        <div class="collapse navbar-collapse" id="node-navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a ng-href="#/requisitions/{{foreignSource}}"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
+            <li><button type="button" class="btn btn-default navbar-btn" ng-disabled="nodeForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
+          </ul>
+        </div>
       </div>
-      <div class="collapse navbar-collapse" id="node-navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a ng-href="#/requisitions/{{foreignSource}}"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-          <li ng-class="{disabled: nodeForm.$invalid}"><a ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Form/TabPanel -->
+    <!-- Form/TabPanel -->
 
-  <form name="nodeForm">
     <tabset justified="true">
 
       <!-- Basic Information Tab -->
 
       <tab heading="Basic Information">
         <br/>
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : nodeForm.foreignId.$invalid }">
           <label classs="control-label" for="foreignId">Foreign ID</label>
           <input class="form-control" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node.foreignId" required/>
+          <p ng-show="nodeForm.foreignId.$invalid" class="help-block">Foreign ID is required.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : nodeForm.nodeLabel.$invalid }">
           <label classs="control-label" for="nodeLabel">Node Label</label>
           <input class="form-control" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node.nodeLabel" required/>
+          <p ng-show="nodeForm.nodeLabel.$invalid" class="help-block">Node Label is required.</p>
         </div>
         <div class="form-group">
           <label classs="control-label" for="building">Building</label>
@@ -67,11 +70,11 @@
           <label class="control-label" for="parentForeignSource">Parent Foreign Source</label>
           <input class="form-control" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node.parentForeignSource"/>
         </div>
-        <div class="form-group" ng-disabled="node.parentForeignLabel != null">
+        <div class="form-group" ng-show="node.parentForeignLabel == null || node.parentForeignLabel == ''">
           <label class="control-label" for="parentForeignId">Parent Foreign ID</label>
           <input class="form-control" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node.parentForeignId"/>
         </div>
-        <div class="form-group" ng-disabled="node.parentForeignId != null">
+        <div class="form-group" ng-show="node.parentForeignId == null || node.parentForeignId == ''">
           <label class="control-label" for="parentForeignLabel">Parent Foreign Label</label>
           <input class="form-control" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node.parentForeignLabel"/>
         </div>

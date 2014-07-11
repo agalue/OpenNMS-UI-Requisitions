@@ -80,11 +80,6 @@ body {
 
 /* Customizations added by agalue@opennms.org */
 
-/* Custom Validation */
-input.ng-invalid {
-  border: 1px solid red;
-}
-
 /* Link Cursors */
 .navbar-nav li:hover {
     cursor: pointer;
