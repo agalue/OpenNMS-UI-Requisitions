@@ -9,7 +9,7 @@
 
   angular.module('onms-requisitions')
 
-  .controller('RequisitionsController', ['$scope', '$filter', 'RequisitionsService', 'growl', function($scope, $filter, RequisitionsService, growl) {
+  .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'growl', function($scope, $filter, $window, RequisitionsService, growl) {
 
     $scope.requisitions = [];
     $scope.filteredRequisitions = [];
@@ -32,18 +32,13 @@
       return -1;
     };
 
-    // Resets the default set of detectors and policies
-    $scope.resetDefaultForeignSource = function() {
-      growl.addWarnMessage('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
-    };
-
     // Clones the detectors and policies of a specific requisition
-    $scope.cloneForeignSource = function(foreignSource) {
+    $scope.clone = function(foreignSource) {
       growl.addWarnMessage('Cannot clone foreign source definitions for ' + foreignSource + '. Not implemented yet.'); // FIXME
     };
 
     // Adds a new requisition on the server
-    $scope.addRequisition = function() {
+    $scope.add = function() {
       bootbox.prompt('Please enter the name for the new requisition', function(foreignSource) {
         if (foreignSource) {
           RequisitionsService.addRequisition(foreignSource).then(
@@ -54,6 +49,26 @@
           );
         }
       });
+    };
+
+    // Edits the default foreign source definition
+    $scope.editDefaultForeignSource = function() {
+      $window.location.href = '#/requisitions/default/foreignSource';
+    };
+
+    // Resets the default set of detectors and policies
+    $scope.resetDefaultForeignSource = function() {
+      growl.addWarnMessage('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
+    };
+
+    // Edits the foreign source definition of an existing requisition
+    $scope.editForeignSource = function(foreignSource) {
+      $window.location.href = '#/requisitions/' + foreignSource + '/foreignSource';
+    };
+
+    // Edits an existing requisition
+    $scope.edit = function(foreignSource) {
+      $window.location.href = '#/requisitions/' + foreignSource;
     };
 
     // Requests the synchronization/import of a requisition on the server
@@ -107,7 +122,7 @@
     };
 
     // Remove a requisition on the server
-    $scope.deleteRequisition = function(foreignSource) {
+    $scope.delete = function(foreignSource) {
       bootbox.confirm('Are you sure you want to remove the requisition ' + foreignSource + '?', function(ok) {
         if (ok) {
           var idx = $scope.indexOfRequisition(foreignSource);
@@ -123,15 +138,15 @@
     };
 
     // Refresh the local requisitions list from the server
-    $scope.refreshRequisitions = function() {
+    $scope.refresh = function() {
       growl.addInfoMessage('Refreshing requisitions...');
       RequisitionsService.clearRequisitionsCache();
       $scope.requisitions = [];
-      $scope.initializeRequisitions();
+      $scope.initialize();
     };
 
     // Initialize the local requisitions list
-    $scope.initializeRequisitions = function() {
+    $scope.initialize = function() {
       RequisitionsService.getRequisitions().then(
         function(data) { // success
           $scope.currentPage = 1;
@@ -155,7 +170,7 @@
 
     // Initializes the requisitions page
     if ($scope.filteredRequisitions.length == 0) {
-      $scope.initializeRequisitions();
+      $scope.initialize();
     }
 
   }]);

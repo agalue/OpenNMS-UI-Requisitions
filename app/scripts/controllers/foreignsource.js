@@ -7,10 +7,18 @@
 
   angular.module('onms-requisitions')
 
-  .controller('ForeignSourceController', ['$scope', '$routeParams', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $modal, RequisitionsService, growl) {
+  .controller('ForeignSourceController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.foreignSourceDef = {};
+
+    $scope.goBack = function() {
+      $window.location.href = '#/requisitions/' + $scope.foreignSource;
+    };
+
+    $scope.goTop = function() {
+      $window.location.href = '#/requisitions';
+    };
 
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message);

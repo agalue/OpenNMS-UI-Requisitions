@@ -9,7 +9,7 @@
 
   angular.module('onms-requisitions')
 
-  .controller('RequisitionController', ['$scope', '$filter', '$routeParams', 'RequisitionsService', 'growl', function($scope, $filter, $routeParams, RequisitionsService, growl) {
+  .controller('RequisitionController', ['$scope', '$filter', '$window', '$routeParams', 'RequisitionsService', 'growl', function($scope, $filter, $window, $routeParams, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.requisition = new Requisition({});
@@ -21,6 +21,16 @@
     // Common error handling
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message, {ttl: 10000});
+    };
+
+    // Goes back to requisitions
+    $scope.goBack = function() {
+      $window.location.href = '#/requisitions';
+    };
+
+    // Edits the foreign source definition of the requisition
+    $scope.editForeignSource = function() {
+      $window.location.href = '#/requisitions/' + $scope.foreignSource + '/foreignSource';
     };
 
     // Requests the synchronization/import of a requisition on the server
@@ -60,6 +70,16 @@
       });
     };
 
+    // Adds a new node to the requisition
+    $scope.addNode = function() {
+      $window.location.href = '#/requisitions/' + $scope.foreignSource + '/nodes/__new__';
+    };
+
+    // Edits an existing node
+    $scope.editNode = function(node) {
+      $window.location.href = '#/requisitions/' + $scope.foreignSource + '/nodes/' + node.foreignId;
+    };
+
     // Deletes a node from the requisition on the server and refresh the local nodes list
     $scope.deleteNode = function(node) {
       bootbox.confirm('Are you sure you want to remove the node ' + node.nodeLabel + '?', function(ok) {
@@ -75,7 +95,7 @@
     };
 
     // Initialize the local requisition from the server
-    $scope.initializeRequisition = function() {
+    $scope.initialize = function() {
       growl.addInfoMessage('Retrieving requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getRequisition($scope.foreignSource).then(
         function(requisition) { // success
@@ -99,7 +119,7 @@
 
     // Initializes the requisition page
     if ($scope.foreignSource) {
-      $scope.initializeRequisition();
+      $scope.initialize();
     }
 
   }]);

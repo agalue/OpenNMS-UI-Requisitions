@@ -24,10 +24,10 @@
       </div>
       <div class="collapse navbar-collapse" id="requisition-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><a ng-href="#/requisitions"><span class="glyphicon glyphicon-remove"/> Return</a></li>
-          <li><a ng-href="#/requisitions/{{foreignSource}}/foreignSource"><span class="glyphicon glyphicon-edit"/> Edit Definition</a></li>
+          <li><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"/> Return</a></li>
+          <li><a ng-click="editForeignSource()"><span class="glyphicon glyphicon-edit"/> Edit Definition</a></li>
           <li><a ng-click="synchronize()"><span class="glyphicon glyphicon-refresh"/> Synchronize</a></li>
-          <li><a ng-href="#/requisitions/{{foreignSource}}/nodes/__new__"><span class="glyphicon glyphicon-plus"/> Add</a></li>
+          <li><a ng-click="addNode()"><span class="glyphicon glyphicon-plus"/> Add</a></li>
         </ul>
         <form class="navbar-form" role="search">
           <div class="input-group">
@@ -64,7 +64,7 @@
           <td>{{ node.building }}</td>
           <td>{{ node.city }}</td>
           <td>
-            <a class="btn btn-default btn-xs" tooltip="Edit the {{node.nodeLabel}} Node" ng-href="#/requisitions/{{node.foreignSource}}/nodes/{{node.foreignId}}">
+            <a class="btn btn-default btn-xs" tooltip="Edit the {{node.nodeLabel}} Node" ng-click="editNode(node)">
               <span class="glyphicon glyphicon-pencil"/>
             </a>
             <a class="btn btn-default btn-xs" tooltip="Remove the {{node.nodeLabel}} Node" ng-click="deleteNode(node)">
@@ -76,5 +76,7 @@
     </table>
   </div>
 
-  <pagination total-items="totalItems" num-pages="numPages" ng-model="currentPage" max-size="maxSize" boundary-links="true" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-show="filteredNodes.length > pageSize"></pagination>
+  <pagination total-items="totalItems" num-pages="numPages" ng-model="currentPage" max-size="maxSize" boundary-links="true"
+    class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+    ng-show="filteredNodes.length > pageSize"></pagination>
 </div>

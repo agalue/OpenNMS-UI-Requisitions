@@ -9,11 +9,19 @@
 
   angular.module('onms-requisitions')
 
-  .controller('NodeController', ['$scope', '$routeParams', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $modal, RequisitionsService, growl) {
+  .controller('NodeController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;
     $scope.foreignId = $routeParams.foreignId;
     $scope.node = {};
+
+    $scope.goBack = function() {
+      $window.location.href = '#/requisitions/' + $scope.foreignSource;
+    };
+
+    $scope.goTop = function() {
+      $window.location.href = '#/requisitions';
+    };
 
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message, {ttl: 10000});
