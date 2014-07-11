@@ -387,7 +387,7 @@
         }
         deferred.resolve(data);
       }).error(function(error, status) {
-        $log.error('addRequisition: DELETE ' + url + ' failed:', data, error);
+        $log.error('deleteRequisition: DELETE ' + url + ' failed:', error, status);
         deferred.reject('Cannot delete the requisition ' + foreignSource + '. HTTP ' + status + ' ' + error);
       });
       return deferred.promise;

@@ -1,3 +1,5 @@
+/* global bootbox:true */
+
 // Controller for the requisitions page (list/add/remove/synchronize requisitions)
 // Author: Alejandro Galue <agalue@opennms.org>
 
@@ -45,8 +47,8 @@
       bootbox.prompt('Please enter the name for the new requisition', function(foreignSource) {
         if (foreignSource) {
           RequisitionsService.addRequisition(foreignSource).then(
-            function(requisition) { // success
-              growl.addSuccessMessage('The requisition ' + foreignSource + ' has been created.');
+            function(r) { // success
+              growl.addSuccessMessage('The requisition ' + r.foreignSource + ' has been created.');
             },
             $scope.errorHandler
           );
@@ -65,26 +67,26 @@
         );
       };
       bootbox.dialog({
-        message: "Do you want to rescan existing nodes ?",
-        title: "Synchronize Requisition " + foreignSource,
+        message: 'Do you want to rescan existing nodes ?',
+        title: 'Synchronize Requisition ' + foreignSource,
         buttons: {
           success: {
-            label: "Yes",
-            className: "btn-success",
+            label: 'Yes',
+            className: 'btn-success',
             callback: function() {
               doSynchronize(foreignSource, true);
             }
           },
           danger: {
-            label: "No",
-            className: "btn-danger",
+            label: 'No',
+            className: 'btn-danger',
             callback: function() {
               doSynchronize(foreignSource, false);
             }
           },
           main: {
-            label: "Cancel",
-            className: "btn-default"
+            label: 'Cancel',
+            className: 'btn-default'
           }
         }
       });
@@ -92,7 +94,7 @@
 
     // Removes all the nodes form the requisition on the server
     $scope.removeAllNodes = function(foreignSource) {
-      bootbox.confirm("Are you sure you want to remove all the nodes from " + foreignSource + "?", function(ok) {
+      bootbox.confirm('Are you sure you want to remove all the nodes from ' + foreignSource + '?', function(ok) {
         if (ok) {
           RequisitionsService.removeAllNodesFromRequisition(foreignSource).then(
             function() { // success
@@ -106,7 +108,7 @@
 
     // Remove a requisition on the server
     $scope.deleteRequisition = function(foreignSource) {
-      bootbox.confirm("Are you sure you want to remove the requisition " + foreignSource + "?", function(ok) {
+      bootbox.confirm('Are you sure you want to remove the requisition ' + foreignSource + '?', function(ok) {
         if (ok) {
           var idx = $scope.indexOfRequisition(foreignSource);
           var deployed = $scope.requisitions[idx].deployed;

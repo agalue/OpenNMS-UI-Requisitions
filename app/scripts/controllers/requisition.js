@@ -1,4 +1,4 @@
-/*global Requisition:true */
+/*global Requisition:true, bootbox:true */
 
 // Controller for the requisition page (add/edit the requisition)
 // Author: Alejandro Galue <agalue@opennms.org>
@@ -24,8 +24,7 @@
     };
 
     // Requests the synchronization/import of a requisition on the server
-    // FIXME Implement rescanExisting on the view
-    $scope.synchronize = function(rescanExisting) {
+    $scope.synchronize = function() {
       var foreignSource = $scope.foreignSource;
       var doSynchronize = function(foreignSource, rescanExisting) {
         RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
@@ -36,26 +35,26 @@
         );
       };
       bootbox.dialog({
-        message: "Do you want to rescan existing nodes ?",
-        title: "Synchronize Requisition " + foreignSource,
+        message: 'Do you want to rescan existing nodes ?',
+        title: 'Synchronize Requisition ' + foreignSource,
         buttons: {
           success: {
-            label: "Yes",
-            className: "btn-success",
+            label: 'Yes',
+            className: 'btn-success',
             callback: function() {
               doSynchronize(foreignSource, true);
             }
           },
           danger: {
-            label: "No",
-            className: "btn-danger",
+            label: 'No',
+            className: 'btn-danger',
             callback: function() {
               doSynchronize(foreignSource, false);
             }
           },
           main: {
-            label: "Cancel",
-            className: "btn-default"
+            label: 'Cancel',
+            className: 'btn-default'
           }
         }
       });
@@ -63,7 +62,7 @@
 
     // Deletes a node from the requisition on the server and refresh the local nodes list
     $scope.deleteNode = function(node) {
-      bootbox.confirm("Are you sure you want to remove the node " + node.nodeLabel + "?", function(ok) {
+      bootbox.confirm('Are you sure you want to remove the node ' + node.nodeLabel + '?', function(ok) {
         if (ok) {
           RequisitionsService.deleteNode(node).then(
             function() { // success
