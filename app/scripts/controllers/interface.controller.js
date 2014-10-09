@@ -7,6 +7,17 @@
 
   angular.module('onms-requisitions')
 
+  /**
+  * @ngdoc controller
+  * @name InterfaceController
+  * @module onms-requisitions
+  *
+  * @requires $scope Angular local scope
+  * @requires $modalInstance Angular modal instance
+  * @requires intf Interface policy object
+  *
+  * @description The controller for manage IP interfaces of requisitioned nodes
+  */
   .controller('InterfaceController', ['$scope', '$modalInstance', 'intf', function($scope, $modalInstance, intf) {
 
     $scope.intf = intf;

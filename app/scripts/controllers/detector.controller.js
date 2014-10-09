@@ -7,6 +7,17 @@
 
   angular.module('onms-requisitions')
 
+  /**
+  * @ngdoc controller
+  * @name DetectorController
+  * @module onms-requisitions
+  *
+  * @requires $scope Angular local scope
+  * @requires $modalInstance Angular modal instance
+  * @requires detector Requisition detector object
+  *
+  * @description The controller for manage requisition detectors
+  */
   .controller('DetectorController', ['$scope', '$modalInstance', 'detector', function($scope, $modalInstance, detector) {
 
     $scope.detector = detector;

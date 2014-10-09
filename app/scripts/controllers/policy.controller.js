@@ -7,6 +7,17 @@
 
   angular.module('onms-requisitions')
 
+  /**
+  * @ngdoc controller
+  * @name PolicyController
+  * @module onms-requisitions
+  *
+  * @requires $scope Angular local scope
+  * @requires $modalInstance Angular modal instance
+  * @requires policy Requisition policy object
+  *
+  * @description The controller for manage requisition policies
+  */
   .controller('PolicyController', ['$scope', '$modalInstance', 'policy', function($scope, $modalInstance, policy) {
 
     $scope.policy = policy;

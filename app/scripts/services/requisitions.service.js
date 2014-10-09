@@ -11,6 +11,7 @@
   /**
   * @ngdoc service
   * @name RequisitionsService
+  * @module onms-requisitions
   *
   * @description The RequisitionsService provides components with access to the OpenNMS requisitions REST resource.
   */
@@ -28,11 +29,11 @@
     /**
     * @description (Internal) Gets the requisitions data from the internal cache
     *
-    * @name RequisitionService:internal.getCachedRequisitionsData
-    * @ngdoc method
-    * @methodOf RequisitionService
-    * @returns {Object} the internal cache
     * @private
+    * @name RequisitionsService:internal.getCachedRequisitionsData
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @returns {object} the internal cache
     */
     requisitionsService.internal.getCachedRequisitionsData = function() {
       return requisitionsService.internal.cache.get('requisitionsData');
@@ -41,11 +42,11 @@
     /**
     * @description (Internal) Saves the requisitions data into internal cache
     *
-    * @name RequisitionService:internal.setCachedRequisitionsData
-    * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {Object} The requisitions data
     * @private
+    * @name RequisitionsService:internal.setCachedRequisitionsData
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {object} requisitionsData The requisitions data
     */
     requisitionsService.internal.setCachedRequisitionsData = function(requisitionsData) {
       requisitionsService.internal.cache.put('requisitionsData', requisitionsData);
@@ -54,9 +55,9 @@
     /**
     * @description Clears the internal cache
     *
-    * @name RequisitionService:internal.clearRequisitionsCache
+    * @name RequisitionsService:internal.clearRequisitionsCache
     * @ngdoc method
-    * @methodOf RequisitionService
+    * @methodOf RequisitionsService
     */
     requisitionsService.clearRequisitionsCache = function() {
       requisitionsService.internal.cache.removeAll();
@@ -66,13 +67,13 @@
     * @description (Internal) Merges an OpenNMS requisition into the requisitionsData object.
     * Assumes the deployed nodes are going to be added first and then the pending nodes.
     *
-    * @name RequisitionService:internal.mergeRequisition
-    * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {Object} The Requisitions Data object.
-    * @param {Object} The OpenNMS Requisition object.
-    * @param {boolean} true, if the requisition has been deployed.
     * @private
+    * @name RequisitionsService:internal.mergeRequisition
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {object} requisitionsData The Requisitions Data object.
+    * @param {object} onmsRequisition The OpenNMS Requisition object.
+    * @param {boolean} deployed true, if the requisition has been deployed.
     */
     requisitionsService.internal.mergeRequisition = function(requisitionsData, onmsRequisition, deployed) {
       var requisition = new Requisition(onmsRequisition, deployed);
@@ -120,12 +121,12 @@
     /**
     * @description (Internal) Merges the deployed and pending requisitions obtained from OpenNMS into a single object.
     *
-    * @name RequisitionService:internal.mergeData
-    * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {Array} The OpenNMS requisitions obtained from the ReST API, [pending, deployed]
-    * @returns {Object} the requisitions data.
     * @private
+    * @name RequisitionsService:internal.mergeData
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {array} results The OpenNMS requisitions obtained from the ReST API, [pending, deployed]
+    * @returns {object} the requisitions data.
     */
     requisitionsService.internal.mergeRequisitions = function(results) {
       var pendingRequisitions  = results[0].data;
@@ -149,12 +150,12 @@
     /**
     * @description (Internal) Gets a specific requisition object from the cache.
     *
-    * @name RequisitionService:internal.getCachedRequisition
-    * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {string} The foreign source
-    * @returns {Object} the requisition object.
     * @private
+    * @name RequisitionsService:internal.getCachedRequisition
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @returns {object} the requisition object.
     */
     requisitionsService.internal.getCachedRequisition = function(foreignSource) {
       var requisitionsData = requisitionsService.internal.getCachedRequisitionsData();
@@ -171,13 +172,13 @@
     /**
     * @description (Internal) Gets a specific node object from the cache.
     *
-    * @name RequisitionService:internal.getCachedNode
-    * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {string} The foreign source
-    * @param {string} The foreign Id
-    * @returns {Object} the node object.
     * @private
+    * @name RequisitionsService:internal.getCachedNode
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @param {string} foreignId The foreign Id
+    * @returns {object} the node object.
     */
     requisitionsService.internal.getCachedNode = function(foreignSource, foreignId) {
       var requisition = requisitionsService.internal.getCachedRequisition(foreignSource);
@@ -194,10 +195,10 @@
     /**
     * @description Requests all the requisitions (pending and deployed) from OpenNMS.
     *
-    * @name RequisitionService:getRequisitions
+    * @name RequisitionsService:getRequisitions
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
     */
     requisitionsService.getRequisitions = function() {
       var deferredResults = $q.defer();
@@ -234,11 +235,11 @@
     /**
     * @description Request a sepcific requisition from OpenNMS.
     *
-    * @name RequisitionService:getRequisition
+    * @name RequisitionsService:getRequisition
     * @ngdoc method
-    * @param {string} The requisition's name (a.k.a. foreignSource)
-    * @methodOf RequisitionService
-    * @returns {*} a handler function.
+    * @param {string} foreignSource The requisition's name (a.k.a. foreignSource)
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
     */
     requisitionsService.getRequisition = function(foreignSource) {
       var deferred = $q.defer();
@@ -270,12 +271,12 @@
     * The controller is responsible for update the status of the requisition object,
     * after a successful synchronization.
     *
-    * @name RequisitionService:synchronizeRequisition
+    * @name RequisitionsService:synchronizeRequisition
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {string} The requisition's name (a.k.a. foreignSource)
-    * @param {boolean} Flag for to scan existing nodes
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @param {boolean} rescanExisting true, to scan existing nodes
+    * @returns {object} a promise.
     */
     requisitionsService.synchronizeRequisition = function(foreignSource, rescanExisting) {
       var deferred = $q.defer();
@@ -313,11 +314,11 @@
     * @description Request the creation of a new requisition on the OpenNMS server.
     * The controller must ensure that the foreignSource is unique.
     *
-    * @name RequisitionService:addRequisition
+    * @name RequisitionsService:addRequisition
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {string} The requisition's name (a.k.a. foreignSource)
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @returns {object} a promise.
     */
     requisitionsService.addRequisition = function(foreignSource) {
       var deferred = $q.defer();
@@ -352,12 +353,12 @@
     * @description Request the deletion of a new requisition on the OpenNMS server.
     * The controller must ensure that the requisition contains no nodes.
     *
-    * @name RequisitionService:deleteRequisition
+    * @name RequisitionsService:deleteRequisition
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {string}  The requisition's name (a.k.a. foreignSource)
-    * @param {boolean} true, if the requisition is deployed
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @param {boolean} deployed true, if the requisition is deployed
+    * @returns {object} a promise.
     */
     requisitionsService.deleteRequisition = function(foreignSource, deployed) {
       var deferred = $q.defer();
@@ -399,11 +400,11 @@
     * The controller is responsible for update the status of the requisition object,
     * after a successful removal.
     *
-    * @name RequisitionService:removeAllNodesFromRequisition
+    * @name RequisitionsService:removeAllNodesFromRequisition
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {string} The requisition's name (a.k.a. foreignSource)
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @returns {object} a promise.
     */
     requisitionsService.removeAllNodesFromRequisition = function(foreignSource) {
       var deferred = $q.defer();
@@ -441,12 +442,12 @@
     /**
     * @description Request a sepcific node from a requisition from OpenNMS.
     *
-    * @name RequisitionService:getNode
+    * @name RequisitionsService:getNode
     * @ngdoc method
-    * @param {string} The requisition's name (a.k.a. foreignSource)
-    * @param {string} The foreignId of the node
-    * @methodOf RequisitionService
-    * @returns {*} a handler function.
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
+    * @param {string} foreignId The foreignId of the node
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
     */
     requisitionsService.getNode = function(foreignSource, foreignId) {
       var deferred = $q.defer();
@@ -480,11 +481,11 @@
     * update of an existing node, or if it is related with the creating of a new node.
     * The controller must ensure that the foreignId is unique within the requisition.
     *
-    * @name RequisitionService:removeAllNodesFromRequisition
+    * @name RequisitionsService:removeAllNodesFromRequisition
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {Object} The RequisitionNode Object
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {object} node The RequisitionNode Object
+    * @returns {object} a promise.
     */
     requisitionsService.saveNode = function(node) {
       var deferred = $q.defer();
@@ -517,11 +518,11 @@
     * The controller is responsible for update the status of the requisition object,
     * after a successful removal.
     *
-    * @name RequisitionService:deleteNode
+    * @name RequisitionsService:deleteNode
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {Object} The RequisitionNode Object
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {object} node The RequisitionNode Object
+    * @returns {object} a promise.
     */
     requisitionsService.deleteNode = function(node) {
       var deferred = $q.defer();
@@ -552,11 +553,11 @@
     /**
     * @description Request a foreign source definition from OpenNMS for a given requisition.
     *
-    * @name RequisitionService:getForeignSourceDefinition
+    * @name RequisitionsService:getForeignSourceDefinition
     * @ngdoc method
-    * @param {string} The requisition's name (a.k.a. foreignSource), use 'default' for the default foreign source.
-    * @methodOf RequisitionService
-    * @returns {*} a handler function.
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source), use 'default' for the default foreign source.
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
     */
     requisitionsService.getForeignSourceDefinition = function(foreignSource) {
       var deferred = $q.defer();
@@ -578,11 +579,11 @@
     * @description Updates the foreign source definition on the OpenNMS server for a given requisition.
     * The foreign source definition contains the set of policies and detectors, as well as the scan frequency.
     *
-    * @name RequisitionService:saveForeignSourceDefinition
+    * @name RequisitionsService:saveForeignSourceDefinition
     * @ngdoc method
-    * @methodOf RequisitionService
-    * @param {Object} The requisition foreign source Object
-    * @returns {*} a handler function.
+    * @methodOf RequisitionsService
+    * @param {object} foreignSourceDef The requisition foreign source Object
+    * @returns {object} a promise.
     */
     requisitionsService.saveForeignSourceDefinition = function(foreignSourceDef) {
       var deferred = $q.defer();

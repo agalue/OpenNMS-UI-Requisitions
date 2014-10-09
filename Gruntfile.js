@@ -338,9 +338,35 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+
+    ngdocs: {
+      options: {
+        dest: 'docs',
+        title: 'OpenNMS UI Requisitions Documentation',
+        startPage: '/models'
+      },
+
+      models: {
+        src: ['**/*.model.js'],
+        title: 'Models'
+      },
+
+      controllers: {
+        src: ['**/*.controller.js'],
+        title: 'Controllers'
+      },
+
+      services: {
+        src: ['**/*.service.js'],
+        title: 'Services'
+      }
     }
+
   });
 
+  // Load the docular plugin.
+  grunt.loadNpmTasks('grunt-ngdocs');
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {

@@ -7,6 +7,17 @@
 
   angular.module('onms-requisitions')
 
+  /**
+  * @ngdoc controller
+  * @name AssetController
+  * @module onms-requisitions
+  *
+  * @requires $scope Angular local scope
+  * @requires $modalInstance Angular modal instance
+  * @requires asset Node asset object
+  *
+  * @description The controller for manage asserts of requisitioned nodes
+  */
   .controller('AssetController', ['$scope', '$modalInstance', 'asset', function($scope, $modalInstance, asset) {
 
     $scope.asset = asset;

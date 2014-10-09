@@ -9,6 +9,20 @@
 
   angular.module('onms-requisitions')
 
+  /**
+  * @ngdoc controller
+  * @name NodeController
+  * @module onms-requisitions
+  *
+  * @requires $scope Angular local scope
+  * @requires $routeParams Angular route params
+  * @requires $window Document window
+  * @requires $modal Angular modal
+  * @requires RequisitionsService The requisitions service
+  * @requires growl The growl plugin for instant notifications
+  *
+  * @description The controller for manage requisitioned nodes
+  */
   .controller('NodeController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;

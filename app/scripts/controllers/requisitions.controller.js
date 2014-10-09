@@ -9,6 +9,19 @@
 
   angular.module('onms-requisitions')
 
+/**
+  * @ngdoc controller
+  * @name RequisitionsController
+  * @module onms-requisitions
+  *
+  * @description The controller for manage all the requisitions
+  *
+  * @requires $scope Angular local scope
+  * @requires $filter Angular requisitions list filter
+  * @requires $window Document window
+  * @requires RequisitionsService The requisitions service
+  * @requires growl The growl plugin for instant notifications
+  */
   .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'growl', function($scope, $filter, $window, RequisitionsService, growl) {
 
     $scope.requisitions = [];

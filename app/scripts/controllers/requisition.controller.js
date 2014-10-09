@@ -9,6 +9,20 @@
 
   angular.module('onms-requisitions')
 
+  /**
+  * @ngdoc controller
+  * @name RequisitionController
+  * @module onms-requisitions
+  *
+  * @description The controller for manage a single requisition
+  *
+  * @requires $scope Angular local scope
+  * @requires $filter Angular requisitions list filter
+  * @requires $window Document window
+  * @requires $routeParams Angular route parameters
+  * @requires RequisitionsService The requisitions service
+  * @requires growl The growl plugin for instant notifications
+  */
   .controller('RequisitionController', ['$scope', '$filter', '$window', '$routeParams', 'RequisitionsService', 'growl', function($scope, $filter, $window, $routeParams, RequisitionsService, growl) {
 
     $scope.foreignSource = $routeParams.foreignSource;
