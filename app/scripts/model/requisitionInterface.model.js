@@ -1,3 +1,5 @@
+/*jshint unused: false, undef:false, sub:true */
+
 /**
 * @ngdoc object
 * @name RequisitionInterface

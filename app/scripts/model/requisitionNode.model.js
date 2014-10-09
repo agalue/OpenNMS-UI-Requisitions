@@ -1,4 +1,5 @@
 /*global RequisitionInterface:true */
+/*jshint unused: false, undef:false, sub:true */
 
 /**
 * @ngdoc object

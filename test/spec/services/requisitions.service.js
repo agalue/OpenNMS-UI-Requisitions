@@ -1,3 +1,6 @@
+/*global RequisitionNode:true, Requisition:true */
+/*jshint sub:true */
+
 'use strict';
 
 describe('Service: RequisitionsService', function () {
@@ -122,7 +125,7 @@ describe('Service: RequisitionsService', function () {
   };
 
   beforeEach(module('onms-requisitions', function($provide) {
-    $provide.value('$log', console);    
+    $provide.value('$log', console);
   }));
 
   beforeEach(inject(function($injector) {
@@ -176,11 +179,11 @@ describe('Service: RequisitionsService', function () {
     requisitionsService.getRequisition('test-network').then(function(r) {
       expect(r).not.toBe(null);
       expect(r.foreignSource).toBe('test-network');
-    })
+    });
     requisitionsService.getNode('test-network', '1001').then(function(n) {
       expect(n).not.toBe(null);
       expect(n.foreignId).toBe('1001');
-    })
+    });
 
   });
 
@@ -240,7 +243,7 @@ describe('Service: RequisitionsService', function () {
 
     var foreignSource = 'blah-blah';
     requisitionsService.synchronizeRequisition(foreignSource).then(function() {
-      throw msg;
+      throw 'This is not expected';
     }, function(msg) {
       expect(msg).toBe('The foreignSource ' + foreignSource + ' does not exist.');
     });
@@ -272,7 +275,7 @@ describe('Service: RequisitionsService', function () {
 
     var foreignSource = 'test-network';
     requisitionsService.addRequisition(foreignSource).then(function() {
-      throw msg;
+      throw 'This is not expected';
     }, function(msg) {
       expect(msg).toBe('Invalid foreignSource ' + foreignSource + ', it already exist.');
     });
@@ -287,7 +290,7 @@ describe('Service: RequisitionsService', function () {
 
     var foreignSource = 'test-network';
     requisitionsService.deleteRequisition(foreignSource).then(function() {
-      throw msg;
+      throw 'This is not expected';
     }, function(msg) {
       expect(msg).toBe('The foreignSource ' + foreignSource + ' contains 2 nodes on the database, it cannot be deleted.');
     });
@@ -302,7 +305,7 @@ describe('Service: RequisitionsService', function () {
 
     var foreignSource = 'blah-blah';
     requisitionsService.deleteRequisition(foreignSource).then(function() {
-      throw msg;
+      throw 'This is not expected';
     }, function(msg) {
       expect(msg).toBe('The foreignSource ' + foreignSource + ' does not exist.');
     });
@@ -322,8 +325,8 @@ describe('Service: RequisitionsService', function () {
     var deleteUrl = requisitionsService.internal.requisitionsUrl + '/' + foreignSource;
     $httpBackend.expect('DELETE', deleteUrl).respond({});
 
-    requisitionsService.deleteRequisition(foreignSource).then(function() {}, function(msg) {
-      throw msg;
+    requisitionsService.deleteRequisition(foreignSource).then(function() {}, function() {
+      throw 'This is not expected';
     });
     $httpBackend.flush();
 

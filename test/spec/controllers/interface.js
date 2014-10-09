@@ -1,3 +1,5 @@
+/*global RequisitionNode:true */
+
 'use strict';
 
 describe('Controller: InterfaceController', function () {
@@ -16,10 +18,10 @@ describe('Controller: InterfaceController', function () {
       $modalInstance: mockModalInstance,
       intf: node.interfaces[0]
     });
-  };
+  }
 
   beforeEach(module('onms-requisitions', function($provide) {
-    $provide.value('$log', console);    
+    $provide.value('$log', console);
   }));
 
   beforeEach(inject(function($rootScope, $controller) {

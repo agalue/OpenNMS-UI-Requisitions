@@ -1,3 +1,5 @@
+/*jshint unused: false, undef:false */
+
 /**
 * @ngdoc object
 * @name RequisitionsData

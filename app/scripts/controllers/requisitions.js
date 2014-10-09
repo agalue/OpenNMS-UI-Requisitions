@@ -169,7 +169,7 @@
     });
 
     // Initializes the requisitions page
-    if ($scope.filteredRequisitions.length == 0) {
+    if ($scope.filteredRequisitions.length === 0) {
       $scope.initialize();
     }
 

@@ -1,3 +1,5 @@
+/*global Requisition:true */
+
 'use strict';
 
 describe('Controller: RequisitionController', function () {
@@ -13,10 +15,10 @@ describe('Controller: RequisitionController', function () {
       RequisitionsService: mockRequisitionsService,
       growl: mockGrowl
     });
-  };
+  }
 
   beforeEach(module('onms-requisitions', function($provide) {
-    $provide.value('$log', console);    
+    $provide.value('$log', console);
   }));
 
   beforeEach(inject(function($rootScope, $controller, _$q_) {

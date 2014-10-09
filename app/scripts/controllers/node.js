@@ -123,7 +123,7 @@
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
-    if ($scope.foreignId == '__new__') {
+    if ($scope.foreignId === '__new__') {
       $scope.node = new RequisitionNode($scope.foreignSource, {});
     } else {
       $scope.refresh();

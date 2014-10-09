@@ -1,3 +1,5 @@
+/*global RequisitionsData:true */
+
 'use strict';
 
 describe('Controller: RequisitionsController', function () {
@@ -12,10 +14,10 @@ describe('Controller: RequisitionsController', function () {
       RequisitionsService: mockRequisitionsService,
       growl: mockGrowl
     });
-  };
+  }
 
   beforeEach(module('onms-requisitions', function($provide) {
-    $provide.value('$log', console);    
+    $provide.value('$log', console);
   }));
 
   beforeEach(inject(function($rootScope, $controller, _$q_) {
@@ -27,7 +29,7 @@ describe('Controller: RequisitionsController', function () {
   beforeEach(function() {
     mockRequisitionsService.getRequisitions = jasmine.createSpy('getRequisitions');
     var requisitionsDefer = $q.defer();
-    requisitionsDefer.resolve(requisitionsData);    
+    requisitionsDefer.resolve(requisitionsData);
     mockRequisitionsService.getRequisitions.andReturn(requisitionsDefer.promise);
 
     mockGrowl = {
