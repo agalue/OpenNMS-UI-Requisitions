@@ -344,7 +344,7 @@ module.exports = function (grunt) {
       options: {
         dest: 'docs',
         title: 'OpenNMS UI Requisitions Documentation',
-        startPage: '/models'
+        startPage: '/services/RequisitionsService'
       },
 
       models: {

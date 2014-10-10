@@ -18,7 +18,19 @@
   * @name RequisitionsService
   * @module onms-requisitions
   *
-  * @description The RequisitionsService provides components with access to the OpenNMS requisitions REST resource.
+  * @requires $q Angular promise/deferred implementation
+  * @requires $cacheFactory Angular cache management
+  * @requires $http Angular service that facilitates communication with the remote HTTP servers
+  * @requires $log Angular log facility
+  *
+  * @description The RequisitionsService provides all the required methods to access ReST API for the OpenNMS requisitions.
+  *
+  * It uses Angular's Cache service to store localy all the requisitions after retrieving them from the server the first time.
+  * This helps in terms of performance and responsiveness of the UI. Only changes are pushed back to the server.
+  *
+  * Conflicts may accour if someone else is changing the requisitions at the same time.
+  *
+  * If the cache is not going to be used, the controllers are responsible for maintaining the state of the data.
   */
   .factory('RequisitionsService', ['$q', '$cacheFactory', '$http', '$log', function($q, $cacheFactory, $http, $log) {
 
@@ -58,7 +70,9 @@
     };
 
     /**
-    * @description Clears the internal cache
+    * @description Clears the internal cache.
+    *
+    * This forces the service to retrieve the data from the server on next request.
     *
     * @name RequisitionsService:internal.clearRequisitionsCache
     * @ngdoc method
@@ -70,7 +84,10 @@
 
     /**
     * @description (Internal) Merges an OpenNMS requisition into the requisitionsData object.
-    * Assumes the deployed nodes are going to be added first and then the pending nodes.
+    *
+    * This method is going to analyze the requisitions data obtained from the server.
+    * It assumes the deployed nodes are added first and then the pending nodes.
+    * The status of the requisition and the nodes depend on the source (deployed, defined).
     *
     * @private
     * @name RequisitionsService:internal.mergeRequisition
@@ -80,6 +97,7 @@
     * @param {object} onmsRequisition The OpenNMS Requisition object.
     * @param {boolean} deployed true, if the requisition has been deployed.
     */
+    // FIXME This method is expensive in terms of enlapsed time and resources used.
     requisitionsService.internal.mergeRequisition = function(requisitionsData, onmsRequisition, deployed) {
       var requisition = new Requisition(onmsRequisition, deployed);
       requisitionsData.status[deployed ? 'deployed' : 'pending']++;
@@ -200,6 +218,13 @@
     /**
     * @description Requests all the requisitions (pending and deployed) from OpenNMS.
     *
+    * After retrieving the pending requisitions and the defined requisitions, the data
+    * is going to be merged to reflect the current state for each requisition and each node.
+    *
+    * After merging the data, the cache is going to be updated.
+    *
+    * If the cache exist, the method is going to use it instead of retrieving the data from the OpenNMS server.
+    *
     * @name RequisitionsService:getRequisitions
     * @ngdoc method
     * @methodOf RequisitionsService
@@ -240,6 +265,8 @@
     /**
     * @description Request a sepcific requisition from OpenNMS.
     *
+    * If the cache exist, the method is going to use it instead of retrieving the data from the OpenNMS server.
+    *
     * @name RequisitionsService:getRequisition
     * @ngdoc method
     * @param {string} foreignSource The requisition's name (a.k.a. foreignSource)
@@ -273,8 +300,10 @@
 
     /**
     * @description Request the synchronization/import of a requisition on the OpenNMS server.
-    * The controller is responsible for update the status of the requisition object,
-    * after a successful synchronization.
+    *
+    * The controller must guarantee that the requisition exist.
+    * If the requisition exist on the internal cache, the operation will be rejected.
+    * The internal cache will be updated after the request is completed successfully if exist.
     *
     * @name RequisitionsService:synchronizeRequisition
     * @ngdoc method
@@ -317,7 +346,10 @@
 
     /**
     * @description Request the creation of a new requisition on the OpenNMS server.
-    * The controller must ensure that the foreignSource is unique.
+    *
+    * The controller must guarantee that the foreignSource is unique (it doesn't exist on the server).
+    * If the requisition exist on the internal cache, the operation will be rejected.
+    * The internal cache will be updated after the request is completed successfully if exist.
     *
     * @name RequisitionsService:addRequisition
     * @ngdoc method
@@ -356,7 +388,11 @@
 
     /**
     * @description Request the deletion of a new requisition on the OpenNMS server.
-    * The controller must ensure that the requisition contains no nodes.
+    *
+    * The controller must guarantee that the requisition contains no nodes.
+    * If the cache is defined and the requisition is not there, the operation will be rejected.
+    * If the requisition exist on the cache and it is not empty, the operation will be rejected.
+    * The internal cache will be updated after the request is completed successfully if exist.
     *
     * @name RequisitionsService:deleteRequisition
     * @ngdoc method
@@ -401,9 +437,10 @@
 
     /**
     * @description Request the removal of all from an existing requisition on the OpenNMS server.
+    *
     * The controller must ensure that the requisition exist.
-    * The controller is responsible for update the status of the requisition object,
-    * after a successful removal.
+    * If the cache is defined and the requisition is not there, the operation will be rejected.
+    * The internal cache will be updated after the request is completed successfully if exist.
     *
     * @name RequisitionsService:removeAllNodesFromRequisition
     * @ngdoc method
@@ -447,6 +484,8 @@
     /**
     * @description Request a sepcific node from a requisition from OpenNMS.
     *
+    * If the cache exist, the method is going to use it instead of retrieving the data from the OpenNMS server.
+    *
     * @name RequisitionsService:getNode
     * @ngdoc method
     * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
@@ -481,10 +520,12 @@
 
     /**
     * @description Updates a node on an existing requisition on the OpenNMS server.
-    * The controler is responsible for update the status of the requisition object,
-    * after a successful operation, depending if the save operation is related with the
-    * update of an existing node, or if it is related with the creating of a new node.
-    * The controller must ensure that the foreignId is unique within the requisition.
+    *
+    * The controller must ensure that the foreignId is unique within the requisition when adding a new node.
+    * 
+    * The internal cache will be updated after the request is completed successfully if exist,
+    * depending if the save operation is related with the update of an existing node, or if it
+    * is related with the creation of a new node.
     *
     * @name RequisitionsService:removeAllNodesFromRequisition
     * @ngdoc method
@@ -519,9 +560,9 @@
 
     /**
     * @description Request the removal of a node from an existing requisition on the OpenNMS server.
-    * The controller must ensure that the requisition exist, and the node is part of the requisition.
-    * The controller is responsible for update the status of the requisition object,
-    * after a successful removal.
+    *
+    * The controller must guarantee that the node exist on the requisition.
+    * The internal cache will be updated after the request is completed successfully if exist.
     *
     * @name RequisitionsService:deleteNode
     * @ngdoc method
@@ -582,6 +623,7 @@
 
     /**
     * @description Updates the foreign source definition on the OpenNMS server for a given requisition.
+    *
     * The foreign source definition contains the set of policies and detectors, as well as the scan frequency.
     *
     * @name RequisitionsService:saveForeignSourceDefinition
