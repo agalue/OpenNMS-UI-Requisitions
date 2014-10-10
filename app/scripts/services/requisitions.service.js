@@ -648,8 +648,450 @@
       return deferred.promise;
     };
 
-    return requisitionsService;
+    /**
+    * @description Gets the available detectors.
+    *
+    * The data return by the promise should be an array of objects.
+    * Each object contains the name of the detector and the full class name.
+    *
+    * @name RequisitionsService:getAvailableDetectors
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors
+    requisitionsService.getAvailableDetectors = function() {
+      var deferred = $q.defer();
+      var data = [
+        { 'name': 'BGP_Session', 'class': 'org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector' },
+        { 'name': 'BSF', 'class': 'org.opennms.netmgt.provision.detector.bsf.BSFDetector' },
+        { 'name': 'CITRIX', 'class': 'org.opennms.netmgt.provision.detector.simple.CitrixDetector' },
+        { 'name': 'Cisco_IP_SLA', 'class': 'org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector' },
+        { 'name': 'DHCP', 'class': 'org.opennms.protocols.dhcp.detector.DhcpDetector' },
+        { 'name': 'DNS', 'class': 'org.opennms.netmgt.provision.detector.datagram.DnsDetector' },
+        { 'name': 'Dell_OpenManageChassis', 'class': 'org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector' },
+        { 'name': 'DiskUsage', 'class': 'org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector' },
+        { 'name': 'DominoIIOP', 'class': 'org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector' },
+        { 'name': 'FTP', 'class': 'org.opennms.netmgt.provision.detector.simple.FtpDetector' },
+        { 'name': 'GP', 'class': 'org.opennms.netmgt.provision.detector.generic.GpDetector' },
+        { 'name': 'HOST-RESOURCES', 'class': 'org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector' },
+        { 'name': 'HTTP', 'class': 'org.opennms.netmgt.provision.detector.simple.HttpDetector' },
+        { 'name': 'HTTPS', 'class': 'org.opennms.netmgt.provision.detector.simple.HttpsDetector' },
+        { 'name': 'ICMP', 'class': 'org.opennms.netmgt.provision.detector.icmp.IcmpDetector' },
+        { 'name': 'IMAP', 'class': 'org.opennms.netmgt.provision.detector.simple.ImapDetector' },
+        { 'name': 'JBoss', 'class': 'org.opennms.netmgt.provision.detector.jmx.JBossDetector' },
+        { 'name': 'JDBC', 'class': 'org.opennms.netmgt.provision.detector.jdbc.JdbcDetector' },
+        { 'name': 'JSR160', 'class': 'org.opennms.netmgt.provision.detector.jmx.Jsr160Detector' },
+        { 'name': 'JdbcQueryDetector', 'class': 'org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector' },
+        { 'name': 'JdbcStoredProcedureDetector', 'class': 'org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector' },
+        { 'name': 'LDAP', 'class': 'org.opennms.netmgt.provision.detector.simple.LdapDetector' },
+        { 'name': 'LDAPS', 'class': 'org.opennms.netmgt.provision.detector.simple.LdapsDetector' },
+        { 'name': 'LOOP', 'class': 'org.opennms.netmgt.provision.detector.loop.LoopDetector' },
+        { 'name': 'MSExchange', 'class': 'org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector' },
+        { 'name': 'MX4J', 'class': 'org.opennms.netmgt.provision.detector.jmx.MX4JDetector' },
+        { 'name': 'Memcached', 'class': 'org.opennms.netmgt.provision.detector.simple.MemcachedDetector' },
+        { 'name': 'NOTES', 'class': 'org.opennms.netmgt.provision.detector.simple.NotesHttpDetector' },
+        { 'name': 'NRPE', 'class': 'org.opennms.netmgt.provision.detector.simple.NrpeDetector' },
+        { 'name': 'NSClient', 'class': 'org.opennms.protocols.nsclient.detector.NsclientDetector' },
+        { 'name': 'NTP', 'class': 'org.opennms.netmgt.provision.detector.datagram.NtpDetector' },
+        { 'name': 'OMSAStorage', 'class': 'org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector' },
+        { 'name': 'PERC', 'class': 'org.opennms.netmgt.provision.detector.snmp.PercDetector' },
+        { 'name': 'POP3', 'class': 'org.opennms.netmgt.provision.detector.simple.Pop3Detector' },
+        { 'name': 'RadiusAuth', 'class': 'org.opennms.protocols.radius.detector.RadiusAuthDetector' },
+        { 'name': 'SMB', 'class': 'org.opennms.netmgt.provision.detector.smb.SmbDetector' },
+        { 'name': 'SMTP', 'class': 'org.opennms.netmgt.provision.detector.simple.SmtpDetector' },
+        { 'name': 'SNMP', 'class': 'org.opennms.netmgt.provision.detector.snmp.SnmpDetector' },
+        { 'name': 'SSH', 'class': 'org.opennms.netmgt.provision.detector.ssh.SshDetector' },
+        { 'name': 'TCP', 'class': 'org.opennms.netmgt.provision.detector.simple.TcpDetector' },
+        { 'name': 'TrivialTime', 'class': 'org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector' },
+        { 'name': 'WEB', 'class': 'org.opennms.netmgt.provision.detector.web.WebDetector' },
+        { 'name': 'WMI', 'class': 'org.opennms.netmgt.provision.detector.wmi.WmiDetector' },
+        { 'name': 'Win32Service', 'class': 'org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector' }
+      ];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
 
+    /**
+    * @description Gets the available policies.
+    *
+    * The data return by the promise should be an array of objects.
+    * Each object contains the name of the policy and the full class name.
+    *
+    * @name RequisitionsService:getAvailablePolicies
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies
+    requisitionsService.getAvailablePolicies = function() {
+      var deferred = $q.defer();
+      var data = [
+        { 'name': 'Match IP Interface', 'class': 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy' },
+        { 'name': 'Match SNMP Interface', 'class': 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy' },
+        { 'name': 'Set Node Category', 'class': 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy' }
+      ];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the available services.
+    *
+    * The data return by the promise should be an array of strings.
+    * Each strings contains the name of the service.
+    *
+    * @example [ 'ICMP', 'SNMP' ]
+    *
+    * @name RequisitionsService:getAvailableServices
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/services
+    requisitionsService.getAvailableServices = function() {
+      var deferred = $q.defer();
+      var data = [
+        'DNS',
+        'Dell-OpenManage',
+        'FTP',
+        'HP Insight Manager',
+        'HTTP',
+        'HTTP-8000',
+        'HTTP-8080',
+        'HTTPS',
+        'HypericAgent',
+        'HypericHQ',
+        'ICMP',
+        'IMAP',
+        'LDAP',
+        'MSExchange',
+        'MySQL',
+        'NRPE',
+        'NRPE-NoSSL',
+        'OpenNMS-JVM',
+        'Oracle',
+        'POP3',
+        'Postgres',
+        'Router',
+        'SMTP',
+        'SNMP',
+        'SQLServer',
+        'SSH',
+        'StrafePing',
+        'Telnet',
+        'Windows-Task-Scheduler',
+      ];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the available assets.
+    *
+    * The data return by the promise should be an array of strings.
+    * Each string is a valid asset field.
+    *
+    * @example [ 'address1, 'city', 'zip' ]
+    *
+    * @name RequisitionsService:getAvailableAssets
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/assets
+    requisitionsService.getAvailableAssets = function() {
+      var deferred = $q.defer();
+      var data = [
+        'additionalhardware',
+        'address1',
+        'address2',
+        'admin',
+        'assetnumber',
+        'autoenable',
+        'building',
+        'category',
+        'circuitid',
+        'city',
+        'comment',
+        'connection',
+        'country',
+        'cpu',
+        'dateinstalled',
+        'department',
+        'description',
+        'displaycategory',
+        'division',
+        'enable',
+        'floor',
+        'hdd1',
+        'hdd2',
+        'hdd3',
+        'hdd4',
+        'hdd5',
+        'hdd6',
+        'inputpower',
+        'lastmodifieddate',
+        'latitude',
+        'lease',
+        'leaseexpires',
+        'longitude',
+        'maintcontract',
+        'maintcontractexpires',
+        'managedobjectinstance',
+        'managedobjecttype',
+        'manufacturer',
+        'modelnumber',
+        'nodeid',
+        'notifycategory',
+        'numpowersupplies',
+        'operatingsystem',
+        'password',
+        'pollercategory',
+        'port',
+        'rack',
+        'rackunitheight',
+        'ram',
+        'region',
+        'room',
+        'serialnumber',
+        'slot',
+        'snmpcommunity',
+        'state',
+        'storagectrl',
+        'supportphone',
+        'thresholdcategory',
+        'userlastmodified',
+        'username',
+        'vendor',
+        'vendorassetnumber',
+        'vendorfax',
+        'vendorphone',
+        'vmwaremanagedentitytype',
+        'vmwaremanagedobjectid',
+        'vmwaremanagementserver',
+        'vmwarestate',
+        'vmwaretopologyinfo',
+        'zip'
+      ];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the available categories.
+    *
+    * The data return by the promise should be an array of strings.
+    * Each string is a valid category name.
+    *
+    * @example [ 'Production, 'Development', 'Testing' ]
+    *
+    * @name RequisitionsService:getAvailableCategories
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/categories
+    requisitionsService.getAvailableCategories = function() {
+      var deferred = $q.defer();
+      var data = [
+        'Development',
+        'Production',
+        'Routers',
+        'Servers',
+        'Switches',
+        'Test'
+      ];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the detector parameters
+    *
+    * @name RequisitionsService:getDetectorParameters
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} detectorClass The full class name of the detector
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors/{class}/params
+    requisitionsService.getDetectorParameters = function(detectorClass) {
+      var deferred = $q.defer();
+      var data = [];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the policy keys
+    *
+    * @name RequisitionsService:getPolicyKeys
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} policyClass The full class name of the policy
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/keys
+    requisitionsService.getPolicyKeys = function(policyClass) {
+      var deferred = $q.defer();
+      var data = [];
+      switch (policyClass) {
+        case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
+          data = [
+            { 'name': 'action', 'type': 'array' },
+            { 'name': 'matchBehavior', 'type': 'array' }
+          ];
+          break;
+        case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
+          data = [
+            { 'name': 'action', 'type': 'array' },
+            { 'name': 'matchBehavior', 'type': 'array' }
+          ];
+          break;
+        case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
+          data = [
+            { 'name': 'category', 'type': 'string' }
+          ];
+          break;
+      }
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /*
+    requisitionsService.getPolicyKeyValues = function(policyClass, policyKey) {
+      switch (policyKey) {
+        case 'action':
+          return requisitionsService.getPolicyActions(policyClass);
+        case 'matchBehavior'
+          return requisitionsService.getPolicyMatchBehaviors(policyClass);
+      }
+      var deferred = $q.defer();
+      deferred.reject('Invalid policy key ' + policyKey);
+      return deferred.promise;
+    }*/
+
+    /**
+    * @description Gets the policy actions
+    *
+    * @name RequisitionsService:getPolicyActions
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} policyClass The full class name of the policy
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/actions
+    requisitionsService.getPolicyActions = function(policyClass) {
+      var deferred = $q.defer();
+      var data = [];
+      switch (policyClass) {
+        case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
+          data = [
+            'DISABLE_COLLECTION',
+            'DISABLE_SNMP_POLL',
+            'DO_NOT_PERSIST',
+            'ENABLE_COLLECTION',
+            'ENABLE_SNMP_POLL',
+            'MANAGE',
+            'UNMANAGE'
+          ];
+          break;
+        case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
+          data = [
+            'DISABLE_COLLECTION',
+            'DISABLE_POLLING',
+            'DO_NOT_PERSIST',
+            'ENABLE_COLLECTION',
+            'ENABLE_POLLING'
+          ];
+          break;
+        case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
+          data = [];
+          break;
+      }
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the policy match behaviors
+    *
+    * @name RequisitionsService:getPolicyMatchBehaviors
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} policyClass The full class name of the policy
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/matchBehaviors
+    requisitionsService.getPolicyMatchBehaviors = function(policyClass) {
+      var deferred = $q.defer();
+      var data = [
+        'ALL_PARAMETERS',
+        'ANY_PARAMETER',
+        'NO_PARAMETER'
+      ];
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    /**
+    * @description Gets the policy parameters
+    *
+    * @name RequisitionsService:getPolicyParameters
+    * @ngdoc method
+    * @methodOf RequisitionsService
+    * @param {string} policyClass The full class name of the policy
+    * @returns {object} a promise.
+    */
+    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/params
+    requisitionsService.getPolicyParameters = function(policyClass) {
+      var deferred = $q.defer();
+      var data = [];
+      switch (policyClass) {
+        case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
+          data = [
+            'hostName',
+            'ipAddress'
+          ];
+          break;
+        case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
+          data = [
+            'ifAdminStatus',
+            'ifAlias',
+            'ifDescr',
+            'ifIndex',
+            'ifName',
+            'ifOperStatus',
+            'ifSpeed',
+            'ifType',
+            'physAddr'
+          ];
+          break;
+        case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
+          data = [
+            'foreignId',
+            'foreignSource',
+            'label',
+            'labelSource',
+            'netBiosDomain',
+            'netBiosName',
+            'operatingSystem',
+            'sysContact',
+            'sysDescription',
+            'sysLocation',
+            'sysName',
+            'sysObjectId',
+            'type'
+          ];
+          break;
+      }
+
+      deferred.resolve(data);
+      return deferred.promise;
+    };
+
+    return requisitionsService;
   }]);
 
 }());
