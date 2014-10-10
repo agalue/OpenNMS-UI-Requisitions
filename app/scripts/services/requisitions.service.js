@@ -1,5 +1,10 @@
 /*global RequisitionsData:true,Requisition:true,RequisitionNode:true */
 
+/**
+* @author Alejandro Galue <agalue@opennms.org>
+* @copyright 2014 The OpenNMS Group, Inc.
+*/
+
 // http://jsfiddle.net/zMjVp/
 
 (function() {

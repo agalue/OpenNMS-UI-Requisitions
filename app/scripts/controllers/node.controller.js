@@ -1,7 +1,9 @@
 /*global RequisitionNode:true */
 
-// Controller for the node page (add/edit the nodes on a specific requisition)
-// Author: Alejandro Galue <agalue@opennms.org>
+/**
+* @author Alejandro Galue <agalue@opennms.org>
+* @copyright 2014 The OpenNMS Group, Inc.
+*/
 
 (function() {
 
@@ -21,27 +23,85 @@
   * @requires RequisitionsService The requisitions service
   * @requires growl The growl plugin for instant notifications
   *
-  * @description The controller for manage requisitioned nodes
+  * @description The controller for manage requisitioned nodes (add/edit the nodes on a specific requisition)
   */
   .controller('NodeController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, growl) {
 
+    /**
+     * @description The foreign source (a.k.a the name of the requisition).
+     * The default value is obtained from the $routeParams.
+     *
+     * @ngdoc property
+     * @name NodeController#foreignSource
+     * @propertyOf NodeController
+     * @returns {string} The foreign source
+     */
     $scope.foreignSource = $routeParams.foreignSource;
+
+    /**
+     * @description The foreign ID
+     * The default value is obtained from the $routeParams.
+     *
+     * @ngdoc property
+     * @name NodeController#foreignId
+     * @propertyOf NodeController
+     * @returns {string} The foreign ID
+     */
     $scope.foreignId = $routeParams.foreignId;
+
+    /**
+     * @description The node object
+     *
+     * @ngdoc property
+     * @name NodeController#node
+     * @propertyOf NodeController
+     * @returns {object} The node object
+     */
     $scope.node = {};
 
+    /**
+    * @description Goes back to requisition editor (navigation)
+    *
+    * @name NodeController:goBack
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.goBack = function() {
       $window.location.href = '#/requisitions/' + $scope.foreignSource;
     };
 
+    /**
+    * @description Goes to requisitions list (navigation)
+    *
+    * @name NodeController:goTop
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.goTop = function() {
       $window.location.href = '#/requisitions';
     };
 
+    /**
+    * @description Shows an error to the user
+    *
+    * @name NodeController:errorHandler
+    * @ngdoc method
+    * @methodOf NodeController
+    * @param {string} message The error message
+    */
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message, {ttl: 10000});
     };
 
-    // Shows the dialog for add/edit an asset field
+    /**
+    * @description Shows the dialog for add/edit an asset field
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    * @param {integer} index The index of the asset to be edited
+    * @param {boolean} isNew true, if the asset is new
+    */
     $scope.editAsset = function(index, isNew) {
       var assetToEdit = $scope.node.assets[index];
 
@@ -63,17 +123,38 @@
       });
     };
 
-    // Removes an asset from the local node
+    /**
+    * @description Removes an asset from the local node
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    * @param {integer} index The index of the asset to be removed
+    */
     $scope.removeAsset = function(index) {
       $scope.node.assets.splice(index, 1);
     };
 
-    // Adds an asset to the local node
+    /**
+    * @description Adds a new asset to the local node
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.addAsset = function() {
       $scope.editAsset($scope.node.addNewAsset(), true);
     };
 
-    // Shows the dialog for add/edit an interface
+    /**
+    * @description Shows a modal dialog for add/edit an interface
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    * @param {integer} index The index of the interface to be edited
+    * @param {boolean} isNew true, if the interface is new
+    */
     $scope.editInterface = function(index, isNew) {
       var intfToEdit = $scope.node.interfaces[index];
 
@@ -95,27 +176,59 @@
       });
     };
 
-    // Removes an interface from the local node
+    /**
+    * @description Removes an interface from the local node
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    * @param {integer} index The index of the interface to be removed
+    */
     $scope.removeInterface = function(index) {
       $scope.node.interfaces.splice(index, 1);
     };
 
-    // Adds an interface to the local node
+    /**
+    * @description Adds a new interface to the local node
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.addInterface = function() {
       $scope.editInterface($scope.node.addNewInterface(), true);
     };
 
-    // Removes a category from the local node
+    /**
+    * @description Removes a category from the local node
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    * @param {integer} index The index of the category to be removed
+    */
     $scope.removeCategory = function(index) {
       $scope.node.categories.splice(index, 1);
     };
 
-    // Adds a category from the local node
+    /**
+    * @description Adds a new category to the local node
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.addCategory = function() {
       $scope.node.addNewCategory();
     };
 
-    // Saves the local node on the server
+    /**
+    * @description Saves the local node on the server
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.save = function() {
       RequisitionsService.saveNode($scope.node).then(
         function() { // success
@@ -125,7 +238,13 @@
       );
     };
 
-    // Refresh the local node from the server
+    /**
+    * @description Refresh the local node from the server
+    *
+    * @name NodeController:save
+    * @ngdoc method
+    * @methodOf NodeController
+    */
     $scope.refresh = function() {
       growl.addInfoMessage('Retrieving node ' + $scope.foreignId + ' from requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getNode($scope.foreignSource, $scope.foreignId).then(

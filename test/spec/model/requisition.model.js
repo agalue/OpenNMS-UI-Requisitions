@@ -1,3 +1,8 @@
+/**
+* @author Alejandro Galue <agalue@opennms.org>
+* @copyright 2014 The OpenNMS Group, Inc.
+*/
+
 'use strict';
 
 describe('Model: Requisitions', function () {

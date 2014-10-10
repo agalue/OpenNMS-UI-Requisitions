@@ -2,6 +2,11 @@
 /*jshint unused: false, undef:false, sub:true */
 
 /**
+* @author Alejandro Galue <agalue@opennms.org>
+* @copyright 2014 The OpenNMS Group, Inc.
+*/
+
+/**
 * @ngdoc object
 * @name RequisitionNode
 * @module onms-requisitions

@@ -1,7 +1,9 @@
 /* global bootbox:true */
 
-// Controller for the requisitions page (list/add/remove/synchronize requisitions)
-// Author: Alejandro Galue <agalue@opennms.org>
+/**
+* @author Alejandro Galue <agalue@opennms.org>
+* @copyright 2014 The OpenNMS Group, Inc.
+*/
 
 (function() {
 
@@ -9,12 +11,12 @@
 
   angular.module('onms-requisitions')
 
-/**
+  /**
   * @ngdoc controller
   * @name RequisitionsController
   * @module onms-requisitions
   *
-  * @description The controller for manage all the requisitions
+  * @description The controller for manage all the requisitions (list/add/remove/synchronize)
   *
   * @requires $scope Angular local scope
   * @requires $filter Angular requisitions list filter
@@ -24,18 +26,71 @@
   */
   .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'growl', function($scope, $filter, $window, RequisitionsService, growl) {
 
+    /**
+     * @description The requisitions list
+     * @ngdoc property
+     * @name RequisitionsController#requisitions
+     * @propertyOf RequisitionsController
+     * @returns {array} The requisitions array
+     */
     $scope.requisitions = [];
+
+    /**
+     * @description The filtered version of the requisitions list
+     * @ngdoc property
+     * @name RequisitionsController#filteredRequisitions
+     * @propertyOf RequisitionsController
+     * @returns {array} The filtered array
+     */
     $scope.filteredRequisitions = [];
+ 
+     /**
+     * @description The amount of items per page for pagination (defaults to 10)
+     * @ngdoc property
+     * @name RequisitionsController#pageSize
+     * @propertyOf RequisitionsController
+     * @returns {integer} The page size
+     */
     $scope.pageSize = 10;
+ 
+     /**
+     * @description The maximum size of pages for pagination (defaults to 5)
+     * @ngdoc property
+     * @name RequisitionControllers#maxSize
+     * @propertyOf RequisitionsController
+     * @returns {integer} The maximum size
+     */
     $scope.maxSize = 5;
+ 
+     /**
+     * @description The total amount of items for pagination (defaults to 0)
+     * @ngdoc property
+     * @name RequisitionControllers#maxSize
+     * @propertyOf RequisitionsController
+     * @returns {integer} The total items
+     */
     $scope.totalItems = 0;
 
-    // Common error handling
+    /**
+    * @description Shows an error to the user
+    *
+    * @name RequisitionsController:errorHandler
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} message The error message
+    */
     $scope.errorHandler = function(message) {
       growl.addErrorMessage(message, {ttl: 10000});
     };
 
-    // Return the index of a requisition
+    /**
+    * @description Returns the index of a requisition
+    *
+    * @name RequisitionsController:indexOfRequisition
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.indexOfRequisition = function(foreignSource) {
       for(var i = 0; i < $scope.requisitions.length; i++) {
         if ($scope.requisitions[i].foreignSource === foreignSource) {
@@ -45,12 +100,27 @@
       return -1;
     };
 
-    // Clones the detectors and policies of a specific requisition
+    /**
+    * @description Clones the detectors and policies of a specific requisition
+    *
+    * @name RequisitionsController:clone
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.clone = function(foreignSource) {
       growl.addWarnMessage('Cannot clone foreign source definitions for ' + foreignSource + '. Not implemented yet.'); // FIXME
     };
 
-    // Adds a new requisition on the server
+    /**
+    * @description Adds a new requisition on the server.
+    *
+    * A dialog box will be displayed to request the name of the requisition to the user.
+    *
+    * @name RequisitionsController:add
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    */
     $scope.add = function() {
       bootbox.prompt('Please enter the name for the new requisition', function(foreignSource) {
         if (foreignSource) {
@@ -64,27 +134,40 @@
       });
     };
 
-    // Edits the default foreign source definition
-    $scope.editDefaultForeignSource = function() {
-      $window.location.href = '#/requisitions/default/foreignSource';
-    };
-
-    // Resets the default set of detectors and policies
-    $scope.resetDefaultForeignSource = function() {
-      growl.addWarnMessage('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
-    };
-
-    // Edits the foreign source definition of an existing requisition
+    /**
+    * @description Edits the foreign source definition of an existing requisition
+    *
+    * @name RequisitionsController:editForeignSource
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.editForeignSource = function(foreignSource) {
       $window.location.href = '#/requisitions/' + foreignSource + '/foreignSource';
     };
 
-    // Edits an existing requisition
+    /**
+    * @description Goes to the edit page of an existing requisition (navigation)
+    *
+    * @name RequisitionsController:edit
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.edit = function(foreignSource) {
       $window.location.href = '#/requisitions/' + foreignSource;
     };
 
-    // Requests the synchronization/import of a requisition on the server
+    /**
+    * @description Requests the synchronization/import of a requisition on the server
+    *
+    * A dialog box is displayed to request to the user if the scan phase should be triggered or not.
+    *
+    * @name RequisitionsController:synchronize
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.synchronize = function(foreignSource) {
       var doSynchronize = function(foreignSource, rescanExisting) {
         RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
@@ -120,7 +203,14 @@
       });
     };
 
-    // Removes all the nodes form the requisition on the server
+    /**
+    * @description Removes all the nodes form the requisition on the server
+    *
+    * @name RequisitionsController:removeAllNodes
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.removeAllNodes = function(foreignSource) {
       bootbox.confirm('Are you sure you want to remove all the nodes from ' + foreignSource + '?', function(ok) {
         if (ok) {
@@ -134,7 +224,14 @@
       });
     };
 
-    // Remove a requisition on the server
+    /**
+    * @description Removes a requisition on the server
+    *
+    * @name RequisitionsController:delete
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    * @param {string} foreignSource The name of the requisition
+    */
     $scope.delete = function(foreignSource) {
       bootbox.confirm('Are you sure you want to remove the requisition ' + foreignSource + '?', function(ok) {
         if (ok) {
@@ -150,7 +247,35 @@
       });
     };
 
-    // Refresh the local requisitions list from the server
+    /**
+    * @description Edits the default foreign source definition (navigation)
+    *
+    * @name RequisitionsController:editDefaultForeignSource
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    */
+    $scope.editDefaultForeignSource = function() {
+      $window.location.href = '#/requisitions/default/foreignSource';
+    };
+
+    /**
+    * @description Resets the default set of detectors and policies
+    *
+    * @name RequisitionsController:resetDefaultForeignSource
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    */
+    $scope.resetDefaultForeignSource = function() {
+      growl.addWarnMessage('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
+    };
+
+    /**
+    * @description Refreshes the local requisitions list from the server
+    *
+    * @name RequisitionsController:refresh
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    */
     $scope.refresh = function() {
       growl.addInfoMessage('Refreshing requisitions...');
       RequisitionsService.clearRequisitionsCache();
@@ -158,7 +283,13 @@
       $scope.initialize();
     };
 
-    // Initialize the local requisitions list
+    /**
+    * @description Initializes the local requisitions list from the server
+    *
+    * @name RequisitionsController:initialize
+    * @ngdoc method
+    * @methodOf RequisitionsController
+    */
     $scope.initialize = function() {
       RequisitionsService.getRequisitions().then(
         function(data) { // success
@@ -173,7 +304,13 @@
       );
     };
 
-    // Watch for filter changes in order to update the nodes list and updates the pagination control
+    /**
+    * @description Watch for filter changes in order to update the requisitions list and updates the pagination control
+    *
+    * @name RequisitionsController:regFilter
+    * @ngdoc event
+    * @methodOf RequisitionsController
+    */
     $scope.$watch('reqFilter', function() {
       $scope.currentPage = 1;
       $scope.filteredRequisitions = $filter('filter')($scope.requisitions, $scope.reqFilter);

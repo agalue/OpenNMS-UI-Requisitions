@@ -1,5 +1,7 @@
-// Controller for the modal dialog for add/edit asset fields
-// Author: Alejandro Galue <agalue@opennms.org>
+/**
+* @author Alejandro Galue <agalue@opennms.org>
+* @copyright 2014 The OpenNMS Group, Inc.
+*/
 
 (function() {
 
@@ -16,11 +18,27 @@
   * @requires $modalInstance Angular modal instance
   * @requires asset Node asset object
   *
-  * @description The controller for manage asserts of requisitioned nodes
+  * @description The controller for manage the modal dialog for add/edit asserts of requisitioned nodes
   */
   .controller('AssetController', ['$scope', '$modalInstance', 'asset', function($scope, $modalInstance, asset) {
 
+    /**
+     * @description The asset object
+     *
+     * @ngdoc property
+     * @name AssetController#asset
+     * @propertyOf AssetController
+     * @returns {object} The asset object
+     */
     $scope.asset = asset;
+
+    /**
+    * @description The available asset fields
+    * @ngdoc property
+    * @name AssetController#$scope.assetFields
+    * @propertyOf AssetController
+    * @returns {array} List of valid asset fields
+    */
     $scope.assetFields = [
       'additionalhardware',
       'address1',
@@ -94,10 +112,24 @@
       'zip'
     ];
 
+    /**
+    * @description Saves the current asset
+    *
+    * @name AssetController:save
+    * @ngdoc method
+    * @methodOf AssetController
+    */
     $scope.save = function () {
       $modalInstance.close($scope.asset);
     };
 
+    /**
+    * @description Cancels current operation
+    *
+    * @name AssetController:cancel
+    * @ngdoc method
+    * @methodOf AssetController
+    */
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };
