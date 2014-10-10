@@ -924,53 +924,37 @@
     };
 
     /**
-    * @description Gets the policy keys
+    * @description Gets the policy data (mandatory and optional parameters, and their possible values)
     *
-    * @name RequisitionsService:getPolicyKeys
+    * @name RequisitionsService:getPolicyData
     * @ngdoc method
     * @methodOf RequisitionsService
     * @param {string} policyClass The full class name of the policy
     * @returns {object} a promise.
     */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/keys
-    requisitionsService.getPolicyKeys = function(policyClass) {
-      var deferred = $q.defer();
-      var data = [];
-      switch (policyClass) {
-        case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
-          data = [
-            { 'name': 'action', 'type': 'array' },
-            { 'name': 'matchBehavior', 'type': 'array' }
-          ];
-          break;
-        case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
-          data = [
-            { 'name': 'action', 'type': 'array' },
-            { 'name': 'matchBehavior', 'type': 'array' }
-          ];
-          break;
-        case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
-          data = [
-            { 'name': 'category', 'type': 'string' }
-          ];
-          break;
-      }
-      deferred.resolve(data);
-      return deferred.promise;
-    };
+    requisitionsService.getPolicyData = function(policyClass) {
+      var deferredResults    = $q.defer();
+      var deferredActions    = requisitionsService.getPolicyActions(policyClass);
+      var deferredBehaviors  = requisitionsService.getPolicyMatchBehaviors(policyClass);
+      var deferredParameters = requisitionsService.getPolicyParameters(policyClass);
 
-    /*
-    requisitionsService.getPolicyKeyValues = function(policyClass, policyKey) {
-      switch (policyKey) {
-        case 'action':
-          return requisitionsService.getPolicyActions(policyClass);
-        case 'matchBehavior'
-          return requisitionsService.getPolicyMatchBehaviors(policyClass);
-      }
-      var deferred = $q.defer();
-      deferred.reject('Invalid policy key ' + policyKey);
-      return deferred.promise;
-    }*/
+      var data = {};
+      $log.debug('getPolicyData: getting policy data for ' + policyClass);
+      $q.all([
+        deferredActions.then(function(actions) { data.actions = actions }),
+        deferredBehaviors.then(function(matchBehaviors) { data.matchBehaviors = matchBehaviors }),
+        deferredParameters.then(function(parameters) { data.parameters = parameters })
+      ]).then(function() {
+        console.log(data);
+        deferredResults.resolve(data);
+      }, function(message) {
+        var msg = 'Cannot obtain policy data. ' + message;
+        $log.error('getPolicyKeys: ' + msg);
+        deferredResults.reject(msg);
+      });
+
+      return deferredResults.promise;
+    };
 
     /**
     * @description Gets the policy actions
@@ -1038,6 +1022,8 @@
     /**
     * @description Gets the policy parameters
     *
+    * There are two kind of parameters: required and optionals.
+    *
     * @name RequisitionsService:getPolicyParameters
     * @ngdoc method
     * @methodOf RequisitionsService
@@ -1051,42 +1037,47 @@
       switch (policyClass) {
         case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
           data = [
-            'hostName',
-            'ipAddress'
+            { name: 'action', optional: false },
+            { name: 'matchBehavior', optional: false },
+            { name: 'hostName', optional: true },
+            { name: 'ipAddress', optional: true }
           ];
           break;
         case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
           data = [
-            'ifAdminStatus',
-            'ifAlias',
-            'ifDescr',
-            'ifIndex',
-            'ifName',
-            'ifOperStatus',
-            'ifSpeed',
-            'ifType',
-            'physAddr'
+            { name: 'action', optional: false },
+            { name: 'matchBehavior', optional: false },
+            { name: 'ifAdminStatus', optional: true },
+            { name: 'ifAlias', optional: true },
+            { name: 'ifDescr', optional: true },
+            { name: 'ifIndex', optional: true },
+            { name: 'ifName', optional: true },
+            { name: 'ifOperStatus', optional: true },
+            { name: 'ifSpeed', optional: true },
+            { name: 'ifType', optional: true },
+            { name: 'physAddr', optional: true }
           ];
           break;
         case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
           data = [
-            'foreignId',
-            'foreignSource',
-            'label',
-            'labelSource',
-            'netBiosDomain',
-            'netBiosName',
-            'operatingSystem',
-            'sysContact',
-            'sysDescription',
-            'sysLocation',
-            'sysName',
-            'sysObjectId',
-            'type'
+            { name: 'category', optional: false },
+            { name: 'matchBehavior', optional: false },
+            { name: 'foreignId', optional: true },
+            { name: 'foreignSource', optional: true },
+            { name: 'label', optional: true },
+            { name: 'labelSource', optional: true },
+            { name: 'netBiosDomain', optional: true },
+            { name: 'netBiosName', optional: true },
+            { name: 'operatingSystem', optional: true },
+            { name: 'sysContact', optional: true },
+            { name: 'sysDescription', optional: true },
+            { name: 'sysLocation', optional: true },
+            { name: 'sysName', optional: true },
+            { name: 'sysObjectId', optional: true },
+            { name: 'type', optional: true }
           ];
           break;
       }
-
       deferred.resolve(data);
       return deferred.promise;
     };
