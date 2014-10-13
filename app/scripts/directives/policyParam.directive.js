@@ -19,7 +19,7 @@
   *
   * @description Policy Parameter
   */
-  .directive('policyParam', function($compile, RequisitionsService) {
+  .directive('policyParam', ['$compile', function($compile) {
 
     /**
      * @description The HTML Template for required properties with a pre-defined set of values.
@@ -54,10 +54,8 @@
      * @propertyOf policyParam
      * @returns {string} The HTML template
      */
-    // FIXME the binding for removeParameters is not working.
     var defaultTemplate = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters | filter:$viewValue"></select>'
       + '<input required type="text" class="form-control" placeholder="Parameter Value" ng-model="parameter.value"></input>'
-      //+ '<span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeParameter(index)"></span>';
       + '<a class="btn btn-default btn-xs" ng-click="removeParameter(index)"><span class="glyphicon glyphicon-remove"></span></a>';
 
     /**
@@ -92,7 +90,7 @@
               }
             }
             if (!paramCfg.required) {
-                scope.optionalParameters.push(paramCfg.key);
+              scope.optionalParameters.push(paramCfg.key);
             }
           }
         }
@@ -113,25 +111,24 @@
     * @param {object} attrs The external attributes of the directive.
     */
     var linker = function(scope, element, attrs) {
-      console.log("Linking the policy parameter '" + scope.parameter.key + "' through a directive");
       element.html(getTemplate(scope)).show();
       $compile(element.contents())(scope);
       scope.removeParameter = function(index) {
         scope.$parent.removeParameter(index);
-      }
+      };
     };
 
     // Directive Bindings
 
     return {
-        restrict: 'E',
-        link: linker,
-        scope: {
-          parameter: '=',
-          index: '@'
-        }
+      restrict: 'E',
+      link: linker,
+      scope: {
+        parameter: '=',
+        index: '@'
+      }
     };
 
-  });
+  }]);
 
 }());

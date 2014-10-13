@@ -110,7 +110,7 @@
           });
         }
       });
-    }
+    };
 
     // Initialize
     RequisitionsService.getAvailablePolicies().then(function(policies) {

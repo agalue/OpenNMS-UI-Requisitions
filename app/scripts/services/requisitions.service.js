@@ -753,10 +753,10 @@
               ]
             }, {
               'key': 'hostName',
-              'required': false 
+              'required': false
             }, {
               'key': 'ipAddress',
-              'required': false 
+              'required': false
             }
           ]
         }, {
@@ -862,7 +862,7 @@
               'key': 'sysObjectId',
               'required': false
             }, {
-              'key': 'type', 
+              'key': 'type',
               'required': false
             }
           ]

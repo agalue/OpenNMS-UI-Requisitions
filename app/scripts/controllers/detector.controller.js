@@ -106,7 +106,7 @@
         }
       }
       $scope.detector.class = null;
-    }
+    };
 
     /**
     * @description Sets the detector name for a given detector class if exist only if the name is not set.
@@ -124,7 +124,7 @@
           $scope.detector.name = detector.name;
         }
       }
-    }
+    };
 
     // Initialize
     RequisitionsService.getAvailableDetectors().then(function(detectors) {
