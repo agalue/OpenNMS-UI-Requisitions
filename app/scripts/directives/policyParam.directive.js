@@ -56,8 +56,9 @@
      */
     // FIXME the binding for removeParameters is not working.
     var defaultTemplate = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters | filter:$viewValue"></select>'
-      + '<input required class="form-control" placeholder="Parameter Value" ng-model="parameter.value"></input>'
-      + '<span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeParameter(index)"></span>';
+      + '<input required type="text" class="form-control" placeholder="Parameter Value" ng-model="parameter.value"></input>'
+      //+ '<span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeParameter(index)"></span>';
+      + '<a class="btn btn-default btn-xs" ng-click="removeParameter(index)"><span class="glyphicon glyphicon-remove"></span></a>';
 
     /**
     * @description Analyzes the local scope of the directive to select the proper HTML template and populate the parameter options.

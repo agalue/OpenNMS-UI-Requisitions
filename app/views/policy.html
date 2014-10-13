@@ -11,13 +11,9 @@
       <input class="form-control" id="name" name="name" placeholder="Name" ng-model="policy.name" required></input>
     </div>
     <div class="form-group">
-      <label class="control-label" for="class">Class</label>
-      <input class="form-control" id="class" name="class" placeholder="Implementation Class" ng-model="policy.class" typeahead-editable="false" typeahead-on-select="updatePolicyParameters($item)" typeahead="policy.class as policy.name for policy in availablePolicies | filter:$viewValue" required></input>
+      <label class="control-label" for="clazz">Class</label>
+      <input class="form-control" id="clazz" name="clazz" placeholder="Implementation Class" ng-model="policy.class" typeahead-editable="false" typeahead-on-select="updatePolicyParameters($item)" typeahead="policy.class as policy.name for policy in availablePolicies | filter:$viewValue" required></input>
     </div>
-    <label>Parameters</label>
-    <a class="btn btn-default btn-xs" tooltip="Add a new parameter" ng-click="addParameter()">
-      <span class="glyphicon glyphicon-plus"></span>
-    </a>
     <div class="form-group" ng-repeat="parameter in policy.parameter">
       <policy-param parameter="parameter" index="{{$index}}"></policy-param>
     </div>
@@ -25,6 +21,7 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="save()" ng-disabled="policyForm.$invalid">Save</button>
+  <button class="btn btn-primary" ng-click="addParameter()" ng-disabled="policyForm.clazz.$invalid">Add Parameter</button>
+  <button class="btn btn-success" ng-click="save()" ng-disabled="policyForm.$invalid">Save</button>
   <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </div>

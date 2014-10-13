@@ -8,20 +8,16 @@
   <form name="detectorForm">
     <div class="form-group">
       <label class="control-label" for="name">Name</label>
-      <input class="form-control" id="name" name="name" placeholder="Detector Name" ng-model="detector.name" typeahead-editable="true" typeahead-on-select="setClassForName($item)" typeahead="detector.name for detector in availableDetectors | filter:$viewValue | limitTo:8" class="form-control" required>
+      <input class="form-control" id="name" name="name" placeholder="Detector Name" ng-model="detector.name" typeahead-editable="true" typeahead-on-select="setClassForName($item)" typeahead="detector.name for detector in availableDetectors | filter:$viewValue " class="form-control" required></input>
     </div>
     <div class="form-group">
-      <label class="control-label" for="class">Class</label>
-      <input class="form-control" id="class" name="class" placeholder="Implementation Class" ng-model="detector.class" typeahead-editable="false" typeahead-on-select="setNameForClass($item)" typeahead="detector.class as detector.name for detector in availableDetectors | filter:$viewValue" class="form-control" required>
+      <label class="control-label" for="clazz">Class</label>
+      <input class="form-control" id="clazz" name="clazz" placeholder="Implementation Class" ng-model="detector.class" typeahead-editable="false" typeahead-on-select="setNameForClass($item)" typeahead="detector.class as detector.name for detector in availableDetectors | filter:$viewValue" class="form-control" required></input>
     </div>
-    <label>Parameters</label>
-    <a class="btn btn-default btn-xs" tooltip="Add a new parameter" ng-click="addParameter()">
-      <span class="glyphicon glyphicon-plus"></span>
-    </a>
     <div class="form-group" ng-repeat="parameter in detector.parameter">
       <div class="input-group">
-        <input class="form-control" placeholder="Parameter Name" ng-model="parameter.key" required>
-        <input class="form-control" placeholder="Parameter Value" ng-model="parameter.value" required>
+        <input class="form-control" placeholder="Parameter Name" ng-model="parameter.key" required></input>
+        <input class="form-control" placeholder="Parameter Value" ng-model="parameter.value" required></input>
         <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeParameter($index)"/>
       </div>
     </div>
@@ -29,6 +25,7 @@
 </div>
 
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="save()" ng-disabled="detectorForm.$invalid">Save</button>
+  <button class="btn btn-primary" ng-click="addParameter()" ng-disabled="detectorForm.clazz.$invalid">Add Parameter</button>
+  <button class="btn btn-success" ng-click="save()" ng-disabled="detectorForm.$invalid">Save</button>
   <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </div>
