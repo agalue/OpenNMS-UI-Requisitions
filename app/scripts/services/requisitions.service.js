@@ -661,7 +661,6 @@
     */
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors
     requisitionsService.getAvailableDetectors = function() {
-      var deferred = $q.defer();
       var data = [
         { 'name': 'BGP_Session', 'class': 'org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector' },
         { 'name': 'BSF', 'class': 'org.opennms.netmgt.provision.detector.bsf.BSFDetector' },
@@ -708,6 +707,8 @@
         { 'name': 'WMI', 'class': 'org.opennms.netmgt.provision.detector.wmi.WmiDetector' },
         { 'name': 'Win32Service', 'class': 'org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector' }
       ];
+
+      var deferred = $q.defer();
       deferred.resolve(data);
       return deferred.promise;
     };
@@ -725,12 +726,150 @@
     */
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies
     requisitionsService.getAvailablePolicies = function() {
-      var deferred = $q.defer();
       var data = [
-        { 'name': 'Match IP Interface', 'class': 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy' },
-        { 'name': 'Match SNMP Interface', 'class': 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy' },
-        { 'name': 'Set Node Category', 'class': 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy' }
+        {
+          'name': 'Match IP Interface',
+          'class': 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy',
+          'parameters': [
+            {
+              'key': 'action',
+              'required': true,
+              'options': [
+                'DISABLE_COLLECTION',
+                'DISABLE_SNMP_POLL',
+                'DO_NOT_PERSIST',
+                'ENABLE_COLLECTION',
+                'ENABLE_SNMP_POLL',
+                'MANAGE',
+                'UNMANAGE'
+              ]
+            }, {
+              'key': 'matchBehavior',
+              'required': true,
+              'options': [
+                'ALL_PARAMETERS',
+                'ANY_PARAMETER',
+                'NO_PARAMETER'
+              ]
+            }, {
+              'key': 'hostName',
+              'required': false 
+            }, {
+              'key': 'ipAddress',
+              'required': false 
+            }
+          ]
+        }, {
+          'name': 'Match SNMP Interface',
+          'class': 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy',
+          'parameters': [
+            {
+              'key': 'action',
+              'required': true,
+              'options': [
+                'DISABLE_COLLECTION',
+                'DISABLE_POLLING',
+                'DO_NOT_PERSIST',
+                'ENABLE_COLLECTION',
+                'ENABLE_POLLING'
+              ],
+            },{
+              'key': 'matchBehavior',
+              'required': true,
+              'options': [
+                'ALL_PARAMETERS',
+                'ANY_PARAMETER',
+                'NO_PARAMETER'
+              ]
+            }, {
+              'key': 'ifAdminStatus',
+              'required': false
+            }, {
+              'key': 'ifAlias',
+              'required': false
+            }, {
+              'key': 'ifDescr',
+              'required': false
+            }, {
+              'key': 'ifIndex',
+              'required': false
+            }, {
+              'key': 'ifName',
+              'required': false
+            }, {
+              'key': 'ifOperStatus',
+              'required': false
+            }, {
+              'key': 'ifSpeed',
+              'required': false
+            }, {
+              'key': 'ifType',
+              'required': false
+            }, {
+              'key': 'physAddr',
+              'required': false
+            }
+          ]
+        }, {
+          'name': 'Set Node Category',
+          'class': 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy',
+          'parameters': [
+            {
+              'key': 'matchBehavior',
+              'required': true,
+              'options': [
+                'ALL_PARAMETERS',
+                'ANY_PARAMETER',
+                'NO_PARAMETER'
+              ]
+            }, {
+              'key': 'category',
+              'required': true
+            }, {
+              'key': 'foreignId',
+              'required': false
+            }, {
+              'key': 'foreignSource',
+              'required': false
+            }, {
+              'key': 'label',
+              'required': false
+            }, {
+              'key': 'labelSource',
+              'required': false
+            }, {
+              'key': 'netBiosDomain',
+              'required': false
+            }, {
+              'key': 'netBiosName',
+              'required': false
+            }, {
+              'key': 'operatingSystem',
+              'required': false
+            }, {
+              'key': 'sysContact',
+              'required': false
+            }, {
+              'key': 'sysDescription',
+              'required': false
+            }, {
+              'key': 'sysLocation',
+              'required': false
+            }, {
+              'key': 'sysName',
+              'required': false
+            }, {
+              'key': 'sysObjectId',
+              'required': false
+            }, {
+              'key': 'type', 
+              'required': false
+            }
+          ]
+        }
       ];
+
+      var deferred = $q.defer();
       deferred.resolve(data);
       return deferred.promise;
     };
@@ -902,182 +1041,6 @@
         'Switches',
         'Test'
       ];
-      deferred.resolve(data);
-      return deferred.promise;
-    };
-
-    /**
-    * @description Gets the detector parameters
-    *
-    * @name RequisitionsService:getDetectorParameters
-    * @ngdoc method
-    * @methodOf RequisitionsService
-    * @param {string} detectorClass The full class name of the detector
-    * @returns {object} a promise.
-    */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors/{class}/params
-    requisitionsService.getDetectorParameters = function(detectorClass) {
-      var deferred = $q.defer();
-      var data = [];
-      deferred.resolve(data);
-      return deferred.promise;
-    };
-
-    /**
-    * @description Gets the policy data (mandatory and optional parameters, and their possible values)
-    *
-    * @name RequisitionsService:getPolicyData
-    * @ngdoc method
-    * @methodOf RequisitionsService
-    * @param {string} policyClass The full class name of the policy
-    * @returns {object} a promise.
-    */
-    requisitionsService.getPolicyData = function(policyClass) {
-      var deferredResults    = $q.defer();
-      var deferredActions    = requisitionsService.getPolicyActions(policyClass);
-      var deferredBehaviors  = requisitionsService.getPolicyMatchBehaviors(policyClass);
-      var deferredParameters = requisitionsService.getPolicyParameters(policyClass);
-
-      var data = {};
-      $log.debug('getPolicyData: getting policy data for ' + policyClass);
-      $q.all([
-        deferredActions.then(function(actions) { data.actions = actions }),
-        deferredBehaviors.then(function(matchBehaviors) { data.matchBehaviors = matchBehaviors }),
-        deferredParameters.then(function(parameters) { data.parameters = parameters })
-      ]).then(function() {
-        console.log(data);
-        deferredResults.resolve(data);
-      }, function(message) {
-        var msg = 'Cannot obtain policy data. ' + message;
-        $log.error('getPolicyKeys: ' + msg);
-        deferredResults.reject(msg);
-      });
-
-      return deferredResults.promise;
-    };
-
-    /**
-    * @description Gets the policy actions
-    *
-    * @name RequisitionsService:getPolicyActions
-    * @ngdoc method
-    * @methodOf RequisitionsService
-    * @param {string} policyClass The full class name of the policy
-    * @returns {object} a promise.
-    */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/actions
-    requisitionsService.getPolicyActions = function(policyClass) {
-      var deferred = $q.defer();
-      var data = [];
-      switch (policyClass) {
-        case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
-          data = [
-            'DISABLE_COLLECTION',
-            'DISABLE_SNMP_POLL',
-            'DO_NOT_PERSIST',
-            'ENABLE_COLLECTION',
-            'ENABLE_SNMP_POLL',
-            'MANAGE',
-            'UNMANAGE'
-          ];
-          break;
-        case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
-          data = [
-            'DISABLE_COLLECTION',
-            'DISABLE_POLLING',
-            'DO_NOT_PERSIST',
-            'ENABLE_COLLECTION',
-            'ENABLE_POLLING'
-          ];
-          break;
-        case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
-          data = [];
-          break;
-      }
-      deferred.resolve(data);
-      return deferred.promise;
-    };
-
-    /**
-    * @description Gets the policy match behaviors
-    *
-    * @name RequisitionsService:getPolicyMatchBehaviors
-    * @ngdoc method
-    * @methodOf RequisitionsService
-    * @param {string} policyClass The full class name of the policy
-    * @returns {object} a promise.
-    */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/matchBehaviors
-    requisitionsService.getPolicyMatchBehaviors = function(policyClass) {
-      var deferred = $q.defer();
-      var data = [
-        'ALL_PARAMETERS',
-        'ANY_PARAMETER',
-        'NO_PARAMETER'
-      ];
-      deferred.resolve(data);
-      return deferred.promise;
-    };
-
-    /**
-    * @description Gets the policy parameters
-    *
-    * There are two kind of parameters: required and optionals.
-    *
-    * @name RequisitionsService:getPolicyParameters
-    * @ngdoc method
-    * @methodOf RequisitionsService
-    * @param {string} policyClass The full class name of the policy
-    * @returns {object} a promise.
-    */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies/{class}/params
-    requisitionsService.getPolicyParameters = function(policyClass) {
-      var deferred = $q.defer();
-      var data = [];
-      switch (policyClass) {
-        case 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy':
-          data = [
-            { name: 'action', optional: false },
-            { name: 'matchBehavior', optional: false },
-            { name: 'hostName', optional: true },
-            { name: 'ipAddress', optional: true }
-          ];
-          break;
-        case 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy':
-          data = [
-            { name: 'action', optional: false },
-            { name: 'matchBehavior', optional: false },
-            { name: 'ifAdminStatus', optional: true },
-            { name: 'ifAlias', optional: true },
-            { name: 'ifDescr', optional: true },
-            { name: 'ifIndex', optional: true },
-            { name: 'ifName', optional: true },
-            { name: 'ifOperStatus', optional: true },
-            { name: 'ifSpeed', optional: true },
-            { name: 'ifType', optional: true },
-            { name: 'physAddr', optional: true }
-          ];
-          break;
-        case 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy':
-          data = [
-            { name: 'category', optional: false },
-            { name: 'matchBehavior', optional: false },
-            { name: 'foreignId', optional: true },
-            { name: 'foreignSource', optional: true },
-            { name: 'label', optional: true },
-            { name: 'labelSource', optional: true },
-            { name: 'netBiosDomain', optional: true },
-            { name: 'netBiosName', optional: true },
-            { name: 'operatingSystem', optional: true },
-            { name: 'sysContact', optional: true },
-            { name: 'sysDescription', optional: true },
-            { name: 'sysLocation', optional: true },
-            { name: 'sysName', optional: true },
-            { name: 'sysObjectId', optional: true },
-            { name: 'type', optional: true }
-          ];
-          break;
-      }
       deferred.resolve(data);
       return deferred.promise;
     };

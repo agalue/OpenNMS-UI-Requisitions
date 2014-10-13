@@ -16,11 +16,12 @@
   *
   * @requires $scope Angular local scope
   * @requires $modalInstance Angular modal instance
+  * @requires RequisitionsService The Requisitions Servive
   * @requires policy Requisition policy object
   *
   * @description The controller for manage the modal dialog for add/edit requisition policies
   */
-  .controller('PolicyController', ['$scope', '$modalInstance', 'policy', function($scope, $modalInstance, policy) {
+  .controller('PolicyController', ['$scope', '$modalInstance', 'RequisitionsService', 'policy', function($scope, $modalInstance, RequisitionsService, policy) {
 
     /**
      * @description The policy object
@@ -31,6 +32,16 @@
      * @returns {object} The policy object
      */
     $scope.policy = policy;
+
+    /**
+     * @description The available policy object
+     *
+     * @ngdoc property
+     * @name PolicyController#availablePolicies
+     * @propertyOf PolicyController
+     * @returns {array} The policy list
+     */
+    $scope.availablePolicies = [];
 
     /**
     * @description Saves the current policy
@@ -76,6 +87,35 @@
     $scope.removeParameter = function(index) {
       $scope.policy.parameter.splice(index, 1);
     };
+
+    /**
+    * @description Update policy parameters after changing the policy class.
+    *
+    * @name PolicyController:updatePolicyParameters
+    * @ngdoc method
+    * @methodOf PolicyController
+    * @param {object} policyConfig the configuration of the selected policy
+    */
+    $scope.updatePolicyParameters = function(policyConfig) {
+      if (policyConfig == null) {
+        return;
+      }
+      $scope.policy.parameter = [];
+      angular.forEach($scope.availablePolicies, function(policy) {
+        if (policy.class == policyConfig.class) {
+          angular.forEach(policyConfig.parameters, function(param) {
+            if (param.required) {
+              $scope.policy.parameter.push({ 'key': param.key, 'value': null });
+            }
+          });
+        }
+      });
+    }
+
+    // Initialize
+    RequisitionsService.getAvailablePolicies().then(function(policies) {
+      $scope.availablePolicies = policies;
+    });
 
   }]);
 

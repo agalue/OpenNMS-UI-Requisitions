@@ -26,9 +26,9 @@ module.exports = function(config) {
       'app/bower_components/angular-growl/build/angular-growl.js',
 
       'app/scripts/*.js',
-//    'app/scripts/**/*.js',
       'app/scripts/model/*.js',
       'app/scripts/filters/*.js',
+      'app/scripts/directives/*.js',
       'app/scripts/services/*.js',
       'app/scripts/controllers/*.js',
       'test/spec/**/*.js'
