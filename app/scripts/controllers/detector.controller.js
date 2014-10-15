@@ -136,6 +136,13 @@
     // Initialize
     RequisitionsService.getAvailableDetectors().then(function(detectors) {
       $scope.availableDetectors = detectors;
+      if ($scope.detector.class != null) {
+        angular.forEach(detectors, function(detector) {
+          if (detector.class == $scope.detector.class) {
+            $scope.availableParameters = detector.parameters;
+          }
+        });
+      }
     });
 
   }]);
