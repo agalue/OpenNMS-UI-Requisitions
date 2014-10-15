@@ -59,6 +59,8 @@
      */
     $scope.node = {};
 
+    $scope.availableCategories = [];
+
     /**
     * @description Goes back to requisition editor (navigation)
     *
@@ -220,6 +222,9 @@
     */
     $scope.addCategory = function() {
       $scope.node.addNewCategory();
+      RequisitionsService.getAvailableCategories().then(function(categories) {
+        $scope.availableCategories = categories;
+      });
     };
 
     /**
@@ -256,6 +261,7 @@
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
+
     if ($scope.foreignId === '__new__') {
       $scope.node = new RequisitionNode($scope.foreignSource, {});
     } else {

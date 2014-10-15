@@ -164,8 +164,10 @@
         <br/>
         <div class="form-group">
           <div class="input-group" ng-repeat="category in node.categories">
-            <input type="text" class="form-control" placeholder="Category Name" ng-model="category.name" required/>
-            <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeCategory($index)"/>
+            <input required type="text" class="form-control" placeholder="Category Name" ng-model="category.name" typeahead-editable="true" typeahead="category for category in availableCategories | filter:$viewValue | limitTo:8"></input>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-click="removeCategory($index)"><span class="glyphicon glyphicon-remove"></span></button>
+            </span>
           </div>
         </div>
       </tab>
