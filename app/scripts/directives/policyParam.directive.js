@@ -19,7 +19,7 @@
   *
   * @description Policy Parameter
   */
-  .directive('policyParam', ['$compile', function($compile) {
+  .directive('policyParam', ['$compile', 'RequisitionsService', function($compile, RequisitionsService) {
 
     /**
      * @description The HTML Template for required properties with a pre-defined set of values.
@@ -31,7 +31,7 @@
      * @returns {string} The HTML template
      */
     var optionsTemplate = '<label class="control-label">{{ parameter.key }}</label>'
-      + '<select required class="form-control" placeholder="Select an option for {{ parameter.key }}" ng-model="parameter.value" ng-options="param for param in parameterOptions | filter:$viewValue"></select>';
+      + '<select required class="form-control" placeholder="Select an option for {{ parameter.key }}" ng-model="parameter.value" ng-options="param for param in parameterOptions"></select>';
 
     /**
      * @description The HTML Template for required string properties.
@@ -42,7 +42,7 @@
      * @propertyOf policyParam
      * @returns {string} The HTML template
      */
-    var stringTemplate = '<label class="control-label">{{ parameter.key }}</label><input required class="form-control" placeholder="Value" ng-model="parameter.value" class="form-control"></input>';
+    var stringTemplate = '<label class="control-label">{{ parameter.key }}</label><input required class="form-control" placeholder="Value" ng-model="parameter.value"></input>';
 
     /**
      * @description The HTML Template for string parameter with remove button.
@@ -80,7 +80,7 @@
      * @propertyOf policyParam
      * @returns {string} The HTML template
      */
-    var defaultTemplateEditable = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters | filter:$viewValue"></select>' + defaultCommon;
+    var defaultTemplateEditable = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters"></select>' + defaultCommon;
 
     /**
     * @description Analyzes the local scope of the directive to select the proper HTML template and populate the parameter options.
@@ -93,16 +93,15 @@
     * @returns {string} The HTML template
     */
     var getTemplate = function(scope) {
-      var policy = scope.$parent.policy;
-      var policies = scope.$parent.availablePolicies;
+      var selectedPolicyClass = scope.$parent.policy.class;
 
       scope.parameterOptions = [];
       scope.optionalParameters = [];
 
-      for (var i=0; i<policies.length; i++) {
-        if (policies[i]['class'] == policy.class) {
-          for (var j=0; j<policies[i].parameters.length; j++) {
-            var paramCfg = policies[i].parameters[j];
+      for (var i=0; i<scope.availablePolicies.length; i++) {
+        if (scope.availablePolicies[i].class == selectedPolicyClass) {
+          for (var j=0; j<scope.availablePolicies[i].parameters.length; j++) {
+            var paramCfg = scope.availablePolicies[i].parameters[j];
             if (paramCfg.key == scope.parameter.key) { // Checking current parameter
               if (paramCfg.required) {
                 if (paramCfg.options) {
@@ -135,11 +134,14 @@
     * @param {object} attrs The external attributes of the directive.
     */
     var linker = function(scope, element, attrs) {
-      element.html(getTemplate(scope)).show();
-      $compile(element.contents())(scope);
-      scope.removeParameter = function(index) {
-        scope.$parent.removeParameter(index);
-      };
+      RequisitionsService.getAvailablePolicies().then(function(policies) {
+        scope.availablePolicies = policies;
+        element.html(getTemplate(scope)).show();
+        $compile(element.contents())(scope);
+        scope.removeParameter = function(index) {
+          scope.$parent.removeParameter(index);
+        };
+      });
     };
 
     // Directive Bindings
@@ -147,6 +149,7 @@
     return {
       restrict: 'E',
       link: linker,
+      replace: true,
       scope: {
         parameter: '=',
         index: '@'

@@ -664,11 +664,20 @@
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors
     requisitionsService.getAvailableDetectors = function() {
       var deferred = $q.defer();
+
+      var config = requisitionsService.internal.cache.get('detectorsConfig');
+      if (config != null) {
+        $log.debug('getAvailableDetectors: returning a cached copy of detectors configuration');
+        deferred.resolve(config);
+        return deferred.promise;
+      }
+
       var url = 'scripts/data/detectors.js'; // Using local data
       $log.debug('getAvailableDetectors: getting available detectors');
       $http.get(url)
       .success(function(data) {
         $log.debug('getAvailableDetectors: got available detectors');
+        requisitionsService.internal.cache.put('detectorsConfig', data);
         deferred.resolve(data);
       })
       .error(function(error, status) {
@@ -692,11 +701,20 @@
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies
     requisitionsService.getAvailablePolicies = function() {
       var deferred = $q.defer();
+
+      var config = requisitionsService.internal.cache.get('policiesConfig');
+      if (config) {
+        $log.debug('getAvailablePolicies: returning a cached copy of policies configuration');
+        deferred.resolve(config);
+        return deferred.promise;
+      }
+
       var url = 'scripts/data/policies.js'; // Using local data
       $log.debug('getAvailablePolicies: getting available policies');
       $http.get(url)
       .success(function(data) {
         $log.debug('getAvailablePolicies: got available policies');
+        requisitionsService.internal.cache.put('policiesConfig', data);
         deferred.resolve(data);
       })
       .error(function(error, status) {
