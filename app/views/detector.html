@@ -5,20 +5,23 @@
 </div>
 
 <div class="modal-body">
-  <form name="detectorForm">
+  <form name="detectorForm" role="form">
     <div class="form-group">
       <label class="control-label" for="name">Name</label>
-      <input class="form-control" id="name" name="name" placeholder="Detector Name" ng-model="detector.name" typeahead-editable="true" typeahead-on-select="setClassForName($item)" typeahead="detector.name for detector in availableDetectors | filter:$viewValue " class="form-control" required></input>
+      <input required class="form-control" id="name" name="name" placeholder="Detector Name" ng-model="detector.name" typeahead-editable="true" typeahead-on-select="setClassForName($item)" typeahead="detector.name as detector.name for detector in availableDetectors | filter:$viewValue | limitTo:8"></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="clazz">Class</label>
-      <input class="form-control" id="clazz" name="clazz" placeholder="Implementation Class" ng-model="detector.class" typeahead-editable="false" typeahead-on-select="setNameForClass($item)" typeahead="detector.class as detector.name for detector in availableDetectors | filter:$viewValue" class="form-control" required></input>
+      <input required class="form-control" id="clazz" name="clazz" placeholder="Implementation Class" ng-model="detector.class" typeahead-editable="false" typeahead-on-select="setNameForClass($item)" typeahead="detector.class as detector.name for detector in availableDetectors | filter:$viewValue | limitTo:8"></input>
     </div>
     <div class="form-group" ng-repeat="parameter in detector.parameter">
+      <select ng-if="!parameter.key" class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param.key as param.key for param in availableParameters"></select>
+      <label ng-if="parameter.key" class="control-label">{{parameter.key}}</label>
       <div class="input-group">
-        <input class="form-control" placeholder="Parameter Name" ng-model="parameter.key" required></input>
-        <input class="form-control" placeholder="Parameter Value" ng-model="parameter.value" required></input>
-        <span class="input-group-addon glyphicon glyphicon-remove" ng-click="removeParameter($index)"/>
+        <input required type="text" class="form-control" placeholder="Parameter Value" ng-model="parameter.value"></input>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="removeParameter($index)"><span class="glyphicon glyphicon-remove"></span></button>
+        </span>
       </div>
     </div>
   </form>

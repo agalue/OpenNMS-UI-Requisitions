@@ -605,6 +605,7 @@
     * @methodOf RequisitionsService
     * @returns {object} a promise.
     */
+    // FIXME This should retrieve the default set of detectors and policies in order to normalize the data and return the Angular version of the ForeignSource (like Requisitions)
     requisitionsService.getForeignSourceDefinition = function(foreignSource) {
       var deferred = $q.defer();
       var url = requisitionsService.internal.foreignSourcesUrl + '/' + foreignSource;
@@ -632,6 +633,7 @@
     * @param {object} foreignSourceDef The requisition foreign source Object
     * @returns {object} a promise.
     */
+    // FIXME This should generate the OpenNMS version of the foreignSource definition based on the model.
     requisitionsService.saveForeignSourceDefinition = function(foreignSourceDef) {
       var deferred = $q.defer();
       var foreignSource = foreignSourceDef['foreign-source'];
@@ -661,55 +663,18 @@
     */
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors
     requisitionsService.getAvailableDetectors = function() {
-      var data = [
-        { 'name': 'BGP_Session', 'class': 'org.opennms.netmgt.provision.detector.snmp.BgpSessionDetector' },
-        { 'name': 'BSF', 'class': 'org.opennms.netmgt.provision.detector.bsf.BSFDetector' },
-        { 'name': 'CITRIX', 'class': 'org.opennms.netmgt.provision.detector.simple.CitrixDetector' },
-        { 'name': 'Cisco_IP_SLA', 'class': 'org.opennms.netmgt.provision.detector.snmp.CiscoIpSlaDetector' },
-        { 'name': 'DHCP', 'class': 'org.opennms.protocols.dhcp.detector.DhcpDetector' },
-        { 'name': 'DNS', 'class': 'org.opennms.netmgt.provision.detector.datagram.DnsDetector' },
-        { 'name': 'Dell_OpenManageChassis', 'class': 'org.opennms.netmgt.provision.detector.snmp.OpenManageChassisDetector' },
-        { 'name': 'DiskUsage', 'class': 'org.opennms.netmgt.provision.detector.snmp.DiskUsageDetector' },
-        { 'name': 'DominoIIOP', 'class': 'org.opennms.netmgt.provision.detector.simple.DominoIIOPDetector' },
-        { 'name': 'FTP', 'class': 'org.opennms.netmgt.provision.detector.simple.FtpDetector' },
-        { 'name': 'GP', 'class': 'org.opennms.netmgt.provision.detector.generic.GpDetector' },
-        { 'name': 'HOST-RESOURCES', 'class': 'org.opennms.netmgt.provision.detector.snmp.HostResourceSWRunDetector' },
-        { 'name': 'HTTP', 'class': 'org.opennms.netmgt.provision.detector.simple.HttpDetector' },
-        { 'name': 'HTTPS', 'class': 'org.opennms.netmgt.provision.detector.simple.HttpsDetector' },
-        { 'name': 'ICMP', 'class': 'org.opennms.netmgt.provision.detector.icmp.IcmpDetector' },
-        { 'name': 'IMAP', 'class': 'org.opennms.netmgt.provision.detector.simple.ImapDetector' },
-        { 'name': 'JBoss', 'class': 'org.opennms.netmgt.provision.detector.jmx.JBossDetector' },
-        { 'name': 'JDBC', 'class': 'org.opennms.netmgt.provision.detector.jdbc.JdbcDetector' },
-        { 'name': 'JSR160', 'class': 'org.opennms.netmgt.provision.detector.jmx.Jsr160Detector' },
-        { 'name': 'JdbcQueryDetector', 'class': 'org.opennms.netmgt.provision.detector.jdbc.JdbcQueryDetector' },
-        { 'name': 'JdbcStoredProcedureDetector', 'class': 'org.opennms.netmgt.provision.detector.jdbc.JdbcStoredProcedureDetector' },
-        { 'name': 'LDAP', 'class': 'org.opennms.netmgt.provision.detector.simple.LdapDetector' },
-        { 'name': 'LDAPS', 'class': 'org.opennms.netmgt.provision.detector.simple.LdapsDetector' },
-        { 'name': 'LOOP', 'class': 'org.opennms.netmgt.provision.detector.loop.LoopDetector' },
-        { 'name': 'MSExchange', 'class': 'org.opennms.netmgt.provision.detector.msexchange.MSExchangeDetector' },
-        { 'name': 'MX4J', 'class': 'org.opennms.netmgt.provision.detector.jmx.MX4JDetector' },
-        { 'name': 'Memcached', 'class': 'org.opennms.netmgt.provision.detector.simple.MemcachedDetector' },
-        { 'name': 'NOTES', 'class': 'org.opennms.netmgt.provision.detector.simple.NotesHttpDetector' },
-        { 'name': 'NRPE', 'class': 'org.opennms.netmgt.provision.detector.simple.NrpeDetector' },
-        { 'name': 'NSClient', 'class': 'org.opennms.protocols.nsclient.detector.NsclientDetector' },
-        { 'name': 'NTP', 'class': 'org.opennms.netmgt.provision.detector.datagram.NtpDetector' },
-        { 'name': 'OMSAStorage', 'class': 'org.opennms.netmgt.provision.detector.snmp.OmsaStorageDetector' },
-        { 'name': 'PERC', 'class': 'org.opennms.netmgt.provision.detector.snmp.PercDetector' },
-        { 'name': 'POP3', 'class': 'org.opennms.netmgt.provision.detector.simple.Pop3Detector' },
-        { 'name': 'RadiusAuth', 'class': 'org.opennms.protocols.radius.detector.RadiusAuthDetector' },
-        { 'name': 'SMB', 'class': 'org.opennms.netmgt.provision.detector.smb.SmbDetector' },
-        { 'name': 'SMTP', 'class': 'org.opennms.netmgt.provision.detector.simple.SmtpDetector' },
-        { 'name': 'SNMP', 'class': 'org.opennms.netmgt.provision.detector.snmp.SnmpDetector' },
-        { 'name': 'SSH', 'class': 'org.opennms.netmgt.provision.detector.ssh.SshDetector' },
-        { 'name': 'TCP', 'class': 'org.opennms.netmgt.provision.detector.simple.TcpDetector' },
-        { 'name': 'TrivialTime', 'class': 'org.opennms.netmgt.provision.detector.simple.TrivialTimeDetector' },
-        { 'name': 'WEB', 'class': 'org.opennms.netmgt.provision.detector.web.WebDetector' },
-        { 'name': 'WMI', 'class': 'org.opennms.netmgt.provision.detector.wmi.WmiDetector' },
-        { 'name': 'Win32Service', 'class': 'org.opennms.netmgt.provision.detector.snmp.Win32ServiceDetector' }
-      ];
-
       var deferred = $q.defer();
-      deferred.resolve(data);
+      var url = 'scripts/data/detectors.js'; // Using local data
+      $log.debug('getAvailableDetectors: getting available detectors');
+      $http.get(url)
+      .success(function(data) {
+        $log.debug('getAvailableDetectors: got available detectors');
+        deferred.resolve(data);
+      })
+      .error(function(error, status) {
+        $log.error('getAvailableDetectors: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve available detectors. HTTP ' + status + ' ' + error);
+      });
       return deferred.promise;
     };
 
@@ -726,151 +691,18 @@
     */
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies
     requisitionsService.getAvailablePolicies = function() {
-      var data = [
-        {
-          'name': 'Match IP Interface',
-          'class': 'org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy',
-          'parameters': [
-            {
-              'key': 'action',
-              'required': true,
-              'options': [
-                'DISABLE_COLLECTION',
-                'DISABLE_SNMP_POLL',
-                'DO_NOT_PERSIST',
-                'ENABLE_COLLECTION',
-                'ENABLE_SNMP_POLL',
-                'MANAGE',
-                'UNMANAGE'
-              ]
-            }, {
-              'key': 'matchBehavior',
-              'required': true,
-              'options': [
-                'ALL_PARAMETERS',
-                'ANY_PARAMETER',
-                'NO_PARAMETER'
-              ]
-            }, {
-              'key': 'hostName',
-              'required': false
-            }, {
-              'key': 'ipAddress',
-              'required': false
-            }
-          ]
-        }, {
-          'name': 'Match SNMP Interface',
-          'class': 'org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy',
-          'parameters': [
-            {
-              'key': 'action',
-              'required': true,
-              'options': [
-                'DISABLE_COLLECTION',
-                'DISABLE_POLLING',
-                'DO_NOT_PERSIST',
-                'ENABLE_COLLECTION',
-                'ENABLE_POLLING'
-              ],
-            },{
-              'key': 'matchBehavior',
-              'required': true,
-              'options': [
-                'ALL_PARAMETERS',
-                'ANY_PARAMETER',
-                'NO_PARAMETER'
-              ]
-            }, {
-              'key': 'ifAdminStatus',
-              'required': false
-            }, {
-              'key': 'ifAlias',
-              'required': false
-            }, {
-              'key': 'ifDescr',
-              'required': false
-            }, {
-              'key': 'ifIndex',
-              'required': false
-            }, {
-              'key': 'ifName',
-              'required': false
-            }, {
-              'key': 'ifOperStatus',
-              'required': false
-            }, {
-              'key': 'ifSpeed',
-              'required': false
-            }, {
-              'key': 'ifType',
-              'required': false
-            }, {
-              'key': 'physAddr',
-              'required': false
-            }
-          ]
-        }, {
-          'name': 'Set Node Category',
-          'class': 'org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy',
-          'parameters': [
-            {
-              'key': 'matchBehavior',
-              'required': true,
-              'options': [
-                'ALL_PARAMETERS',
-                'ANY_PARAMETER',
-                'NO_PARAMETER'
-              ]
-            }, {
-              'key': 'category',
-              'required': true
-            }, {
-              'key': 'foreignId',
-              'required': false
-            }, {
-              'key': 'foreignSource',
-              'required': false
-            }, {
-              'key': 'label',
-              'required': false
-            }, {
-              'key': 'labelSource',
-              'required': false
-            }, {
-              'key': 'netBiosDomain',
-              'required': false
-            }, {
-              'key': 'netBiosName',
-              'required': false
-            }, {
-              'key': 'operatingSystem',
-              'required': false
-            }, {
-              'key': 'sysContact',
-              'required': false
-            }, {
-              'key': 'sysDescription',
-              'required': false
-            }, {
-              'key': 'sysLocation',
-              'required': false
-            }, {
-              'key': 'sysName',
-              'required': false
-            }, {
-              'key': 'sysObjectId',
-              'required': false
-            }, {
-              'key': 'type',
-              'required': false
-            }
-          ]
-        }
-      ];
-
       var deferred = $q.defer();
-      deferred.resolve(data);
+      var url = 'scripts/data/policies.js'; // Using local data
+      $log.debug('getAvailablePolicies: getting available policies');
+      $http.get(url)
+      .success(function(data) {
+        $log.debug('getAvailablePolicies: got available policies');
+        deferred.resolve(data);
+      })
+      .error(function(error, status) {
+        $log.error('getAvailablePolicies: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve available policies. HTTP ' + status + ' ' + error);
+      });
       return deferred.promise;
     };
 

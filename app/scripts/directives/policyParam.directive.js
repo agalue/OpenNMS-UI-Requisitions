@@ -38,25 +38,49 @@
      *
      * @private
      * @ngdoc property
-     * @name policyParam#optionsTemplate
+     * @name policyParam#stringTemplate
      * @propertyOf policyParam
      * @returns {string} The HTML template
      */
-    var stringTemplate = '<label class="control-label">{{ parameter.key }}</label>'
-      + '<input required class="form-control" placeholder="Value" ng-model="parameter.value" class="form-control"></input>';
+    var stringTemplate = '<label class="control-label">{{ parameter.key }}</label><input required class="form-control" placeholder="Value" ng-model="parameter.value" class="form-control"></input>';
 
     /**
-     * @description The HTML Template for optional string properties.
+     * @description The HTML Template for string parameter with remove button.
      *
      * @private
      * @ngdoc property
-     * @name policyParam#optionsTemplate
+     * @name policyParam#defaultCommon
      * @propertyOf policyParam
      * @returns {string} The HTML template
      */
-    var defaultTemplate = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters | filter:$viewValue"></select>'
+    var defaultCommon = '<div class="input-group">'
       + '<input required type="text" class="form-control" placeholder="Parameter Value" ng-model="parameter.value"></input>'
-      + '<a class="btn btn-default btn-xs" ng-click="removeParameter(index)"><span class="glyphicon glyphicon-remove"></span></a>';
+      + '<span class="input-group-btn">'
+      + '<button class="btn btn-default" type="button" ng-click="removeParameter(index)"><span class="glyphicon glyphicon-remove"></span></button>'
+      + '</span>'
+      + '</div>';
+
+    /**
+     * @description The HTML Template for existing optional properties.
+     *
+     * @private
+     * @ngdoc property
+     * @name policyParam#defaultTemplateFixed
+     * @propertyOf policyParam
+     * @returns {string} The HTML template
+     */
+    var defaultTemplateFixed = '<label class="control-label">{{ parameter.key }}</label>' + defaultCommon;
+
+    /**
+     * @description The HTML Template for new optional properties.
+     *
+     * @private
+     * @ngdoc property
+     * @name policyParam#defaultTemplateEditable
+     * @propertyOf policyParam
+     * @returns {string} The HTML template
+     */
+    var defaultTemplateEditable = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters | filter:$viewValue"></select>' + defaultCommon;
 
     /**
     * @description Analyzes the local scope of the directive to select the proper HTML template and populate the parameter options.
@@ -96,7 +120,7 @@
         }
       }
 
-      return defaultTemplate;
+      return scope.parameter.key ? defaultTemplateFixed : defaultTemplateEditable;
     };
 
     /**

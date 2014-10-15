@@ -90,7 +90,6 @@
     */
     $scope.editPolicy = function(index, isNew) {
       var policyToEdit = $scope.foreignSourceDef.policies[index];
-
       $modal.open({
         backdrop: true,
         controller: 'PolicyController',
@@ -142,7 +141,6 @@
     */
     $scope.editDetector = function(index, isNew) {
       var detectorToEdit = $scope.foreignSourceDef.detectors[index];
-
       $modal.open({
         backdrop: true,
         controller: 'DetectorController',

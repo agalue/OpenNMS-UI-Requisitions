@@ -44,6 +44,16 @@
     $scope.availableDetectors = [];
 
     /**
+     * @description The available parameters/attributes for the selected detector
+     *
+     * @ngdoc property
+     * @name DetectorController#availableParameters
+     * @propertyOf DetectorController
+     * @returns {array} The parameters list
+     */
+    $scope.availableParameters = [];
+
+    /**
     * @description Saves the current detector
     *
     * @name DetectorController:save
@@ -51,6 +61,7 @@
     * @methodOf DetectorController
     */
     $scope.save = function () {
+      console.log($scope.detector);
       $modalInstance.close($scope.detector);
     };
 
@@ -89,8 +100,10 @@
     };
 
     /**
-    * @description Sets the detector class for a given detector name if exist;
-    * otherwise, set the class to be null.
+    * @description Sets the detector class after choosing an implementation if it is different than the existing one.
+    * Otherwise, leaves the detector class unchanged.
+    *
+    * The parameters list of the current detector is reinitialized after changing the class.
     *
     * @name DetectorController:setClassForName
     * @ngdoc method
@@ -98,19 +111,16 @@
     * @param {object} selectedDetector the detector to be used as a reference
     */
     $scope.setClassForName = function(selectedDetector) {
-      for (var i=0; i < $scope.availableDetectors.length; i++) {
-        var detector = $scope.availableDetectors[i];
-        if (detector.name == selectedDetector.name) {
-          $scope.detector.class = detector.class;
-          return;
-        }
+      if (selectedDetector && $scope.detector.class != selectedDetector.class) {
+        $scope.detector.class = selectedDetector.class;
+        $scope.detector.parameter = [];
+        $scope.availableParameters = selectedDetector.parameters;
       }
-      $scope.detector.class = null;
     };
 
     /**
-    * @description Sets the detector name for a given detector class if exist only if the name is not set.
-    * otherwise, leavs the detector name unchanged.
+    * @description Sets the detector name after choosing an implementation if it has not been set.
+    * Otherwise, leaves the detector name unchanged.
     *
     * @name DetectorController:setNameForClass
     * @ngdoc method
@@ -118,11 +128,8 @@
     * @param {object} selectedDetector the detector to be used as a reference
     */
     $scope.setNameForClass = function(selectedDetector) {
-      for (var i=0; i < $scope.availableDetectors.length; i++) {
-        var detector = $scope.availableDetectors[i];
-        if (detector.class == selectedDetector.class && !$scope.detector.name) {
-          $scope.detector.name = detector.name;
-        }
+      if (selectedDetector && !$scope.detector.name) {
+        $scope.detector.name = selectedDetector.name;
       }
     };
 
