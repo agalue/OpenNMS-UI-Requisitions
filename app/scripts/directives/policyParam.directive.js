@@ -17,7 +17,10 @@
   * @name policyParam
   * @module onms-requisitions
   *
-  * @description Policy Parameter
+  * @requires $compile Angular compile utility
+  * @requires RequisitionsService The Requisitions Servive
+  *
+  * @description Policy Parameter Directive. It must be used inside the scope of the PolicyController, and requires the index of the parameter and parameter object.
   */
   .directive('policyParam', ['$compile', 'RequisitionsService', function($compile, RequisitionsService) {
 
@@ -85,6 +88,7 @@
     /**
     * @description Analyzes the local scope of the directive to select the proper HTML template and populate the parameter options.
     *
+    * This method expects to obtain the class of the parent policy through the parent scope (that's why the directive should be managed by PolicyController)
     * @private
     * @name policyParam:getTemplate
     * @ngdoc method
