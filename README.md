@@ -3,7 +3,7 @@ OpenNMS-UI-Requisitions
 
 A user interface to manage OpenNMS Requisition implemented with AngularJS and Bootstrap 3
 
-IMPORTANT: This required at least OpenNMS 1.13.4-SNASHOT compiled after 2014-06-05
+IMPORTANT: This project was designed and implemented to work with OpenNMS 14 or greater.
 
 Compilation Instructions
 =======================
@@ -26,15 +26,17 @@ npm install
 bower install
 ```
 
-* If requested, specify Angular 1.2.15
+* If requested, specify Angular 1.2.26
 
-* Install the latest OpenNMS RPM from http://yum.opennms.org/bleeding/common/opennms/
+* Install the latest stable OpenNMS RPM from http://yum.opennms.org/stable/common/opennms/
 
 * Copy over OpenNMS-UI-Requisitions/ into jetty-webapps/opennms/ as ng-requisition, for example:
 
 ```
-sudo rsync -avr OpenNMS-UI-Requisitions/ /opt/opennms/jetty-webapps/opennms/admin/ng-requisitions/
+sudo rsync -avr OpenNMS-UI-Requisitions/ $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
 ```
+
+Or, edit $OPENNMS_HOME/jetty-webapps/WEB-INF/web.xml, find a settings called 'aliases', change its value to be 'true', and finally add a symbolic link from OpenNMS-UI-Requisitions/ to $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
 
 * Start OpenNMS
 

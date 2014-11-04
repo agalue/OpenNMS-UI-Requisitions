@@ -22,9 +22,10 @@
   * @requires $filter Angular requisitions list filter
   * @requires $window Document window
   * @requires RequisitionsService The requisitions service
+  * @requires SynchronizeService The synchronize service
   * @requires growl The growl plugin for instant notifications
   */
-  .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'growl', function($scope, $filter, $window, RequisitionsService, growl) {
+  .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'SynchronizeService', 'growl', function($scope, $filter, $window, RequisitionsService, SynchronizeService, growl) {
 
     /**
      * @description The requisitions list
@@ -169,38 +170,7 @@
     * @param {string} foreignSource The name of the requisition
     */
     $scope.synchronize = function(foreignSource) {
-      var doSynchronize = function(foreignSource, rescanExisting) {
-        RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
-          function() { // success
-            growl.addSuccessMessage('The import operation has been started for ' + foreignSource + ' (rescanExisting? ' + rescanExisting + ')');
-          },
-          $scope.errorHandler
-        );
-      };
-      bootbox.dialog({
-        message: 'Do you want to rescan existing nodes ?',
-        title: 'Synchronize Requisition ' + foreignSource,
-        buttons: {
-          success: {
-            label: 'Yes',
-            className: 'btn-success',
-            callback: function() {
-              doSynchronize(foreignSource, true);
-            }
-          },
-          danger: {
-            label: 'No',
-            className: 'btn-danger',
-            callback: function() {
-              doSynchronize(foreignSource, false);
-            }
-          },
-          main: {
-            label: 'Cancel',
-            className: 'btn-default'
-          }
-        }
-      });
+      SynchronizeService.synchronize(foreignSource, $scope.errorHandler);
     };
 
     /**

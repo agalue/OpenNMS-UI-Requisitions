@@ -740,38 +740,26 @@
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/services
     requisitionsService.getAvailableServices = function() {
       var deferred = $q.defer();
-      var data = [
-        'DNS',
-        'Dell-OpenManage',
-        'FTP',
-        'HP Insight Manager',
-        'HTTP',
-        'HTTP-8000',
-        'HTTP-8080',
-        'HTTPS',
-        'HypericAgent',
-        'HypericHQ',
-        'ICMP',
-        'IMAP',
-        'LDAP',
-        'MSExchange',
-        'MySQL',
-        'NRPE',
-        'NRPE-NoSSL',
-        'OpenNMS-JVM',
-        'Oracle',
-        'POP3',
-        'Postgres',
-        'Router',
-        'SMTP',
-        'SNMP',
-        'SQLServer',
-        'SSH',
-        'StrafePing',
-        'Telnet',
-        'Windows-Task-Scheduler',
-      ];
-      deferred.resolve(data);
+
+      var config = requisitionsService.internal.cache.get('servicesConfig');
+      if (config) {
+        $log.debug('getAvailableServices: returning a cached copy of services configuration');
+        deferred.resolve(config);
+        return deferred.promise;
+      }
+
+      var url = 'scripts/data/services.js'; // Using local data
+      $log.debug('getAvailableServices: getting available services');
+      $http.get(url)
+      .success(function(data) {
+        $log.debug('getAvailableServices: got available services');
+        requisitionsService.internal.cache.put('servicesConfig', data);
+        deferred.resolve(data);
+      })
+      .error(function(error, status) {
+        $log.error('getAvailableServices: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve available services. HTTP ' + status + ' ' + error);
+      });
       return deferred.promise;
     };
 
@@ -791,79 +779,26 @@
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/assets
     requisitionsService.getAvailableAssets = function() {
       var deferred = $q.defer();
-      var data = [
-        'additionalhardware',
-        'address1',
-        'address2',
-        'admin',
-        'assetnumber',
-        'autoenable',
-        'building',
-        'category',
-        'circuitid',
-        'city',
-        'comment',
-        'connection',
-        'country',
-        'cpu',
-        'dateinstalled',
-        'department',
-        'description',
-        'displaycategory',
-        'division',
-        'enable',
-        'floor',
-        'hdd1',
-        'hdd2',
-        'hdd3',
-        'hdd4',
-        'hdd5',
-        'hdd6',
-        'inputpower',
-        'lastmodifieddate',
-        'latitude',
-        'lease',
-        'leaseexpires',
-        'longitude',
-        'maintcontract',
-        'maintcontractexpires',
-        'managedobjectinstance',
-        'managedobjecttype',
-        'manufacturer',
-        'modelnumber',
-        'nodeid',
-        'notifycategory',
-        'numpowersupplies',
-        'operatingsystem',
-        'password',
-        'pollercategory',
-        'port',
-        'rack',
-        'rackunitheight',
-        'ram',
-        'region',
-        'room',
-        'serialnumber',
-        'slot',
-        'snmpcommunity',
-        'state',
-        'storagectrl',
-        'supportphone',
-        'thresholdcategory',
-        'userlastmodified',
-        'username',
-        'vendor',
-        'vendorassetnumber',
-        'vendorfax',
-        'vendorphone',
-        'vmwaremanagedentitytype',
-        'vmwaremanagedobjectid',
-        'vmwaremanagementserver',
-        'vmwarestate',
-        'vmwaretopologyinfo',
-        'zip'
-      ];
-      deferred.resolve(data);
+
+      var config = requisitionsService.internal.cache.get('assetsConfig');
+      if (config) {
+        $log.debug('getAvailableAssets: returning a cached copy of assets configuration');
+        deferred.resolve(config);
+        return deferred.promise;
+      }
+
+      var url = 'scripts/data/assets.js'; // Using local data
+      $log.debug('getAvailableAssets: getting available assets');
+      $http.get(url)
+      .success(function(data) {
+        $log.debug('getAvailableAssets: got available assets');
+        requisitionsService.internal.cache.put('servicesConfig', data);
+        deferred.resolve(data);
+      })
+      .error(function(error, status) {
+        $log.error('getAvailableAssets: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve available assets. HTTP ' + status + ' ' + error);
+      });
       return deferred.promise;
     };
 
@@ -883,15 +818,26 @@
     // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/categories
     requisitionsService.getAvailableCategories = function() {
       var deferred = $q.defer();
-      var data = [
-        'Development',
-        'Production',
-        'Routers',
-        'Servers',
-        'Switches',
-        'Test'
-      ];
-      deferred.resolve(data);
+
+      var config = requisitionsService.internal.cache.get('assetsConfig');
+      if (config) {
+        $log.debug('getAvailableCategories: returning a cached copy of categories configuration');
+        deferred.resolve(config);
+        return deferred.promise;
+      }
+
+      var url = 'scripts/data/categories.js'; // Using local data
+      $log.debug('getAvailableCategories: getting available categories');
+      $http.get(url)
+      .success(function(data) {
+        $log.debug('getAvailableCategories: got available categories');
+        requisitionsService.internal.cache.put('servicesConfig', data);
+        deferred.resolve(data);
+      })
+      .error(function(error, status) {
+        $log.error('getAvailableCategories: GET ' + url + ' failed:', error, status);
+        deferred.reject('Cannot retrieve available categories. HTTP ' + status + ' ' + error);
+      });
       return deferred.promise;
     };
 

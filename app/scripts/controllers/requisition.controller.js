@@ -23,9 +23,10 @@
   * @requires $window Document window
   * @requires $routeParams Angular route parameters
   * @requires RequisitionsService The requisitions service
+  * @requires SynchronizeService The synchronize service
   * @requires growl The growl plugin for instant notifications
   */
-  .controller('RequisitionController', ['$scope', '$filter', '$window', '$routeParams', 'RequisitionsService', 'growl', function($scope, $filter, $window, $routeParams, RequisitionsService, growl) {
+  .controller('RequisitionController', ['$scope', '$filter', '$window', '$routeParams', 'RequisitionsService', 'SynchronizeService', 'growl', function($scope, $filter, $window, $routeParams, RequisitionsService, SynchronizeService, growl) {
 
     /**
      * @description The foreign source (a.k.a the name of the requisition).
@@ -121,45 +122,15 @@
     /**
     * @description Requests the synchronization/import of a requisition on the server
     *
+    * A dialog box is displayed to request to the user if the scan phase should be triggered or not.
+    *
     * @name RequisitionController:synchronize
     * @ngdoc method
     * @methodOf RequisitionController
     */
-    // FIXME bootbox ?
     $scope.synchronize = function() {
       var foreignSource = $scope.foreignSource;
-      var doSynchronize = function(foreignSource, rescanExisting) {
-        RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
-          function() { // success
-            growl.addSuccessMessage('The import operation has been started for ' + foreignSource + ' (rescanExisting? ' + rescanExisting + ')');
-          },
-          $scope.errorHandler
-        );
-      };
-      bootbox.dialog({
-        message: 'Do you want to rescan existing nodes ?',
-        title: 'Synchronize Requisition ' + foreignSource,
-        buttons: {
-          success: {
-            label: 'Yes',
-            className: 'btn-success',
-            callback: function() {
-              doSynchronize(foreignSource, true);
-            }
-          },
-          danger: {
-            label: 'No',
-            className: 'btn-danger',
-            callback: function() {
-              doSynchronize(foreignSource, false);
-            }
-          },
-          main: {
-            label: 'Cancel',
-            className: 'btn-default'
-          }
-        }
-      });
+      SynchronizeService.synchronize(foreignSource, $scope.errorHandler);
     };
 
     /**
