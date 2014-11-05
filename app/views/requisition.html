@@ -51,42 +51,45 @@
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="container-fluid table-responsive" ng-show="requisition.nodes.length > 0">
-      <table class="table table-striped table-condensed table-hover">
-        <thead>
-          <tr>
-            <th>Node Label</th>
-            <th>Foreign ID</th>
-            <th>Building</th>
-            <th>City</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-class="{danger: !node.deployed}" ng-repeat="node in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
-            <td>{{ node.nodeLabel }}</td>
-            <td>{{ node.foreignId }}</td>
-            <td>{{ node.building }}</td>
-            <td>{{ node.city }}</td>
-            <td>
-              <a class="btn btn-default btn-xs" tooltip="Edit the {{node.nodeLabel}} Node" ng-click="editNode(node)">
-                <span class="glyphicon glyphicon-pencil"></span>
-              </a>
-              <a class="btn btn-default btn-xs" tooltip="Remove the {{node.nodeLabel}} Node" ng-click="deleteNode(node)">
-                <span class="glyphicon glyphicon-remove"></span>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  </div> <!-- panel-content -->
 
-    <!-- Navigation -->
+  <!-- Table with Navigation -->
+  <div class="container-fluid table-responsive" ng-show="requisition.nodes.length > 0">
+
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th>Node Label</th>
+          <th>Foreign ID</th>
+          <th>Building</th>
+          <th>City</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-class="{danger: !node.deployed}" ng-repeat="node in filteredNodes | startFrom:(currentPage-1)*pageSize | limitTo:pageSize ">
+          <td>{{ node.nodeLabel }}</td>
+          <td>{{ node.foreignId }}</td>
+          <td>{{ node.building }}</td>
+          <td>{{ node.city }}</td>
+          <td>
+            <a class="btn btn-default btn-xs" tooltip="Edit the {{node.nodeLabel}} Node" ng-click="editNode(node)">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a class="btn btn-default btn-xs" tooltip="Remove the {{node.nodeLabel}} Node" ng-click="deleteNode(node)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <br ng-hide="filteredRequisitions.length > pageSize" />
+
     <pagination total-items="totalItems" num-pages="numPages" ng-model="currentPage" max-size="maxSize" boundary-links="true"
       class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
       ng-show="filteredNodes.length > pageSize"></pagination>
 
-  </div> <!-- panel-content -->
+  </div> <!-- table with navigation -->
 
 </div> <!-- panel -->
