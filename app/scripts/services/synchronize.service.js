@@ -13,6 +13,11 @@
   * @ngdoc service
   * @name SynchronizeService
   * @module onms-requisitions
+  *
+  * @requires RequisitionsService The requisitions service
+  * @requires growl The growl plugin for instant notifications
+  *
+  * @description The SynchronizeService provides a way to request a requisition synchronization asking the user how the scan process will be processed.
   */
   .factory('SynchronizeService', ['RequisitionsService', 'growl', function(RequisitionsService, growl) {  
     return {
@@ -21,12 +26,17 @@
       *
       * A dialog box is displayed to request to the user if the scan phase should be triggered or not.
       *
-      * @name RequisitionsController:synchronize
+      * @name SynchronizeService:synchronize
       * @ngdoc method
-      * @methodOf RequisitionsController
+      * @methodOf SynchronizeService
       * @param {string} foreignSource The name of the requisition
+      * @param {function} errorHandler The function to call when something went wrong.
       */
       synchronize: function(foreignSource, errorHandler) {
+        /**
+        * @param {string} foreignSource The name of the requisition
+        * @param {string} rescanExisting true to perform a full scan, false to only add/remove nodes without scan, dbonly for all DB operations without scan
+        */
         var doSynchronize = function(foreignSource, rescanExisting) {
           RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
             function() { // success
