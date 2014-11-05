@@ -28,72 +28,8 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- OpenNMS Navigation Bar -->
-    <nav class="navbar navbar-inverse" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><img src="images/o-512.png" style="max-height: 40px; overflow: visible; padding-top: 0; padding-bottom: 0; margin-left: -10px; margin-top: -10px"></a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="dropdown" ng-repeat="item in menuItems">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.name}} <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li ng-repeat="entry in item.entries"><a ng-href="#{{entry.route}}">{{entry.name}}</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Info <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="/opennms/event/list">Events</a></li>
-                <li><a href="/opennms/alarm/list.htm">Alarms</a></li>
-                <li><a href="/opennms/notification/browse?acktype=unack">Notifications</a></li>
-                <li><a href="/opennms/element/nodeList.htm">Nodes</a></li>
-                <li><a href="/opennms/asset/index.jsp">Assets</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="/opennms/outage/index.jsp">Outages</a></li>
-                <li><a href="/opennms/pathOutage/index.jsp">Path Outages</a></li>
-                <li><a href="/opennms/distributedStatusSummary.htm">Distributed Status</a></li>
-                <li><a href="/opennms/surveillanceView.htm?viewName=default">Surveillance View</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="/opennms/charts/index.jsp">Charts</a></li>
-                <li><a href="/opennms/graph/index.jsp">Resource Graphs</a></li>
-                <li><a href="/opennms/KSC/index.htm">KSC</a></li>
-                <li><a href="/opennms/report/database/index.htm">Database</a></li>
-                <li><a href="/opennms/statisticsReports/index.htm">Statistics</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Maps <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="/opennms/RemotePollerMap/index.jsp">Distributed</a></li>
-                <li><a href="/opennms/topology">Topology</a></li>
-                <li><a href="/opennms/node-maps">Geographical</a></li>
-              </ul>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/opennms/admin/index.jsp">Admin</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-
     <!-- Add your site or application content here -->
+    <div ng-include="'views/onms.nav.html'"></div>
     <div class="container-fluid" ng-view></div>
     <div growl></div>
 
@@ -133,24 +69,24 @@
     <script src="bower_components/bootstrap/js/collapse.js"></script>
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/model/requisitionInterface.model.js"></script>
-        <script src="scripts/model/requisitionNode.model.js"></script>
-        <script src="scripts/model/requisition.model.js"></script>
-        <script src="scripts/model/requisitionsData.model.js"></script>
-        <script src="scripts/services/requisitions.service.js"></script>
-        <script src="scripts/services/synchronize.service.js"></script>
-        <script src="scripts/filters/startFrom.js"></script>
-        <script src="scripts/directives/policyParam.directive.js"></script>
-        <script src="scripts/controllers/detector.controller.js"></script>
-        <script src="scripts/controllers/policy.controller.js"></script>
-        <script src="scripts/controllers/foreignsource.controller.js"></script>
-        <script src="scripts/controllers/asset.controller.js"></script>
-        <script src="scripts/controllers/interface.controller.js"></script>
-        <script src="scripts/controllers/node.controller.js"></script>
-        <script src="scripts/controllers/requisition.controller.js"></script>        
-        <script src="scripts/controllers/requisitions.controller.js"></script>
-        <!-- endbuild -->
-</body>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/model/requisitionInterface.model.js"></script>
+    <script src="scripts/model/requisitionNode.model.js"></script>
+    <script src="scripts/model/requisition.model.js"></script>
+    <script src="scripts/model/requisitionsData.model.js"></script>
+    <script src="scripts/services/requisitions.service.js"></script>
+    <script src="scripts/services/synchronize.service.js"></script>
+    <script src="scripts/filters/startFrom.js"></script>
+    <script src="scripts/directives/policyParam.directive.js"></script>
+    <script src="scripts/controllers/detector.controller.js"></script>
+    <script src="scripts/controllers/policy.controller.js"></script>
+    <script src="scripts/controllers/foreignsource.controller.js"></script>
+    <script src="scripts/controllers/asset.controller.js"></script>
+    <script src="scripts/controllers/interface.controller.js"></script>
+    <script src="scripts/controllers/node.controller.js"></script>
+    <script src="scripts/controllers/requisition.controller.js"></script>        
+    <script src="scripts/controllers/requisitions.controller.js"></script>
+    <!-- endbuild -->
+  </body>
 </html>
