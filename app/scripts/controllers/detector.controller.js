@@ -140,6 +140,17 @@
         angular.forEach(detectors, function(detector) {
           if (detector.class == $scope.detector.class) {
             $scope.availableParameters = detector.parameters;
+            var orderedParams = [];
+            for (var i=0; i<detector.parameters.length; i++) {
+              var pkey = detector.parameters[i].key;
+              for (var j=0; j<$scope.detector.parameter.length; j++) {
+                var p = $scope.detector.parameter[j];
+                if (p.key === pkey) {
+                  orderedParams.push(p);
+                }
+              }
+            }
+            $scope.detector.parameter = orderedParams;
           }
         });
       }

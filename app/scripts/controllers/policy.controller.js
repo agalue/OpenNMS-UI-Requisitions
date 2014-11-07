@@ -115,6 +115,21 @@
     // Initialize
     RequisitionsService.getAvailablePolicies().then(function(policies) {
       $scope.availablePolicies = policies;
+      angular.forEach(policies, function(policy) {
+        if (policy.class == $scope.policy.class) {
+          var orderedParams = [];
+          for (var i=0; i<policy.parameters.length; i++) {
+            var pkey = policy.parameters[i].key;
+            for (var j=0; j<$scope.policy.parameter.length; j++) {
+              var p = $scope.policy.parameter[j];
+              if (p.key === pkey) {
+                orderedParams.push(p);
+              }
+            }
+          }
+          $scope.policy.parameter = orderedParams;
+        }
+      });
     });
 
   }]);
