@@ -22,19 +22,15 @@
     "name": "Match SNMP Interface",
     "class": "org.opennms.netmgt.provision.persist.policies.MatchingSnmpInterfacePolicy",
     "parameters": [{
+        "key": "matchBehavior",
+        "required": true,
+        "options": ["ALL_PARAMETERS", "ANY_PARAMETER", "NO_PARAMETERS"]
+    }, {
+        "key": "action",
+        "required": true,
+        "options": ["DISABLE_COLLECTION", "DISABLE_POLLING", "DO_NOT_PERSIST", "ENABLE_COLLECTION", "ENABLE_POLLING"]
+    }, {
         "key": "ifAdminStatus",
-        "required": false,
-        "options": []
-    }, {
-        "key": "physAddr",
-        "required": false,
-        "options": []
-    }, {
-        "key": "ifType",
-        "required": false,
-        "options": []
-    }, {
-        "key": "ifOperStatus",
         "required": false,
         "options": []
     }, {
@@ -42,27 +38,31 @@
         "required": false,
         "options": []
     }, {
-        "key": "matchBehavior",
-        "required": true,
-        "options": ["ALL_PARAMETERS", "ANY_PARAMETER", "NO_PARAMETERS"]
-    }, {
-        "key": "ifName",
+        "key": "ifDescr",
         "required": false,
         "options": []
-    }, {
-        "key": "action",
-        "required": true,
-        "options": ["DISABLE_COLLECTION", "DISABLE_POLLING", "DO_NOT_PERSIST", "ENABLE_COLLECTION", "ENABLE_POLLING"]
     }, {
         "key": "ifIndex",
         "required": false,
         "options": []
     }, {
-        "key": "ifDescr",
+        "key": "ifName",
+        "required": false,
+        "options": []
+    }, {
+        "key": "ifOperStatus",
         "required": false,
         "options": []
     }, {
         "key": "ifSpeed",
+        "required": false,
+        "options": []
+    }, {
+        "key": "ifType",
+        "required": false,
+        "options": []
+    }, {
+        "key": "physAddr",
         "required": false,
         "options": []
     }]
@@ -70,13 +70,13 @@
     "name": "Set Node Category",
     "class": "org.opennms.netmgt.provision.persist.policies.NodeCategorySettingPolicy",
     "parameters": [{
-        "key": "operatingSystem",
-        "required": false,
+        "key": "category",
+        "required": true,
         "options": []
     }, {
-        "key": "netBiosDomain",
-        "required": false,
-        "options": []
+        "key": "matchBehavior",
+        "required": true,
+        "options": ["ALL_PARAMETERS", "ANY_PARAMETER", "NO_PARAMETERS"]
     }, {
         "key": "foreignSource",
         "required": false,
@@ -90,23 +90,7 @@
         "required": false,
         "options": []
     }, {
-        "key": "type",
-        "required": false,
-        "options": []
-    }, {
-        "key": "sysName",
-        "required": false,
-        "options": []
-    }, {
-        "key": "labelSource",
-        "required": false,
-        "options": []
-    }, {
-        "key": "category",
-        "required": true,
-        "options": []
-    }, {
-        "key": "sysContact",
+        "key": "netBiosDomain",
         "required": false,
         "options": []
     }, {
@@ -114,11 +98,27 @@
         "required": false,
         "options": []
     }, {
-        "key": "matchBehavior",
-        "required": true,
-        "options": ["ALL_PARAMETERS", "ANY_PARAMETER", "NO_PARAMETERS"]
+        "key": "labelSource",
+        "required": false,
+        "options": []
+    }, {
+        "key": "operatingSystem",
+        "required": false,
+        "options": []
+    }, {
+        "key": "sysContact",
+        "required": false,
+        "options": []
+    }, {
+        "key": "sysDescription",
+        "required": false,
+        "options": []
     }, {
         "key": "sysLocation",
+        "required": false,
+        "options": []
+    }, {
+        "key": "sysName",
         "required": false,
         "options": []
     }, {
@@ -126,7 +126,7 @@
         "required": false,
         "options": []
     }, {
-        "key": "sysDescription",
+        "key": "type",
         "required": false,
         "options": []
     }]
