@@ -86,6 +86,20 @@
     var defaultTemplateEditable = '<select required class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param for param in optionalParameters"></select>' + defaultCommon;
 
     /**
+    * @description Checks if a variable is a non empty array.
+    *
+    * @private
+    * @name policyParam:isNonEmptyArray
+    * @ngdoc method
+    * @methodOf policyParam
+    * @param {object} myArray The array to check
+    * @returns {boolean} true for a non empty array
+    */
+    function isNonEmptyArray(myArray) {
+      return myArray.constructor.toString().indexOf("Array") > -1 && myArray.length > 0;
+    }
+
+    /**
     * @description Analyzes the local scope of the directive to select the proper HTML template and populate the parameter options.
     *
     * This method expects to obtain the class of the parent policy through the parent scope (that's why the directive should be managed by PolicyController)
@@ -108,7 +122,7 @@
             var paramCfg = scope.availablePolicies[i].parameters[j];
             if (paramCfg.key == scope.parameter.key) { // Checking current parameter
               if (paramCfg.required) {
-                if (paramCfg.options) {
+                if (isNonEmptyArray(paramCfg.options)) {
                   scope.parameterOptions = paramCfg.options;
                   return optionsTemplate;
                 } else {
