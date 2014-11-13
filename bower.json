@@ -4,6 +4,10 @@
   "authors": [
     "Alejandro Galue <agalue@opennms.org>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/agalue/OpenNMS-UI-Requisitions.git"
+  },
   "dependencies": {
     "angular": "~1.2.26",
     "json3": "~3.2.6",
