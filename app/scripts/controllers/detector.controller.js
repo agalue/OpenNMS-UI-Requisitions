@@ -54,6 +54,29 @@
     $scope.availableParameters = [];
 
     /**
+    * @description Gets the available parameters not being used by the detector
+    *
+    * @name DetectorController:getAvailableParameters
+    * @ngdoc method
+    * @methodOf DetectorController
+    */
+    $scope.getAvailableParameters = function() {
+      var params = [];
+      angular.forEach($scope.availableParameters, function(availParam) {
+        var found = false;
+        angular.forEach($scope.detector.parameter, function(param) {
+          if (param.key == availParam.key) {
+            found = true;
+          }
+        });
+        if (!found) {
+          params.push(availParam);
+        }
+      });
+      return params;
+    };
+
+    /**
     * @description Saves the current detector
     *
     * @name DetectorController:save
