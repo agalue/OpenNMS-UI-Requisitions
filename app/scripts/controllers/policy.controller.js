@@ -24,24 +24,44 @@
   .controller('PolicyController', ['$scope', '$modalInstance', 'RequisitionsService', 'policy', function($scope, $modalInstance, RequisitionsService, policy) {
 
     /**
-     * @description The policy object
-     *
-     * @ngdoc property
-     * @name PolicyController#policy
-     * @propertyOf PolicyController
-     * @returns {object} The policy object
-     */
+    * @description The policy object
+    *
+    * @ngdoc property
+    * @name PolicyController#policy
+    * @propertyOf PolicyController
+    * @returns {object} The policy object
+    */
     $scope.policy = policy;
 
     /**
-     * @description The available policy object
-     *
-     * @ngdoc property
-     * @name PolicyController#availablePolicies
-     * @propertyOf PolicyController
-     * @returns {array} The policy list
-     */
+    * @description The available policies array
+    *
+    * @ngdoc property
+    * @name PolicyController#availablePolicies
+    * @propertyOf PolicyController
+    * @returns {array} The policy list
+    */
     $scope.availablePolicies = [];
+
+    /**
+    * @description The current parameter options
+    *
+    * @ngdoc property
+    * @name PolicyController#availablePolicies
+    * @propertyOf PolicyController
+    * @returns {array} The parameter options list
+    */
+    $scope.parameterOptions = [];
+
+    /**
+    * @description The optional parameters array
+    *
+    * @ngdoc property
+    * @name PolicyController#optionalParameters
+    * @propertyOf PolicyController
+    * @returns {array} The optional parameters list
+    */
+    $scope.optionalParameters = [];
 
     /**
     * @description Saves the current policy
@@ -110,6 +130,83 @@
           });
         }
       });
+    };
+
+    /**
+    * @description Checks if an object is a non empty array
+    *
+    * @private
+    * @name PolicyController:updatePolicyParameters
+    * @ngdoc method
+    * @methodOf PolicyController
+    * @param {object} myArray the object to check
+    * @returns {boolean} true, if the object is a non empty array
+    */
+    $scope.isNonEmptyArray = function(myArray) {
+      return myArray.constructor.toString().indexOf("Array") > -1 && myArray.length > 0;
+    };
+
+    /**
+    * @description Analyzes the local scope of the directive to select the proper HTML template and populate the parameter options.
+    *
+    * This method expects to obtain the class of the parent policy through the parent scope (that's why the directive should be managed by PolicyController)
+    * @name PolicyController:getTemplate
+    * @ngdoc method
+    * @methodOf PolicyController
+    * @param {object} scope The directive scope object
+    * @returns {string} The HTML template
+    */
+    $scope.getTemplate = function(parameter) {
+      var selectedPolicyClass = $scope.policy.class;
+      $scope.parameterOptions = [];
+      $scope.optionalParameters = [];
+
+      for (var i=0; i<$scope.availablePolicies.length; i++) {
+        if ($scope.availablePolicies[i].class == selectedPolicyClass) {
+          for (var j=0; j<$scope.availablePolicies[i].parameters.length; j++) {
+            var paramCfg = $scope.availablePolicies[i].parameters[j];
+            if (paramCfg.key == parameter.key) { // Checking current parameter
+              if (paramCfg.required) {
+                if ($scope.isNonEmptyArray(paramCfg.options)) {
+                  $scope.parameterOptions = paramCfg.options;
+                  return "views/policy-param.options.html";
+                } else {
+                  return "views/policy-param.string.html";
+                }
+              }
+            }
+            if (!paramCfg.required) {
+              $scope.optionalParameters.push(paramCfg.key);
+            }
+          }
+        }
+      }
+
+      return parameter.key ? "views/policy-param.fixed.html" : "views/policy-param.editable.html";
+    };
+
+    /**
+    * @description Gets the available parameters.
+    *
+    * @name PolicyController:getAvailableParameters
+    * @ngdoc method
+    * @methodOf PolicyController
+    * @returns {array} The parameters list
+    */
+    $scope.getAvailableParameters = function() {
+      var params = [];
+      angular.forEach($scope.parameterOptions, function(availParam) {
+        var found = false;
+        angular.forEach($scope.policy.parameter, function(param) {
+          if (param.key == availParam.key) {
+            found = true;
+          }
+        });
+        if (!found) {
+          params.push(availParam);
+        }
+      });
+      return params;
     };
 
     // Initialize
