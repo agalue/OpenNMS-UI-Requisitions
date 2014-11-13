@@ -1,11 +1,11 @@
 <select required class="form-control"
         placeholder="Parameter Name"
         ng-model="parameter.key"
-        ng-options="param for param in optionalParameters"></select>
+        ng-options="param for param in getOptionalParameters()"></select>
 <div class="input-group">
   <input required type="text" class="form-control" placeholder="Parameter Value" ng-model="parameter.value"></input>
   <span class="input-group-btn">
-    <button class="btn btn-default" type="button" ng-click="removeParameter(index)">
+    <button class="btn btn-default" type="button" ng-click="removeParameter($index)">
       <span class="glyphicon glyphicon-remove"></span>
     </button>
   </span>

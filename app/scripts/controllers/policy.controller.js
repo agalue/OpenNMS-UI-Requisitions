@@ -44,16 +44,6 @@
     $scope.availablePolicies = [];
 
     /**
-    * @description The current parameter options
-    *
-    * @ngdoc property
-    * @name PolicyController#availablePolicies
-    * @propertyOf PolicyController
-    * @returns {array} The parameter options list
-    */
-    $scope.parameterOptions = [];
-
-    /**
     * @description The optional parameters array
     *
     * @ngdoc property
@@ -158,7 +148,6 @@
     */
     $scope.getTemplate = function(parameter) {
       var selectedPolicyClass = $scope.policy.class;
-      $scope.parameterOptions = [];
       $scope.optionalParameters = [];
 
       for (var i=0; i<$scope.availablePolicies.length; i++) {
@@ -168,7 +157,6 @@
             if (paramCfg.key == parameter.key) { // Checking current parameter
               if (paramCfg.required) {
                 if ($scope.isNonEmptyArray(paramCfg.options)) {
-                  $scope.parameterOptions = paramCfg.options;
                   return "views/policy-param.options.html";
                 } else {
                   return "views/policy-param.string.html";
@@ -186,19 +174,42 @@
     };
 
     /**
-    * @description Gets the available parameters.
+    * @description Gets the options for a particular parameter
     *
-    * @name PolicyController:getAvailableParameters
+    * @name PolicyController:getParameterOptions
     * @ngdoc method
     * @methodOf PolicyController
-    * @returns {array} The parameters list
+    * @param {string} parameterKey The parameter key
+    * @returns {array} The parameter options list
     */
-    $scope.getAvailableParameters = function() {
+    $scope.getParameterOptions = function(parameterKey) {
+      for (var i=0; i<$scope.availablePolicies.length; i++) {
+        if ($scope.availablePolicies[i].class == $scope.policy.class) {
+          for (var j=0; j<$scope.availablePolicies[i].parameters.length; j++) {
+            var paramCfg = $scope.availablePolicies[i].parameters[j];
+            if (paramCfg.key == parameterKey) { // Checking current parameter
+              return paramCfg.options;
+            }
+          }
+        }
+      }
+      return [];
+    };
+
+    /**
+    * @description Gets the optional parameters.
+    *
+    * @name PolicyController:getOptionalParameters
+    * @ngdoc method
+    * @methodOf PolicyController
+    * @returns {array} The optional parameters list
+    */
+    $scope.getOptionalParameters = function() {
       var params = [];
-      angular.forEach($scope.parameterOptions, function(availParam) {
+      angular.forEach($scope.optionalParameters, function(availParam) {
         var found = false;
         angular.forEach($scope.policy.parameter, function(param) {
-          if (param.key == availParam.key) {
+          if (param.key == availParam) {
             found = true;
           }
         });

@@ -2,4 +2,4 @@
 <select required class="form-control"
         placeholder="Select an option for {{ parameter.key }}"
         ng-model="parameter.value"
-        ng-options="param for param in getAvailableParameters()"></select>
+        ng-options="param for param in getParameterOptions(parameter.key)"></select>
