@@ -46,21 +46,21 @@
           <br/>
           <div class="form-group" ng-class="{ 'has-error' : nodeForm.foreignId.$invalid }">
             <label classs="control-label" for="foreignId">Foreign ID</label>
-            <input class="form-control" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node.foreignId" required/>
+            <input class="form-control" type="text" id="foreignId" name="foreignId" placeholder="Foreign ID" ng-model="node.foreignId" required/>
             <p ng-show="nodeForm.foreignId.$invalid" class="help-block">Foreign ID is required.</p>
           </div>
           <div class="form-group" ng-class="{ 'has-error' : nodeForm.nodeLabel.$invalid }">
             <label classs="control-label" for="nodeLabel">Node Label</label>
-            <input class="form-control" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node.nodeLabel" required/>
+            <input class="form-control" type="text" id="nodeLabel" name="nodeLabel" placeholder="Node Label" ng-model="node.nodeLabel" required/>
             <p ng-show="nodeForm.nodeLabel.$invalid" class="help-block">Node Label is required.</p>
           </div>
           <div class="form-group">
             <label classs="control-label" for="building">Building</label>
-            <input class="form-control" id="building" name="building" placeholder="Building" ng-model="node.building"/>
+            <input class="form-control" type="text" id="building" name="building" placeholder="Building" ng-model="node.building"/>
           </div>
           <div class="form-group">
             <label classs="control-label" for="city">City</label>
-            <input class="form-control" id="city" name="city" placeholder="City" ng-model="node.city"/>
+            <input class="form-control" type="text" id="city" name="city" placeholder="City" ng-model="node.city"/>
           </div>
         </tab>
 
@@ -69,15 +69,15 @@
           <br/>
           <div class="form-group">
             <label class="control-label" for="parentForeignSource">Parent Foreign Source</label>
-            <input class="form-control" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node.parentForeignSource"/>
+            <input class="form-control" type="text" id="parentForeignSource" name="parentForeignSource" placeholder="Parent Foreign Source" ng-model="node.parentForeignSource"/>
           </div>
           <div class="form-group" ng-show="node.parentForeignLabel == null || node.parentForeignLabel == ''">
             <label class="control-label" for="parentForeignId">Parent Foreign ID</label>
-            <input class="form-control" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node.parentForeignId"/>
+            <input class="form-control" type="text" id="parentForeignId" name="parentForeignId" placeholder="Parent Foreign ID" ng-model="node.parentForeignId"/>
           </div>
           <div class="form-group" ng-show="node.parentForeignId == null || node.parentForeignId == ''">
             <label class="control-label" for="parentForeignLabel">Parent Foreign Label</label>
-            <input class="form-control" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node.parentForeignLabel"/>
+            <input class="form-control" type="text" id="parentForeignLabel" name="parentForeignLabel" placeholder="Parent Foreign Label" ng-model="node.parentForeignLabel"/>
           </div>
         </tab>
 
@@ -162,7 +162,7 @@
           <br/>
           <div class="form-group">
             <div class="input-group" ng-repeat="category in node.categories">
-              <input required type="text" class="form-control" placeholder="Category Name" ng-model="category.name" typeahead-editable="true" typeahead="category for category in availableCategories | filter:$viewValue | limitTo:8"></input>
+              <input class="form-control" type="text" placeholder="Category Name" ng-model="category.name" typeahead-editable="true" typeahead="category for category in availableCategories | filter:$viewValue" typeahead-min-length="0" required></input>
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button" ng-click="removeCategory($index)"><span class="glyphicon glyphicon-remove"></span></button>
               </span>

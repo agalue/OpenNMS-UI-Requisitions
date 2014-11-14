@@ -51,7 +51,7 @@
           <div class="col-lg-6">
             <div class="form-group" ng-class="{ 'has-error' : fsForm.scanInterval.$invalid }">
               <label classs="control-label" for="scanInterval">Scan Interval</label>
-              <input class="form-control input-xs" id="scanInterval" name="scanInterval" placeholder="Scan Interval" ng-model="foreignSourceDef['scan-interval']" required/>
+              <input class="form-control input-xs" type="text" id="scanInterval" name="scanInterval" placeholder="Scan Interval" ng-model="foreignSourceDef['scan-interval']" required/>
               <div ng-show="fsForm.scanInterval.$invalid" class="help-block">Scan Interval is required.</div>
             </div>
           </div>

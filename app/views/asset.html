@@ -9,11 +9,11 @@
     <div class="form-group">
       <div class="form-group">
         <label class="control-label" for="name">Name</label>
-        <input class="form-control" id="name" name="name" ng-model="asset.name" typeahead-editable="false" typeahead="asset for asset in assetFields | filter:$viewValue" placeholder="Asset Name" required>
+        <input class="form-control" type="text" id="name" name="name" placeholder="Asset Name" ng-model="asset.name" typeahead-editable="false" typeahead="asset for asset in assetFields | filter:$viewValue" typeahead-min-length="0" required>
       </div>
       <div class="form-group">
         <label class="control-label" for="value">Value</label>
-        <input class="form-control" id="value" name="value" placeholder="Asset Value" ng-model="asset.value" required/>
+        <input class="form-control" type="text" id="value" name="value" placeholder="Asset Value" ng-model="asset.value" required/>
       </div>
     </div>
   </form>

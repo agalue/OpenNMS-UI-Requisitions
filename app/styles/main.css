@@ -87,3 +87,7 @@ body {
 span .input-group-addon {
     cursor: pointer;
 }
+.dropdown-menu {
+  max-height: 300px;
+  overflow: auto;
+}
