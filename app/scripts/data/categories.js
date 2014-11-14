@@ -1,8 +1,8 @@
 [
-    'Development',
-    'Production',
-    'Routers',
-    'Servers',
-    'Switches',
-    'Test'
-];
+    "Development",
+    "Production",
+    "Routers",
+    "Servers",
+    "Switches",
+    "Test"
+]
