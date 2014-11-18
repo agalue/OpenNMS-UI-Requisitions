@@ -156,6 +156,8 @@
       var deployedRequisitions = results[1].data;
       var requisitionsData = new RequisitionsData();
 
+      var startTime = new Date().getTime();
+
       $log.debug('mergeRequisitions: processing deployed requisitions');
       angular.forEach(deployedRequisitions['model-import'], function(r) {
         requisitionsService.internal.mergeRequisition(requisitionsData, r, true);
@@ -167,6 +169,9 @@
       });
 
       requisitionsService.internal.setCachedRequisitionsData(requisitionsData);
+
+      var enlapsedTime = new Date().getTime() - startTime;
+      $log.debug('mergeRequisitions: done in ' + enlapsedTime + ' ms.');
       return requisitionsData;
     };
 
