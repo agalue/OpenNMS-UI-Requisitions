@@ -28,6 +28,15 @@
   .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'SynchronizeService', 'growl', function($scope, $filter, $window, RequisitionsService, SynchronizeService, growl) {
 
     /**
+     * @description The load flag.
+     * @ngdoc property
+     * @name RequisitionsController#loaded
+     * @propertyOf RequisitionsController
+     * @returns {boolean} True, if the requisitions have been loaded.
+     */
+    $scope.loaded = false;
+
+    /**
      * @description The requisitions list
      * @ngdoc property
      * @name RequisitionsController#requisitions
@@ -261,6 +270,7 @@
     * @methodOf RequisitionsController
     */
     $scope.initialize = function() {
+      $scope.loaded = false;
       RequisitionsService.getRequisitions().then(
         function(data) { // success
           $scope.currentPage = 1;
@@ -268,6 +278,7 @@
           $scope.totalItems = data.requisitions.length;
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
+          $scope.loaded = true;
           growl.addInfoMessage('Loaded ' + data.requisitions.length + ' requisitions...');
         },
         $scope.errorHandler
