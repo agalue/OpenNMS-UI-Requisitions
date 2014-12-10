@@ -53,18 +53,32 @@
     * @methodOf ForeignSourceController
     */
     $scope.goBack = function() {
-      $window.location.href = '#/requisitions/' + $scope.foreignSource;
-    };
-
-    /**
-    * @description Goes to requisitions list (navigation)
-    *
-    * @name ForeignSourceController:goTop
-    * @ngdoc method
-    * @methodOf ForeignSourceController
-    */
-    $scope.goTop = function() {
-      $window.location.href = '#/requisitions';
+      var doGoBack = function() {
+        if ($scope.foreignSource == 'default') {
+          $window.location.href = '#/requisitions';
+        } else {
+          $window.location.href = '#/requisitions/' + $scope.foreignSource;
+        }
+      }
+      if (this.fsForm.$dirty) {
+        bootbox.dialog({
+          message: 'There are changes on the current requisition. Are you sure you want to cancel ?',
+          title: 'Cancel Changes',
+          buttons: {
+            success: {
+              label: 'Yes',
+              className: 'btn-danger',
+              callback: doGoBack
+            },
+            main: {
+              label: 'No',
+              className: 'btn-default'
+            }
+          }
+        });
+      } else {
+        doGoBack();
+      }
     };
 
     /**
@@ -89,6 +103,7 @@
     * @param {boolean} isNew true, if the policy is new
     */
     $scope.editPolicy = function(index, isNew) {
+      var form = this.fsForm;
       var policyToEdit = $scope.foreignSourceDef.policies[index];
       $modal.open({
         backdrop: true,
@@ -99,6 +114,7 @@
         }
       }).result.then(function(result) {
         angular.copy(result, policyToEdit);
+        form.$dirty = true;
       }, function() {
         if (isNew) {
           $scope.foreignSourceDef.policies.pop();
@@ -116,6 +132,7 @@
     */
     $scope.removePolicy = function(index) {
       $scope.foreignSourceDef.policies.splice(index, 1);
+      this.fsForm.$dirty = true;
     };
 
     /**
@@ -140,6 +157,7 @@
     * @param {boolean} isNew true, if the detector is new
     */
     $scope.editDetector = function(index, isNew) {
+      var form = this.fsForm;
       var detectorToEdit = $scope.foreignSourceDef.detectors[index];
       $modal.open({
         backdrop: true,
@@ -150,6 +168,7 @@
         }
       }).result.then(function(result) {
         angular.copy(result, detectorToEdit);
+        form.$dirty = true;
       }, function() {
         if (isNew) {
           $scope.foreignSourceDef.detectors.pop();
@@ -167,6 +186,7 @@
     */
     $scope.removeDetector = function(index) {
       $scope.foreignSourceDef.detectors.splice(index, 1);
+      this.fsForm.$dirty = true;
     };
 
     /**
@@ -189,9 +209,11 @@
     * @methodOf ForeignSourceController
     */
     $scope.save = function() {
+      var form = this.fsForm;
       RequisitionsService.saveForeignSourceDefinition($scope.foreignSourceDef).then(
         function() { // success
           growl.success('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
+          form.$dirty = false;
         },
         $scope.errorHandler
       );

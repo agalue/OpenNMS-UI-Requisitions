@@ -69,18 +69,28 @@
     * @methodOf NodeController
     */
     $scope.goBack = function() {
-      $window.location.href = '#/requisitions/' + $scope.foreignSource;
-    };
-
-    /**
-    * @description Goes to requisitions list (navigation)
-    *
-    * @name NodeController:goTop
-    * @ngdoc method
-    * @methodOf NodeController
-    */
-    $scope.goTop = function() {
-      $window.location.href = '#/requisitions';
+      var doGoBack = function() {
+        $window.location.href = '#/requisitions/' + $scope.foreignSource;
+      }
+      if (this.nodeForm.$dirty) {
+        bootbox.dialog({
+          message: 'There are changes on the current node. Are you sure you want to cancel ?',
+          title: 'Cancel Changes',
+          buttons: {
+            success: {
+              label: 'Yes',
+              className: 'btn-danger',
+              callback: doGoBack
+            },
+            main: {
+              label: 'No',
+              className: 'btn-default'
+            }
+          }
+        });
+      } else {
+        doGoBack();
+      }
     };
 
     /**
@@ -105,6 +115,7 @@
     * @param {boolean} isNew true, if the asset is new
     */
     $scope.editAsset = function(index, isNew) {
+      var form = this.nodeForm;
       var assetToEdit = $scope.node.assets[index];
 
       var modalInstance = $modal.open({
@@ -118,6 +129,7 @@
 
       modalInstance.result.then(function(result) {
         angular.copy(result, assetToEdit);
+        form.$dirty = true;
       }, function() {
         if (isNew) {
           $scope.node.assets.pop();
@@ -135,6 +147,7 @@
     */
     $scope.removeAsset = function(index) {
       $scope.node.assets.splice(index, 1);
+      this.nodeForm.$dirty = true;
     };
 
     /**
@@ -158,6 +171,7 @@
     * @param {boolean} isNew true, if the interface is new
     */
     $scope.editInterface = function(index, isNew) {
+      var form = this.nodeForm;
       var intfToEdit = $scope.node.interfaces[index];
 
       var modalInstance = $modal.open({
@@ -171,6 +185,7 @@
 
       modalInstance.result.then(function(result) {
         angular.copy(result, intfToEdit);
+        form.$dirty = true;
       }, function() {
         if (isNew) {
           $scope.node.interfaces.pop();
@@ -188,6 +203,7 @@
     */
     $scope.removeInterface = function(index) {
       $scope.node.interfaces.splice(index, 1);
+      this.nodeForm.$dirty = true;
     };
 
     /**
@@ -211,6 +227,7 @@
     */
     $scope.removeCategory = function(index) {
       $scope.node.categories.splice(index, 1);
+      this.nodeForm.$dirty = true;
     };
 
     /**
@@ -222,6 +239,7 @@
     */
     $scope.addCategory = function() {
       $scope.node.addNewCategory();
+      this.nodeForm.$dirty = true;
       RequisitionsService.getAvailableCategories().then(function(categories) {
         $scope.availableCategories = categories;
       });
@@ -235,9 +253,11 @@
     * @methodOf NodeController
     */
     $scope.save = function() {
+      var form = this.nodeForm;
       RequisitionsService.saveNode($scope.node).then(
         function() { // success
           growl.success('The node ' + $scope.node.nodeLabel + ' has been saved.');
+          form.$dirty = false;
         },
         $scope.errorHandler
       );

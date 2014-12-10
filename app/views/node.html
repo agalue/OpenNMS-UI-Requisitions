@@ -2,17 +2,6 @@
 
 <div class="panel panel-default">
 
-  <div class="panel-heading">
-
-    <!-- Breadcrumb Bar -->
-    <ol class="breadcrumb">
-      <li><a ng-click="goTop()">Requisitions</a></li>
-      <li><a ng-click="goBack()">{{ node.foreignSource }}</a></li>
-      <li class="active">{{ node.foreignId }}</li>
-    </ol>
-
-  </div>
-
   <div class="panel-content">
 
     <form name="nodeForm" novalidate>
@@ -27,12 +16,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <div class="navbar-brand">Node {{ node.nodeLabel }}</div>
+            <div class="navbar-brand">{{ node.nodeLabel }} @ {{ foreignSource }}</div>
           </div>
           <div class="collapse navbar-collapse" id="node-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
               <li><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-              <li><button type="button" class="btn btn-default navbar-btn" ng-disabled="nodeForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
+              <li><button type="button" class="btn btn-primary navbar-btn" ng-show="nodeForm.$dirty && nodeForm.$valid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
             </ul>
           </div>
         </div>

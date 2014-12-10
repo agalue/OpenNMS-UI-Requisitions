@@ -2,16 +2,6 @@
 
 <div class="panel panel-default">
 
-  <div class="panel-heading">
-
-    <!-- Breadcrumb Bar -->
-    <ol class="breadcrumb">
-      <li><a ng-click="goTop()">Requisitions</a></li>
-      <li class="active">{{ foreignSource }}</li>
-    </ol>
-
-  </div>
-
   <div class="panel-content">
 
     <form name="fsForm" novalidate>
@@ -31,9 +21,8 @@
           </div>
           <div class="collapse navbar-collapse" id="node-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li ng-hide="foreignSource == 'default'"><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-              <li ng-show="foreignSource == 'default'"><a ng-click="goTop()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-              <li><button type="button" class="btn btn-default navbar-btn" ng-disabled="fsForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
+              <li><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
+              <li><button type="button" class="btn btn-primary navbar-btn" ng-show="fsForm.$dirty && fsForm.$valid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
             </ul>
           </div>
         </div>
@@ -45,13 +34,13 @@
           <div class="col-lg-6">
             <div class="form-group">
               <label classs="control-label">Last Modified</label>
-              <span class="form-control input-xs">{{ foreignSourceDef['date-stamp'] | date:'dd-MM-yy hh:mm:ss' }}</span>
+              <span class="form-control">{{ foreignSourceDef['date-stamp'] | date:'dd-MM-yy hh:mm:ss' }}</span>
             </div>
           </div>
           <div class="col-lg-6">
             <div class="form-group" ng-class="{ 'has-error' : fsForm.scanInterval.$invalid }">
               <label classs="control-label" for="scanInterval">Scan Interval</label>
-              <input class="form-control input-xs" type="text" id="scanInterval" name="scanInterval" placeholder="Scan Interval" ng-model="foreignSourceDef['scan-interval']" required/>
+              <input class="form-control" type="text" id="scanInterval" name="scanInterval" placeholder="Scan Interval" ng-model="foreignSourceDef['scan-interval']" required/>
               <div ng-show="fsForm.scanInterval.$invalid" class="help-block">Scan Interval is required.</div>
             </div>
           </div>
