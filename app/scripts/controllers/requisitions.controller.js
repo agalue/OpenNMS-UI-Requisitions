@@ -90,7 +90,7 @@
     * @param {string} message The error message
     */
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message, {ttl: 10000});
+      growl.error(message, {ttl: 10000});
     };
 
     /**
@@ -119,7 +119,7 @@
     * @param {string} foreignSource The name of the requisition
     */
     $scope.clone = function(foreignSource) {
-      growl.addWarnMessage('Cannot clone foreign source definitions for ' + foreignSource + '. Not implemented yet.'); // FIXME
+      growl.warn('Cannot clone foreign source definitions for ' + foreignSource + '. Not implemented yet.'); // FIXME
     };
 
     /**
@@ -136,7 +136,7 @@
         if (foreignSource) {
           RequisitionsService.addRequisition(foreignSource).then(
             function(r) { // success
-              growl.addSuccessMessage('The requisition ' + r.foreignSource + ' has been created.');
+              growl.success('The requisition ' + r.foreignSource + ' has been created.');
             },
             $scope.errorHandler
           );
@@ -195,7 +195,7 @@
         if (ok) {
           RequisitionsService.removeAllNodesFromRequisition(foreignSource).then(
             function() { // success
-              growl.addSuccessMessage('All the nodes from ' + foreignSource + ' have been removed');
+              growl.success('All the nodes from ' + foreignSource + ' have been removed');
             },
             $scope.errorHandler
           );
@@ -218,7 +218,7 @@
           var deployed = $scope.requisitions[idx].deployed;
           RequisitionsService.deleteRequisition(foreignSource, deployed).then(
             function() { // success
-              growl.addSuccessMessage('The requisition ' + foreignSource + ' has been deleted.');
+              growl.success('The requisition ' + foreignSource + ' has been deleted.');
             },
             $scope.errorHandler
           );
@@ -245,7 +245,7 @@
     * @methodOf RequisitionsController
     */
     $scope.resetDefaultForeignSource = function() {
-      growl.addWarnMessage('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
+      growl.warn('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
     };
 
     /**
@@ -256,7 +256,7 @@
     * @methodOf RequisitionsController
     */
     $scope.refresh = function() {
-      growl.addInfoMessage('Refreshing requisitions...');
+      growl.info('Refreshing requisitions...');
       RequisitionsService.clearRequisitionsCache();
       $scope.requisitions = [];
       $scope.initialize();
@@ -279,7 +279,7 @@
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
           $scope.loaded = true;
-          growl.addInfoMessage('Loaded ' + data.requisitions.length + ' requisitions...');
+          growl.info('Loaded ' + data.requisitions.length + ' requisitions...');
         },
         $scope.errorHandler
       );

@@ -116,7 +116,7 @@
     * @param {string} message The error message
     */
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message, {ttl: 10000});
+      growl.error(message, {ttl: 10000});
     };
 
     /**
@@ -170,7 +170,7 @@
         if (ok) {
           RequisitionsService.deleteNode(node).then(
             function() { // success
-              growl.addSuccessMessage('The node ' + node.nodeLabel + ' has been deleted.');
+              growl.success('The node ' + node.nodeLabel + ' has been deleted.');
             },
             $scope.errorHandler
           );
@@ -186,7 +186,7 @@
     * @methodOf RequisitionController
     */
     $scope.initialize = function() {
-      growl.addInfoMessage('Retrieving requisition ' + $scope.foreignSource + '...');
+      growl.info('Retrieving requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getRequisition($scope.foreignSource).then(
         function(requisition) { // success
           $scope.currentPage = 1;

@@ -92,7 +92,7 @@
     * @param {string} message The error message
     */
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message, {ttl: 10000});
+      growl.error(message, {ttl: 10000});
     };
 
     /**
@@ -237,7 +237,7 @@
     $scope.save = function() {
       RequisitionsService.saveNode($scope.node).then(
         function() { // success
-          growl.addSuccessMessage('The node ' + $scope.node.nodeLabel + ' has been saved.');
+          growl.success('The node ' + $scope.node.nodeLabel + ' has been saved.');
         },
         $scope.errorHandler
       );
@@ -251,7 +251,7 @@
     * @methodOf NodeController
     */
     $scope.refresh = function() {
-      growl.addInfoMessage('Retrieving node ' + $scope.foreignId + ' from requisition ' + $scope.foreignSource + '...');
+      growl.info('Retrieving node ' + $scope.foreignId + ' from requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getNode($scope.foreignSource, $scope.foreignId).then(
         function(node) { // success
           $scope.node = node;

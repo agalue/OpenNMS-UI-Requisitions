@@ -23,7 +23,7 @@ module.exports = function(config) {
       'app/bower_components/bootstrap/dist/js/bootstrap.js',
       'app/bower_components/angular-loading-bar/src/loading-bar.js',
       'app/bower_components/angular-animate/angular-animate.js',
-      'app/bower_components/angular-growl/build/angular-growl.js',
+      'app/bower_components/angular-growl-v2/build/angular-growl.js',
 
       'app/scripts/*.js',
       'app/scripts/model/*.js',

@@ -82,12 +82,11 @@ body {
 
 /* Link Cursors */
 .navbar-nav li:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 span .input-group-addon {
-    cursor: pointer;
+  cursor: pointer;
 }
-.dropdown-menu {
-  max-height: 300px;
-  overflow: auto;
+.dropdown:hover .dropdown-menu {
+  display: block;
 }

@@ -76,7 +76,7 @@
     * @param {string} message The error message
     */
     $scope.errorHandler = function(message) {
-      growl.addErrorMessage(message);
+      growl.error(message, {ttl: 10000});
     };
 
     /**
@@ -191,7 +191,7 @@
     $scope.save = function() {
       RequisitionsService.saveForeignSourceDefinition($scope.foreignSourceDef).then(
         function() { // success
-          growl.addSuccessMessage('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
+          growl.success('The definition for the requisition ' + $scope.foreignSource + ' has been saved.');
         },
         $scope.errorHandler
       );
@@ -205,7 +205,7 @@
     * @methodOf ForeignSourceController
     */
     $scope.refresh = function() {
-      growl.addInfoMessage('Retrieving definition for requisition ' + $scope.foreignSource + '...');
+      growl.info('Retrieving definition for requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getForeignSourceDefinition($scope.foreignSource).then(
         function(data) { // success
           $scope.foreignSourceDef = data;

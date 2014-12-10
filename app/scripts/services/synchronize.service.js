@@ -40,7 +40,7 @@
         var doSynchronize = function(foreignSource, rescanExisting) {
           RequisitionsService.synchronizeRequisition(foreignSource, rescanExisting).then(
             function() { // success
-              growl.addSuccessMessage('The import operation has been started for ' + foreignSource + ' (rescanExisting? ' + rescanExisting + ')');
+              growl.success('The import operation has been started for ' + foreignSource + ' (rescanExisting? ' + rescanExisting + ')');
             },
             errorHandler
           );

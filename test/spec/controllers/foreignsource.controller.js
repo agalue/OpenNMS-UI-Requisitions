@@ -38,10 +38,10 @@ describe('Controller: ForeignSourceController', function () {
     mockRequisitionsService.getForeignSourceDefinition.andReturn(requisitionDefer.promise);
 
     mockGrowl = {
-      addWarnMessage: function(msg) { console.warn(msg); },
-      addErrorMessage: function(msg) { console.error(msg); },
-      addInfoMessage: function(msg) { console.info(msg); },
-      addSuccessMessage: function(msg) { console.info(msg); }
+      warn: function(msg) { console.warn(msg); },
+      error: function(msg) { console.error(msg); },
+      info: function(msg) { console.info(msg); },
+      success: function(msg) { console.info(msg); }
     };
   });
 
