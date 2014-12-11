@@ -59,6 +59,14 @@
      */
     $scope.node = {};
 
+    /**
+     * @description The available configured categories
+     *
+     * @ngdoc property
+     * @name NodeController#availableCategories
+     * @propertyOf NodeController
+     * @returns {array} The categories
+     */
     $scope.availableCategories = [];
 
     /**
@@ -240,9 +248,6 @@
     $scope.addCategory = function() {
       $scope.node.addNewCategory();
       this.nodeForm.$dirty = true;
-      RequisitionsService.getAvailableCategories().then(function(categories) {
-        $scope.availableCategories = categories;
-      });
     };
 
     /**
@@ -275,6 +280,12 @@
       RequisitionsService.getNode($scope.foreignSource, $scope.foreignId).then(
         function(node) { // success
           $scope.node = node;
+        },
+        $scope.errorHandler
+      );
+      RequisitionsService.getAvailableCategories().then(
+        function(categories) { // success
+          $scope.availableCategories = categories;
         },
         $scope.errorHandler
       );
