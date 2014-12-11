@@ -15,6 +15,7 @@ describe('Controller: NodeController', function () {
 
   var foreignSource = 'test-requisition';
   var foreignId = '1001';
+  var categories = ['Production', 'Testing'];
   var node = new RequisitionNode(foreignSource, { 'foreign-id': foreignId });
 
   function createController() {
@@ -39,8 +40,12 @@ describe('Controller: NodeController', function () {
 
   beforeEach(function() {
     mockRequisitionsService.getNode = jasmine.createSpy('getNode');
+    mockRequisitionsService.getAvailableCategories = jasmine.createSpy('getAvailableCategories');
     var nodeDefer = $q.defer();
     nodeDefer.resolve(node);
+    var categoriesDefer = $q.defer();
+    categoriesDefer.resolve(categories);
+    mockRequisitionsService.getAvailableCategories.andReturn(categoriesDefer.promise);
     mockRequisitionsService.getNode.andReturn(nodeDefer.promise);
 
     mockGrowl = {
@@ -54,9 +59,11 @@ describe('Controller: NodeController', function () {
   it('test controller', function() {
     createController();
     scope.$digest();
+    expect(mockRequisitionsService.getAvailableCategories).toHaveBeenCalled();
     expect(mockRequisitionsService.getNode).toHaveBeenCalledWith(foreignSource, foreignId);
     expect(scope.foreignSource).toBe(foreignSource);
     expect(scope.foreignId).toBe(foreignId);
+    expect(scope.availableCategories.length).toBe(2);
   });
 
 });
