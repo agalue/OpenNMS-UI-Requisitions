@@ -186,7 +186,7 @@
     * @methodOf RequisitionController
     */
     $scope.initialize = function() {
-      growl.info('Retrieving requisition ' + $scope.foreignSource + '...');
+      growl.success('Retrieving requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getRequisition($scope.foreignSource).then(
         function(requisition) { // success
           $scope.currentPage = 1;

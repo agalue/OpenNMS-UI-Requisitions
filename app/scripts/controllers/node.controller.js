@@ -283,12 +283,6 @@
         },
         $scope.errorHandler
       );
-      RequisitionsService.getAvailableCategories().then(
-        function(categories) { // success
-          $scope.availableCategories = categories;
-        },
-        $scope.errorHandler
-      );
     };
 
     // Initialize the node's page for either adding a new node or editing an existing node
@@ -298,6 +292,12 @@
     } else {
       $scope.refresh();
     }
+    RequisitionsService.getAvailableCategories().then(
+      function(categories) { // success
+        $scope.availableCategories = categories;
+      },
+      $scope.errorHandler
+    );
   }]);
 
 }());

@@ -256,7 +256,7 @@
     * @methodOf RequisitionsController
     */
     $scope.refresh = function() {
-      growl.info('Refreshing requisitions...');
+      growl.success('Refreshing requisitions...');
       RequisitionsService.clearRequisitionsCache();
       $scope.requisitions = [];
       $scope.initialize();
@@ -279,7 +279,7 @@
           $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
           $scope.filteredRequisitions = data.requisitions;
           $scope.loaded = true;
-          growl.info('Loaded ' + data.requisitions.length + ' requisitions...');
+          growl.success('Loaded ' + data.requisitions.length + ' requisitions...');
         },
         $scope.errorHandler
       );

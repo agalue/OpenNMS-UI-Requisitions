@@ -227,7 +227,7 @@
     * @methodOf ForeignSourceController
     */
     $scope.refresh = function() {
-      growl.info('Retrieving definition for requisition ' + $scope.foreignSource + '...');
+      growl.success('Retrieving definition for requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getForeignSourceDefinition($scope.foreignSource).then(
         function(data) { // success
           $scope.foreignSourceDef = data;
