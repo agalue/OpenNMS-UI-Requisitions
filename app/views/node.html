@@ -151,7 +151,7 @@
           <br/>
           <div class="form-group">
             <div class="input-group" ng-repeat="category in node.categories">
-              <input class="form-control" type="text" placeholder="Category Name" ng-model="category.name" typeahead-editable="true" typeahead="category for category in availableCategories | filter:$viewValue" typeahead-min-length="0" required></input>
+              <input class="form-control" type="text" placeholder="Category Name" ng-model="category.name" ng-focus="onFocus($event)" empty-typeahead typeahead-editable="true" typeahead="category for category in availableCategories | filter:$viewValue:fieldComparator" required></input>
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button" ng-click="removeCategory($index)"><span class="glyphicon glyphicon-remove"></span></button>
               </span>

@@ -21,11 +21,12 @@
   * @requires $window Document window
   * @requires $modal Angular modal
   * @requires RequisitionsService The requisitions service
+  * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires growl The growl plugin for instant notifications
   *
   * @description The controller for manage requisitioned nodes (add/edit the nodes on a specific requisition)
   */
-  .controller('NodeController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, growl) {
+  .controller('NodeController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'EmptyTypeaheadService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, EmptyTypeaheadService, growl) {
 
     /**
      * @description The foreign source (a.k.a the name of the requisition).
@@ -68,6 +69,20 @@
      * @returns {array} The categories
      */
     $scope.availableCategories = [];
+
+    /**
+    * @description fieldComparator method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
+
+    /**
+    * @description onFocus method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.onFocus = EmptyTypeaheadService.onFocus;
 
     /**
     * @description Goes back to requisition editor (navigation)

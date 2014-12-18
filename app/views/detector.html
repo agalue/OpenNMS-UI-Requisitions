@@ -8,11 +8,11 @@
   <form name="detectorForm" role="form">
     <div class="form-group">
       <label class="control-label" for="name">Name</label>
-      <input class="form-control" type="text" id="name" name="name" placeholder="Detector Name" ng-model="detector.name" typeahead-editable="true" typeahead-on-select="setClassForName($item)" typeahead="detector.name as detector.name for detector in availableDetectors | filter:$viewValue" typeahead-min-length="0" required></input>
+      <input class="form-control" type="text" id="name" name="name" placeholder="Detector Name" ng-model="detector.name" ng-focus="onFocus($event)" empty-typeahead typeahead-editable="true" typeahead-on-select="setClassForName($item)" typeahead="detector.name as detector.name for detector in availableDetectors | filter:$viewValue:fieldComparator" required></input>
     </div>
     <div class="form-group">
       <label class="control-label" for="clazz">Class</label>
-      <input class="form-control" type="text" id="clazz" name="clazz" placeholder="Implementation Class" ng-model="detector.class" typeahead-editable="false" typeahead-on-select="setNameForClass($item)" typeahead="detector.class as detector.name for detector in availableDetectors | filter:$viewValue" typeahead-min-length="0" required></input>
+      <input class="form-control" type="text" id="clazz" name="clazz" placeholder="Implementation Class" ng-model="detector.class" ng-focus="onFocus($event)" empty-typeahead typeahead-editable="false" typeahead-on-select="setNameForClass($item)" typeahead="detector.class as detector.name for detector in availableDetectors | filter:$viewValue:fieldComparator" required></input>
     </div>
     <div class="form-group" ng-repeat="parameter in detector.parameter">
       <select ng-if="!parameter.key" class="form-control" placeholder="Parameter Name" ng-model="parameter.key" ng-options="param.key as param.key for param in getAvailableParameters()"></select>

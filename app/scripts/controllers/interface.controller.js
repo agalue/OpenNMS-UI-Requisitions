@@ -16,11 +16,12 @@
   *
   * @requires $scope Angular local scope
   * @requires $modalInstance Angular modal instance
+  * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires intf Interface policy object
   *
   * @description The controller for manage the modal dialog for add/edit IP interfaces of requisitioned nodes
   */
-  .controller('InterfaceController', ['$scope', '$modalInstance', 'intf', function($scope, $modalInstance, intf) {
+  .controller('InterfaceController', ['$scope', '$modalInstance', 'EmptyTypeaheadService', 'intf', function($scope, $modalInstance, EmptyTypeaheadService, intf) {
 
     /**
      * @description The interface object
@@ -45,6 +46,20 @@
       { id: 'S', title: 'Secondary' },
       { id: 'N', title: 'Not Elegible'}
     ];
+
+    /**
+    * @description fieldComparator method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
+
+    /**
+    * @description onFocus method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.onFocus = EmptyTypeaheadService.onFocus;
 
     /**
     * @description Saves the current interface

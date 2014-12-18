@@ -17,11 +17,12 @@
   * @requires $scope Angular local scope
   * @requires $modalInstance Angular modal instance
   * @requires RequisitionsService The Requisitions Servive
+  * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires policy Requisition policy object
   *
   * @description The controller for manage the modal dialog for add/edit requisition policies
   */
-  .controller('PolicyController', ['$scope', '$modalInstance', 'RequisitionsService', 'policy', function($scope, $modalInstance, RequisitionsService, policy) {
+  .controller('PolicyController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'policy', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, policy) {
 
     /**
     * @description The policy object
@@ -52,6 +53,20 @@
     * @returns {array} The optional parameters list
     */
     $scope.optionalParameters = [];
+
+    /**
+    * @description fieldComparator method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
+
+    /**
+    * @description onFocus method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.onFocus = EmptyTypeaheadService.onFocus;
 
     /**
     * @description Saves the current policy

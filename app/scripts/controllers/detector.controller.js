@@ -17,11 +17,12 @@
   * @requires $scope Angular local scope
   * @requires $modalInstance Angular modal instance
   * @requires RequisitionsService The Requisitions Servive
+  * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires detector Requisition detector object
   *
   * @description The controller for manage the modal dialog for add/edit requisition detectors
   */
-  .controller('DetectorController', ['$scope', '$modalInstance', 'RequisitionsService', 'detector', function($scope, $modalInstance, RequisitionsService, detector) {
+  .controller('DetectorController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'detector', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, detector) {
 
     /**
      * @description The detector object
@@ -52,6 +53,20 @@
      * @returns {array} The parameters list
      */
     $scope.availableParameters = [];
+
+    /**
+    * @description fieldComparator method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
+
+    /**
+    * @description onFocus method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.onFocus = EmptyTypeaheadService.onFocus;
 
     /**
     * @description Gets the available parameters not being used by the detector
