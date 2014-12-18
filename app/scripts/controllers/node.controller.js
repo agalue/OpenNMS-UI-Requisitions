@@ -276,7 +276,7 @@
     * @methodOf NodeController
     */
     $scope.refresh = function() {
-      growl.info('Retrieving node ' + $scope.foreignId + ' from requisition ' + $scope.foreignSource + '...');
+      growl.success('Retrieving node ' + $scope.foreignId + ' from requisition ' + $scope.foreignSource + '...');
       RequisitionsService.getNode($scope.foreignSource, $scope.foreignId).then(
         function(node) { // success
           $scope.node = node;
