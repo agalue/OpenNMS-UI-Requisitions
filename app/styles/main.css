@@ -87,6 +87,12 @@ body {
 span .input-group-addon {
   cursor: pointer;
 }
+/* Auto-show menus */
 .dropdown:hover .dropdown-menu {
   display: block;
+}
+/* Avoid large menus using scroll */
+.dropdown-menu {
+  max-height: 300px;
+  overflow: auto;
 }

@@ -17,11 +17,12 @@
   * @requires $scope Angular local scope
   * @requires $modalInstance Angular modal instance
   * @requires RequisitionsService The Requisitions Servive
+  * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires asset Node asset object
   *
   * @description The controller for manage the modal dialog for add/edit asserts of requisitioned nodes
   */
-  .controller('AssetController', ['$scope', '$modalInstance', 'RequisitionsService', 'asset', function($scope, $modalInstance, RequisitionsService, asset) {
+  .controller('AssetController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'asset', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, asset) {
 
     /**
      * @description The asset object
@@ -43,13 +44,27 @@
     $scope.assetFields = [];
 
     /**
+    * @description fieldComparator method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
+
+    /**
+    * @description onFocus method from EmptyTypeaheadService
+    * @ngdoc method
+    * @methodOf AssetController
+    */
+    $scope.onFocus = EmptyTypeaheadService.onFocus;
+
+    /**
     * @description Saves the current asset
     *
     * @name AssetController:save
     * @ngdoc method
     * @methodOf AssetController
     */
-    $scope.save = function () {
+    $scope.save = function() {
       $modalInstance.close($scope.asset);
     };
 
@@ -60,7 +75,7 @@
     * @ngdoc method
     * @methodOf AssetController
     */
-    $scope.cancel = function () {
+    $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
   
