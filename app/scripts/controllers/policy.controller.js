@@ -56,14 +56,18 @@
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name PolicyController#fieldComparator
     * @methodOf AssetController
     */
     $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
 
     /**
     * @description onFocus method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name PolicyController#onFocus
     * @methodOf AssetController
     */
     $scope.onFocus = EmptyTypeaheadService.onFocus;
@@ -235,7 +239,8 @@
       return params;
     };
 
-    // Initialize
+    // Initialization
+
     RequisitionsService.getAvailablePolicies().then(function(policies) {
       $scope.availablePolicies = policies;
       angular.forEach(policies, function(policy) {

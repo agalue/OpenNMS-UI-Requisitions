@@ -29,59 +29,64 @@
   .controller('RequisitionController', ['$scope', '$filter', '$window', '$routeParams', 'RequisitionsService', 'SynchronizeService', 'growl', function($scope, $filter, $window, $routeParams, RequisitionsService, SynchronizeService, growl) {
 
     /**
-     * @description The foreign source (a.k.a the name of the requisition).
-     * The default value is obtained from the $routeParams.
-     *
-     * @ngdoc property
-     * @name RequisitionController#foreignSource
-     * @propertyOf RequisitionController
-     * @returns {string} The foreign source
-     */
+    * @description The foreign source (a.k.a the name of the requisition).
+    * The default value is obtained from the $routeParams.
+    *
+    * @ngdoc property
+    * @name RequisitionController#foreignSource
+    * @propertyOf RequisitionController
+    * @returns {string} The foreign source
+    */
     $scope.foreignSource = $routeParams.foreignSource;
 
     /**
-     * @description The requisition object
-     * @ngdoc property
-     * @name RequisitionController#requisition
-     * @propertyOf RequisitionController
-     * @returns {object} The requisition object
-     */
+    * @description The requisition object
+    *
+    * @ngdoc property
+    * @name RequisitionController#requisition
+    * @propertyOf RequisitionController
+    * @returns {object} The requisition object
+    */
     $scope.requisition = new Requisition({});
 
     /**
-     * @description The filtered list of nodes
-     * @ngdoc property
-     * @name RequisitionController#filteredNodes
-     * @propertyOf RequisitionController
-     * @returns {array} The filtered array
-     */
+    * @description The filtered list of nodes
+    *
+    * @ngdoc property
+    * @name RequisitionController#filteredNodes
+    * @propertyOf RequisitionController
+    * @returns {array} The filtered array
+    */
     $scope.filteredNodes = [];
 
     /**
-     * @description The amount of items per page for pagination (defaults to 10)
-     * @ngdoc property
-     * @name RequisitionController#pageSize
-     * @propertyOf RequisitionController
-     * @returns {integer} The page size
-     */
+    * @description The amount of items per page for pagination (defaults to 10)
+    *
+    * @ngdoc property
+    * @name RequisitionController#pageSize
+    * @propertyOf RequisitionController
+    * @returns {integer} The page size
+    */
     $scope.pageSize = 10;
 
     /**
-     * @description The maximum size of pages for pagination (defaults to 5)
-     * @ngdoc property
-     * @name RequisitionController#maxSize
-     * @propertyOf RequisitionController
-     * @returns {integer} The maximum size
-     */
+    * @description The maximum size of pages for pagination (defaults to 5)
+    *
+    * @ngdoc property
+    * @name RequisitionController#maxSize
+    * @propertyOf RequisitionController
+    * @returns {integer} The maximum size
+    */
     $scope.maxSize = 5;
 
     /**
-     * @description The total amount of items for pagination (defaults to 0)
-     * @ngdoc property
-     * @name RequisitionController#maxSize
-     * @propertyOf RequisitionController
-     * @returns {integer} The total items
-     */
+    * @description The total amount of items for pagination (defaults to 0)
+    *
+    * @ngdoc property
+    * @name RequisitionController#maxSize
+    * @propertyOf RequisitionController
+    * @returns {integer} The total items
+    */
     $scope.totalItems = 0;
 
     /**
@@ -213,7 +218,8 @@
       $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
     });
 
-    // Initializes the requisition page
+    // Initialization
+
     if ($scope.foreignSource) {
       $scope.initialize();
     }

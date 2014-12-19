@@ -25,45 +25,49 @@
   .controller('DetectorController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'detector', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, detector) {
 
     /**
-     * @description The detector object
-     *
-     * @ngdoc property
-     * @name DetectorController#detector
-     * @propertyOf DetectorController
-     * @returns {object} The detector object
-     */
+    * @description The detector object
+    *
+    * @ngdoc property
+    * @name DetectorController#detector
+    * @propertyOf DetectorController
+    * @returns {object} The detector object
+    */
     $scope.detector = detector;
 
     /**
-     * @description The available detectors object
-     *
-     * @ngdoc property
-     * @name DetectorController#availableDetectors
-     * @propertyOf DetectorController
-     * @returns {array} The detectors list
-     */
+    * @description The available detectors object
+    *
+    * @ngdoc property
+    * @name DetectorController#availableDetectors
+    * @propertyOf DetectorController
+    * @returns {array} The detectors list
+    */
     $scope.availableDetectors = [];
 
     /**
-     * @description The available parameters/attributes for the selected detector
-     *
-     * @ngdoc property
-     * @name DetectorController#availableParameters
-     * @propertyOf DetectorController
-     * @returns {array} The parameters list
-     */
+    * @description The available parameters/attributes for the selected detector
+    *
+    * @ngdoc property
+    * @name DetectorController#availableParameters
+    * @propertyOf DetectorController
+    * @returns {array} The parameters list
+    */
     $scope.availableParameters = [];
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name DetectorController#fieldComparator
     * @methodOf AssetController
     */
     $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
 
     /**
     * @description onFocus method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name DetectorController#onFocus
     * @methodOf AssetController
     */
     $scope.onFocus = EmptyTypeaheadService.onFocus;
@@ -171,7 +175,8 @@
       }
     };
 
-    // Initialize
+    // Initialization
+
     RequisitionsService.getAvailableDetectors().then(function(detectors) {
       $scope.availableDetectors = detectors;
       if ($scope.detector.class != null) {

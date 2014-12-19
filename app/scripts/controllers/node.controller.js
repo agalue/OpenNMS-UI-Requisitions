@@ -29,57 +29,61 @@
   .controller('NodeController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'EmptyTypeaheadService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, EmptyTypeaheadService, growl) {
 
     /**
-     * @description The foreign source (a.k.a the name of the requisition).
-     * The default value is obtained from the $routeParams.
-     *
-     * @ngdoc property
-     * @name NodeController#foreignSource
-     * @propertyOf NodeController
-     * @returns {string} The foreign source
-     */
+    * @description The foreign source (a.k.a the name of the requisition).
+    * The default value is obtained from the $routeParams.
+    *
+    * @ngdoc property
+    * @name NodeController#foreignSource
+    * @propertyOf NodeController
+    * @returns {string} The foreign source
+    */
     $scope.foreignSource = $routeParams.foreignSource;
 
     /**
-     * @description The foreign ID
-     * The default value is obtained from the $routeParams.
-     *
-     * @ngdoc property
-     * @name NodeController#foreignId
-     * @propertyOf NodeController
-     * @returns {string} The foreign ID
-     */
+    * @description The foreign ID
+    * The default value is obtained from the $routeParams.
+    *
+    * @ngdoc property
+    * @name NodeController#foreignId
+    * @propertyOf NodeController
+    * @returns {string} The foreign ID
+    */
     $scope.foreignId = $routeParams.foreignId;
 
     /**
-     * @description The node object
-     *
-     * @ngdoc property
-     * @name NodeController#node
-     * @propertyOf NodeController
-     * @returns {object} The node object
-     */
+    * @description The node object
+    *
+    * @ngdoc property
+    * @name NodeController#node
+    * @propertyOf NodeController
+    * @returns {object} The node object
+    */
     $scope.node = {};
 
     /**
-     * @description The available configured categories
-     *
-     * @ngdoc property
-     * @name NodeController#availableCategories
-     * @propertyOf NodeController
-     * @returns {array} The categories
-     */
+    * @description The available configured categories
+    *
+    * @ngdoc property
+    * @name NodeController#availableCategories
+    * @propertyOf NodeController
+    * @returns {array} The categories
+    */
     $scope.availableCategories = [];
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name NodeController#fieldComparator
     * @methodOf AssetController
     */
     $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
 
     /**
     * @description onFocus method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name NodeController#onFocus
     * @methodOf AssetController
     */
     $scope.onFocus = EmptyTypeaheadService.onFocus;
@@ -300,7 +304,7 @@
       );
     };
 
-    // Initialize the node's page for either adding a new node or editing an existing node
+    // Initialization of the node's page for either adding a new node or editing an existing node
 
     if ($scope.foreignId === '__new__') {
       $scope.node = new RequisitionNode($scope.foreignSource, {});

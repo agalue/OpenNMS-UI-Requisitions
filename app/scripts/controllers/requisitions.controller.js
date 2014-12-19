@@ -28,57 +28,63 @@
   .controller('RequisitionsController', ['$scope', '$filter', '$window', 'RequisitionsService', 'SynchronizeService', 'growl', function($scope, $filter, $window, RequisitionsService, SynchronizeService, growl) {
 
     /**
-     * @description The load flag.
-     * @ngdoc property
-     * @name RequisitionsController#loaded
-     * @propertyOf RequisitionsController
-     * @returns {boolean} True, if the requisitions have been loaded.
-     */
+    * @description The load flag.
+    *
+    * @ngdoc property
+    * @name RequisitionsController#loaded
+    * @propertyOf RequisitionsController
+    * @returns {boolean} True, if the requisitions have been loaded.
+    */
     $scope.loaded = false;
 
     /**
-     * @description The requisitions list
-     * @ngdoc property
-     * @name RequisitionsController#requisitions
-     * @propertyOf RequisitionsController
-     * @returns {array} The requisitions array
-     */
+    * @description The requisitions list
+    *
+    * @ngdoc property
+    * @name RequisitionsController#requisitions
+    * @propertyOf RequisitionsController
+    * @returns {array} The requisitions array
+    */
     $scope.requisitions = [];
 
     /**
-     * @description The filtered version of the requisitions list
-     * @ngdoc property
-     * @name RequisitionsController#filteredRequisitions
-     * @propertyOf RequisitionsController
-     * @returns {array} The filtered array
-     */
+    * @description The filtered version of the requisitions list
+    *
+    * @ngdoc property
+    * @name RequisitionsController#filteredRequisitions
+    * @propertyOf RequisitionsController
+    * @returns {array} The filtered array
+    */
     $scope.filteredRequisitions = [];
  
-     /**
-     * @description The amount of items per page for pagination (defaults to 10)
-     * @ngdoc property
-     * @name RequisitionsController#pageSize
-     * @propertyOf RequisitionsController
-     * @returns {integer} The page size
-     */
+    /**
+    * @description The amount of items per page for pagination (defaults to 10)
+    *
+    * @ngdoc property
+    * @name RequisitionsController#pageSize
+    * @propertyOf RequisitionsController
+    * @returns {integer} The page size
+    */
     $scope.pageSize = 10;
  
-     /**
-     * @description The maximum size of pages for pagination (defaults to 5)
-     * @ngdoc property
-     * @name RequisitionControllers#maxSize
-     * @propertyOf RequisitionsController
-     * @returns {integer} The maximum size
-     */
+    /**
+    * @description The maximum size of pages for pagination (defaults to 5)
+    *
+    * @ngdoc property
+    * @name RequisitionControllers#maxSize
+    * @propertyOf RequisitionsController
+    * @returns {integer} The maximum size
+    */
     $scope.maxSize = 5;
  
-     /**
-     * @description The total amount of items for pagination (defaults to 0)
-     * @ngdoc property
-     * @name RequisitionControllers#maxSize
-     * @propertyOf RequisitionsController
-     * @returns {integer} The total items
-     */
+    /**
+    * @description The total amount of items for pagination (defaults to 0)
+    *
+    * @ngdoc property
+    * @name RequisitionControllers#maxSize
+    * @propertyOf RequisitionsController
+    * @returns {integer} The total items
+    */
     $scope.totalItems = 0;
 
     /**
@@ -299,7 +305,8 @@
       $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
     });
 
-    // Initializes the requisitions page
+    // Initialization
+
     if ($scope.filteredRequisitions.length === 0) {
       $scope.initialize();
     }

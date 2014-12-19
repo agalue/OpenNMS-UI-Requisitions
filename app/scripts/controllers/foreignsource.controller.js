@@ -27,35 +27,40 @@
   .controller('ForeignSourceController', ['$scope', '$routeParams', '$window', '$modal', 'RequisitionsService', 'EmptyTypeaheadService', 'growl', function($scope, $routeParams, $window, $modal, RequisitionsService, EmptyTypeaheadService, growl) {
 
     /**
-     * @description The foreign source (a.k.a the name of the requisition).
-     * The default value is obtained from the $routeParams.
-     *
-     * @ngdoc property
-     * @name ForeignSourceController#foreignSource
-     * @propertyOf ForeignSourceController
-     * @returns {string} The foreign source
-     */
+    * @description The foreign source (a.k.a the name of the requisition).
+    * The default value is obtained from the $routeParams.
+    *
+    * @ngdoc property
+    * @name ForeignSourceController#foreignSource
+    * @propertyOf ForeignSourceController
+    * @returns {string} The foreign source
+    */
     $scope.foreignSource = $routeParams.foreignSource;
 
     /**
-     * @description The foreign source definition object
-     * @ngdoc property
-     * @name ForeignSourceController#foreignSourceDef
-     * @propertyOf ForeignSourceController
-     * @returns {object} The foreign source definition
-     */
+    * @description The foreign source definition object
+    *
+    * @ngdoc property
+    * @name ForeignSourceController#foreignSourceDef
+    * @propertyOf ForeignSourceController
+    * @returns {object} The foreign source definition
+    */
     $scope.foreignSourceDef = {};
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name ForeignSourceController#fieldComparator
     * @methodOf AssetController
     */
     $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
 
     /**
     * @description onFocus method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name ForeignSourceController#onFocus
     * @methodOf AssetController
     */
     $scope.onFocus = EmptyTypeaheadService.onFocus;
@@ -251,7 +256,8 @@
       );
     };
 
-    // Initialize the page
+    // Initialization
+
     if ($scope.foreignSource) {
       $scope.refresh();
     }

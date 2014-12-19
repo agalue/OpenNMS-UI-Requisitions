@@ -24,23 +24,23 @@
   .controller('InterfaceController', ['$scope', '$modalInstance', 'EmptyTypeaheadService', 'intf', function($scope, $modalInstance, EmptyTypeaheadService, intf) {
 
     /**
-     * @description The interface object
-     *
-     * @ngdoc property
-     * @name InterfaceController#intf
-     * @propertyOf InterfaceController
-     * @returns {object} The interface object
-     */
+    * @description The interface object
+    *
+    * @ngdoc property
+    * @name InterfaceController#intf
+    * @propertyOf InterfaceController
+    * @returns {object} The interface object
+    */
     $scope.intf = intf;
 
     /**
-     * @description An array map with the valid values for snmp-primary
-     *
-     * @ngdoc property
-     * @name InterfaceController#snmpPrimaryFields
-     * @propertyOf InterfaceController
-     * @returns {object} The snmp primary fields object
-     */
+    * @description An array map with the valid values for snmp-primary
+    *
+    * @ngdoc property
+    * @name InterfaceController#snmpPrimaryFields
+    * @propertyOf InterfaceController
+    * @returns {object} The snmp primary fields object
+    */
     $scope.snmpPrimaryFields = [
       { id: 'P', title: 'Primary' },
       { id: 'S', title: 'Secondary' },
@@ -49,14 +49,18 @@
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name InterfaceController#fieldComparator
     * @methodOf AssetController
     */
     $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
 
     /**
     * @description onFocus method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name InterfaceController#onFocus
     * @methodOf AssetController
     */
     $scope.onFocus = EmptyTypeaheadService.onFocus;

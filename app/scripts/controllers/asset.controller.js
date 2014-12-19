@@ -25,17 +25,18 @@
   .controller('AssetController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'asset', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, asset) {
 
     /**
-     * @description The asset object
-     *
-     * @ngdoc property
-     * @name AssetController#asset
-     * @propertyOf AssetController
-     * @returns {object} The asset object
-     */
+    * @description The asset object
+    *
+    * @ngdoc property
+    * @name AssetController#asset
+    * @propertyOf AssetController
+    * @returns {object} The asset object
+    */
     $scope.asset = asset;
 
     /**
     * @description The available asset fields
+    *
     * @ngdoc property
     * @name AssetController#$scope.assetFields
     * @propertyOf AssetController
@@ -45,14 +46,18 @@
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name AssetController:fieldComparator
     * @methodOf AssetController
     */
     $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
 
     /**
     * @description onFocus method from EmptyTypeaheadService
+    *
     * @ngdoc method
+    * @name AssetController:onFocus
     * @methodOf AssetController
     */
     $scope.onFocus = EmptyTypeaheadService.onFocus;
@@ -79,7 +84,8 @@
       $modalInstance.dismiss('cancel');
     };
   
-    // Initialize
+    // Initialization
+
     RequisitionsService.getAvailableAssets().then(function(assets) {
       $scope.assetFields = assets;
     });
