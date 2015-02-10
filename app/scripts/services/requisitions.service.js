@@ -314,7 +314,7 @@
     * @ngdoc method
     * @methodOf RequisitionsService
     * @param {string} foreignSource The requisition's name (a.k.a. foreign source)
-    * @param {boolean} rescanExisting true, to scan existing nodes
+    * @param {string} rescanExisting [true, false, dbonly]
     * @returns {object} a promise.
     */
     requisitionsService.synchronizeRequisition = function(foreignSource, rescanExisting) {
@@ -331,7 +331,7 @@
 
       var url = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/import';
       $log.debug('synchronizeRequisition: synchronizing requisition ' + foreignSource);
-      $http({ method: 'PUT', url: url, params: { rescanExisting: rescanExisting ? 'true' : 'false' }})
+      $http({ method: 'PUT', url: url, params: { rescanExisting: rescanExisting }})
       .success(function(data) {
         $log.debug('synchronizeRequisition: synchronized requisition ' + foreignSource);
         var r = requisitionsService.internal.getCachedRequisition(foreignSource);
