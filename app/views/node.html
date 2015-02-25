@@ -2,32 +2,31 @@
 
 <div class="panel panel-default">
 
-  <div class="panel-content">
+  <form name="nodeForm" novalidate>
 
-    <form name="nodeForm" novalidate>
-
-      <!-- Navigation Bar -->
-      <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#node-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <div class="navbar-brand">{{ node.nodeLabel }} @ {{ foreignSource }}</div>
-          </div>
-          <div class="collapse navbar-collapse" id="node-navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-              <li><button type="button" class="btn btn-primary navbar-btn" ng-show="nodeForm.$dirty && nodeForm.$valid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
-            </ul>
-          </div>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#node-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">{{ node.nodeLabel }} @ {{ foreignSource }}</div>
         </div>
-      </nav>
+        <div class="collapse navbar-collapse" id="node-navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
+            <li><button type="button" class="btn btn-primary navbar-btn" ng-show="nodeForm.$dirty && nodeForm.$valid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-      <!-- Form/TabPanel -->
+    <!-- TabPanel -->
+    <div class="container-fluid">
       <tabset justified="true">
 
         <!-- Basic Information Tab -->
@@ -160,8 +159,8 @@
         </tab>
 
       </tabset>
-    </form>
+    </div> <!-- container-fluid -->
 
-  </div> <!-- panel-content -->
+  </form>
 
 </div> <!-- panel -->
