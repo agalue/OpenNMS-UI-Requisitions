@@ -31,6 +31,7 @@
     })
     .when('/requisitions/:foreignSource/nodes/:foreignId', {
       templateUrl: 'views/node.html',
+      //templateUrl: 'views/node-panels.html',
       controller: 'NodeController'
     })
     .otherwise({
