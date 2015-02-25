@@ -9,11 +9,12 @@
 
 describe('Controller: InterfaceController', function () {
 
-  var scope, controllerFactory, mockModalInstance;
+  var scope, $q, controllerFactory, mockModalInstance, mockRequisitionsService = {};
 
   var foreignSource = 'test-requisition';
   var foreignId = '1001';
   var node = new RequisitionNode(foreignSource, { 'foreign-id': foreignId });
+  var services = ['ICMP', 'SNMP', 'HTTP'];
   node.addNewInterface();
   node.interfaces[0].ipAddress = '10.0.0.1';
 
@@ -21,6 +22,7 @@ describe('Controller: InterfaceController', function () {
     return controllerFactory('InterfaceController', {
       $scope: scope,
       $modalInstance: mockModalInstance,
+      RequisitionsService: mockRequisitionsService,
       intf: node.interfaces[0]
     });
   }
@@ -29,12 +31,18 @@ describe('Controller: InterfaceController', function () {
     $provide.value('$log', console);
   }));
 
-  beforeEach(inject(function($rootScope, $controller) {
+  beforeEach(inject(function($rootScope, $controller, _$q_) {
     scope = $rootScope.$new();
     controllerFactory = $controller;
+    $q = _$q_;
   }));
 
   beforeEach(function() {
+    mockRequisitionsService.getAvailableServices = jasmine.createSpy('getAvailableServices');
+    var servicesDefer = $q.defer();
+    servicesDefer.resolve(services);
+    mockRequisitionsService.getAvailableServices.andReturn(servicesDefer.promise);
+
     mockModalInstance = {
       close: function(obj) { console.info(obj); },
       dismiss: function(msg) { console.info(msg); }
@@ -50,6 +58,8 @@ describe('Controller: InterfaceController', function () {
     expect(scope.intf.services.length).toBe(1);
     scope.removeService(0);
     expect(scope.intf.services.length).toBe(0);
+    expect(scope.availableServices.length).toBe(3);
+    expect(scope.availableServices[0]).toBe('ICMP');
   });
 
 });
