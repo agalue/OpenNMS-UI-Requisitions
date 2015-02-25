@@ -797,7 +797,7 @@
       $http.get(url)
       .success(function(data) {
         $log.debug('getAvailableAssets: got available assets');
-        requisitionsService.internal.cache.put('servicesConfig', data);
+        requisitionsService.internal.cache.put('assetsConfig', data);
         deferred.resolve(data);
       })
       .error(function(error, status) {
@@ -824,7 +824,7 @@
     requisitionsService.getAvailableCategories = function() {
       var deferred = $q.defer();
 
-      var config = requisitionsService.internal.cache.get('assetsConfig');
+      var config = requisitionsService.internal.cache.get('categoriesConfig');
       if (config) {
         $log.debug('getAvailableCategories: returning a cached copy of categories configuration');
         deferred.resolve(config);
@@ -836,7 +836,7 @@
       $http.get(url)
       .success(function(data) {
         $log.debug('getAvailableCategories: got available categories');
-        requisitionsService.internal.cache.put('servicesConfig', data);
+        requisitionsService.internal.cache.put('categoriesConfig', data);
         deferred.resolve(data);
       })
       .error(function(error, status) {
