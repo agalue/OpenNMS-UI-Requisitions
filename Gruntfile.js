@@ -348,17 +348,17 @@ module.exports = function (grunt) {
       },
 
       models: {
-        src: ['**/*.model.js'],
+        src: ['**/model/*.js'],
         title: 'Models'
       },
 
       controllers: {
-        src: ['**/*.controller.js'],
+        src: ['**/controllers/*.js'],
         title: 'Controllers'
       },
 
       services: {
-        src: ['**/*.service.js'],
+        src: ['**/services/*.js'],
         title: 'Services'
       }
     }
