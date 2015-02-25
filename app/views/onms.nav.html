@@ -11,23 +11,24 @@
   </div>
   <div class="collapse navbar-collapse" id="onms-navbar-collapse">
     <ul class="nav navbar-nav navbar-right">
+      <li><a href="/opennms/element/index.jsp">Search</a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="/opennms/event/list">Events</a></li>
-          <li><a href="/opennms/alarm/list.htm">Alarms</a></li>
-          <li><a href="/opennms/notification/browse?acktype=unack">Notifications</a></li>
           <li><a href="/opennms/element/nodeList.htm">Nodes</a></li>
           <li><a href="/opennms/asset/index.jsp">Assets</a></li>
+          <li><a href="/opennms/pathOutage/index.jsp">Path Outages</a></li>
         </ul>
       </li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Status <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
+          <li><a href="/opennms/event/list">Events</a></li>
+          <li><a href="/opennms/alarm/list.htm">Alarms</a></li>
+          <li><a href="/opennms/notification/browse?acktype=unack">Notifications</a></li>
           <li><a href="/opennms/outage/index.jsp">Outages</a></li>
-          <li><a href="/opennms/pathOutage/index.jsp">Path Outages</a></li>
+          <li><a href="/opennms/surveillanceView.htm?viewName=default">Surveillance</a></li>
           <li><a href="/opennms/distributedStatusSummary.htm">Distributed Status</a></li>
-          <li><a href="/opennms/surveillanceView.htm?viewName=default">Surveillance View</a></li>
         </ul>
       </li>
       <li class="dropdown">
@@ -35,9 +36,16 @@
         <ul class="dropdown-menu" role="menu">
           <li><a href="/opennms/charts/index.jsp">Charts</a></li>
           <li><a href="/opennms/graph/index.jsp">Resource Graphs</a></li>
-          <li><a href="/opennms/KSC/index.htm">KSC</a></li>
-          <li><a href="/opennms/report/database/index.htm">Database</a></li>
+          <li><a href="/opennms/KSC/index.htm">KSC Reports</a></li>
+          <li><a href="/opennms/report/database/index.htm">Database Reports</a></li>
           <li><a href="/opennms/statisticsReports/index.htm">Statistics</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dashboards <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="/opennms/dashboard.jsp">Dashboard</a></li>
+          <li><a href="/opennms/vaadin-wallboard">Ops Board</a></li>
         </ul>
       </li>
       <li class="dropdown">
@@ -46,6 +54,7 @@
           <li><a href="/opennms/RemotePollerMap/index.jsp">Distributed</a></li>
           <li><a href="/opennms/topology">Topology</a></li>
           <li><a href="/opennms/node-maps">Geographical</a></li>
+          <li><a href="/opennms/map/index.jsp">SVG</a></li>
         </ul>
       </li>
       <li><a href="/opennms/admin/index.jsp">Admin</a></li>

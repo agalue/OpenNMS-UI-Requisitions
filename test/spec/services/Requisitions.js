@@ -194,7 +194,7 @@ describe('Service: RequisitionsService', function () {
 
   // Testing Cache
 
-  it('test cache', function() {
+  it('internal.cache', function() {
     console.log('Running tests for cache');
 
     initializeCache();
@@ -235,7 +235,7 @@ describe('Service: RequisitionsService', function () {
     var importUrl = requisitionsService.internal.requisitionsUrl + '/' + foreignSource + '/import?rescanExisting=false';
     $httpBackend.expect('PUT', importUrl).respond({});
 
-    requisitionsService.synchronizeRequisition(foreignSource);
+    requisitionsService.synchronizeRequisition(foreignSource, "false");
     $httpBackend.flush();
   });
 
