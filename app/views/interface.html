@@ -21,7 +21,7 @@
     <label ng-show="intf.services.length > 0">Services</label>
     <div class="form-group" ng-repeat="service in intf.services">
       <div class="input-group">
-        <input class="form-control" type="text" placeholder="Service Name" ng-model="service.name" required></input>
+        <input class="form-control" type="text" placeholder="Service Name" ng-model="service.name" ng-focus="onFocus($event)" empty-typeahead typeahead="service for service in availableServices | filter:$viewValue:fieldComparator" typeahead-editable="true" required></input>
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" ng-click="removeService($index)"><span class="glyphicon glyphicon-remove"></span></button>
         </span>

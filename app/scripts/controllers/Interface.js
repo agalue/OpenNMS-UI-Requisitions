@@ -16,12 +16,13 @@
   *
   * @requires $scope Angular local scope
   * @requires $modalInstance Angular modal instance
+  * @requires RequisitionsService The Requisitions Servive
   * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires intf Interface policy object
   *
   * @description The controller for manage the modal dialog for add/edit IP interfaces of requisitioned nodes
   */
-  .controller('InterfaceController', ['$scope', '$modalInstance', 'EmptyTypeaheadService', 'intf', function($scope, $modalInstance, EmptyTypeaheadService, intf) {
+  .controller('InterfaceController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'intf', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, intf) {
 
     /**
     * @description The interface object
@@ -46,6 +47,16 @@
       { id: 'S', title: 'Secondary' },
       { id: 'N', title: 'Not Elegible'}
     ];
+
+    /**
+    * @description The available asset fields
+    *
+    * @ngdoc property
+    * @name InterfaceController#availableServices
+    * @propertyOf InterfaceController
+    * @returns {array} List of available services
+    */
+    $scope.availableServices = [];
 
     /**
     * @description fieldComparator method from EmptyTypeaheadService
@@ -109,6 +120,12 @@
     $scope.removeService = function(index) {
       $scope.intf.services.splice(index, 1);
     };
+
+    // Initialization
+
+    RequisitionsService.getAvailableServices().then(function(services) {
+      $scope.availableServices = services;
+    });
 
   }]);
 
