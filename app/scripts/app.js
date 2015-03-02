@@ -49,7 +49,7 @@
       'mouseenter': 'mouseleave'
     });
     $tooltipProvider.options({
-      'placement': 'left',
+      'placement': 'top',
       'trigger': 'mouseenter'
     });
   }]);
