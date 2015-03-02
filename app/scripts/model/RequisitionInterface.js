@@ -51,7 +51,11 @@ function RequisitionInterface(intf) {
    * @propertyOf RequisitionInterface
    * @returns {string} The status
    */
-  self.status = intf['status'] === '1' ? 'managed' : 'unmanaged';
+  self.status = 'managed';
+  if (intf != null && intf['status'] != null) {
+    self.status = intf['status'] === '1' ? 'managed' : 'unmanaged';
+  }
+
 
   /**
    * @description The array of services. Each service is an object with a name property, for example: { name: 'ICMP' }

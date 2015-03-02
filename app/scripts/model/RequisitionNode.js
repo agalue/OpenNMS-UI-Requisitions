@@ -209,7 +209,7 @@ function RequisitionNode(foreignSource, node, isDeployed) {
         'ip-addr': intf.ipAddress,
         'descr': intf.description,
         'snmp-primary': intf.snmpPrimary,
-        'status': intf.status === 'managed' ? '1' : '3',
+        'status': (intf.status || intf.status === 'managed') ? '1' : '3',
         'monitored-service': []
       };
       angular.forEach(intf.services, function(service) {
