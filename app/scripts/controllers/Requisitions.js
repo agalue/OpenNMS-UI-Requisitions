@@ -125,7 +125,7 @@
     * @param {string} foreignSource The name of the requisition
     */
     $scope.clone = function(foreignSource) {
-      growl.warn('Cannot clone foreign source definitions for ' + foreignSource + '. Not implemented yet.'); // FIXME
+      growl.warning('Cannot clone foreign source definitions for ' + foreignSource + '. Not implemented yet.'); // FIXME
     };
 
     /**
@@ -251,7 +251,7 @@
     * @methodOf RequisitionsController
     */
     $scope.resetDefaultForeignSource = function() {
-      growl.warn('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
+      growl.warning('Cannot reset default foreign source definition. Not implemented yet.'); // FIXME
     };
 
     /**

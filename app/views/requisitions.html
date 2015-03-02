@@ -21,7 +21,9 @@
         <div class="collapse navbar-collapse" id="requisitions-navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a ng-click="editDefaultForeignSource()"><span class="glyphicon glyphicon-edit"/> Edit Default</a></li>
+            <!-- Not implemented
             <li><a ng-click="resetDefaultForeignSource()"><span class="glyphicon glyphicon-retweet"/> Reset Default</a></li>
+            -->
             <li><a ng-click="refresh()"><span class="glyphicon glyphicon-refresh"/> Refresh</a></li>
             <li><a ng-click="add()"><span class="glyphicon glyphicon-plus"/> Add</a></li>
           </ul>
@@ -87,11 +89,13 @@
               ng-click="editForeignSource(requisition.foreignSource)">
               <span class="glyphicon glyphicon-edit"></span>
             </a>
+            <!-- Not implemented
             <a class="btn btn-default btn-xs"
               tooltip="Clone the set detectors and policies of the {{requisition.foreignSource}} Requisition"
               ng-click="clone(requisition.foreignSource)">
               <span class="glyphicon glyphicon-link"></span>
             </a>
+            -->
             <a class="btn btn-default btn-xs"
               tooltip="Synchronize the {{requisition.foreignSource}} Requisition"
               ng-click="synchronize(requisition.foreignSource)">
