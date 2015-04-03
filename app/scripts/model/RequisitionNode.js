@@ -200,6 +200,9 @@ function RequisitionNode(foreignSource, node, isDeployed) {
       'city': self.city,
       'building': self.building,
       'interface': [],
+      'parent-foreign-source': self.parentForeignSource,
+      'parent-foreign-id': self.parentForeignId,
+      'parent-foreign-label': self.parentForeignLabel,
       'asset': [],
       'category': []
     };
