@@ -39,8 +39,9 @@
     var requisitionsService = {};
     requisitionsService.internal = {};
 
-    requisitionsService.internal.requisitionsUrl   = '/opennms/rest/requisitions';
+    requisitionsService.internal.requisitionsUrl = '/opennms/rest/requisitions';
     requisitionsService.internal.foreignSourcesUrl = '/opennms/rest/foreignSources';
+    requisitionsService.internal.foreignSourcesConfigUrl = '/opennms/rest/foreignSourcesConfig';
     requisitionsService.internal.cache = $cacheFactory('RequisitionsService');
 
     /**
@@ -666,7 +667,6 @@
     * @methodOf RequisitionsService
     * @returns {object} a promise.
     */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/detectors
     requisitionsService.getAvailableDetectors = function() {
       var deferred = $q.defer();
 
@@ -677,7 +677,7 @@
         return deferred.promise;
       }
 
-      var url = 'scripts/data/detectors.js'; // Using local data
+      var url = requisitionsService.internal.foreignSourcesConfigUrl + '/detectors';
       $log.debug('getAvailableDetectors: getting available detectors');
       $http.get(url)
       .success(function(data) {
@@ -703,7 +703,6 @@
     * @methodOf RequisitionsService
     * @returns {object} a promise.
     */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/policies
     requisitionsService.getAvailablePolicies = function() {
       var deferred = $q.defer();
 
@@ -714,7 +713,7 @@
         return deferred.promise;
       }
 
-      var url = 'scripts/data/policies.js'; // Using local data
+      var url = requisitionsService.internal.foreignSourcesConfigUrl + '/policies';
       $log.debug('getAvailablePolicies: getting available policies');
       $http.get(url)
       .success(function(data) {
@@ -740,10 +739,10 @@
     * @name RequisitionsService:getAvailableServices
     * @ngdoc method
     * @methodOf RequisitionsService
+    * @param {string} foreignSource The requisition's name (a.k.a. foreign source), use 'default' for the default foreign source.
     * @returns {object} a promise.
     */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/services
-    requisitionsService.getAvailableServices = function() {
+    requisitionsService.getAvailableServices = function(foreignSource) {
       var deferred = $q.defer();
 
       var config = requisitionsService.internal.cache.get('servicesConfig');
@@ -753,7 +752,7 @@
         return deferred.promise;
       }
 
-      var url = 'scripts/data/services.js'; // Using local data
+      var url = requisitionsService.internal.foreignSourcesConfigUrl + '/services/' + foreignSource;
       $log.debug('getAvailableServices: getting available services');
       $http.get(url)
       .success(function(data) {
@@ -781,7 +780,6 @@
     * @methodOf RequisitionsService
     * @returns {object} a promise.
     */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/assets
     requisitionsService.getAvailableAssets = function() {
       var deferred = $q.defer();
 
@@ -792,7 +790,7 @@
         return deferred.promise;
       }
 
-      var url = 'scripts/data/assets.js'; // Using local data
+      var url = requisitionsService.internal.foreignSourcesConfigUrl + '/assets';
       $log.debug('getAvailableAssets: getting available assets');
       $http.get(url)
       .success(function(data) {
@@ -820,7 +818,6 @@
     * @methodOf RequisitionsService
     * @returns {object} a promise.
     */
-    // FIXME Temporal solution until we have a valid ReST Service for this: GET /foreignSources/config/categories
     requisitionsService.getAvailableCategories = function() {
       var deferred = $q.defer();
 
@@ -831,7 +828,7 @@
         return deferred.promise;
       }
 
-      var url = 'scripts/data/categories.js'; // Using local data
+      var url = requisitionsService.internal.foreignSourcesConfigUrl + '/categories';
       $log.debug('getAvailableCategories: getting available categories');
       $http.get(url)
       .success(function(data) {

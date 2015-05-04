@@ -18,21 +18,33 @@
   * @requires $modalInstance Angular modal instance
   * @requires RequisitionsService The Requisitions Servive
   * @requires EmptyTypeaheadService The empty typeahead Service
-  * @requires intf Interface policy object
+  * @requires foreignSource The requisition's name (a.k.a. foreign source), use 'default' for the default foreign source.
+  * @requires requisitionInterface The requisition interface object
   *
   * @description The controller for manage the modal dialog for add/edit IP interfaces of requisitioned nodes
   */
-  .controller('InterfaceController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'intf', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, intf) {
+  .controller('InterfaceController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'foreignSource', 'requisitionInterface', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, foreignSource, requisitionInterface) {
+
+    /**
+    * @description The foreign source (a.k.a the name of the requisition).
+    * The default value is obtained from the $routeParams.
+    *
+    * @ngdoc property
+    * @name InterfaceController#foreignSource
+    * @propertyOf InterfaceController
+    * @returns {object} The foreign source
+    */
+    $scope.foreignSource = foreignSource;
 
     /**
     * @description The interface object
     *
     * @ngdoc property
-    * @name InterfaceController#intf
+    * @name InterfaceController#requisitionInterface
     * @propertyOf InterfaceController
     * @returns {object} The interface object
     */
-    $scope.intf = intf;
+    $scope.requisitionInterface = requisitionInterface;
 
     /**
     * @description An array map with the valid values for snmp-primary
@@ -84,7 +96,7 @@
     * @methodOf InterfaceController
     */
     $scope.save = function () {
-      $modalInstance.close($scope.intf);
+      $modalInstance.close($scope.requisitionInterface);
     };
 
     /**
@@ -106,7 +118,7 @@
     * @methodOf InterfaceController
     */
     $scope.addService = function() {
-      $scope.intf.services.push({ name: '' });
+      $scope.requisitionInterface.services.push({ name: '' });
     };
 
     /**
@@ -118,12 +130,12 @@
     * @param {integer} index The index of the service to remove
     */
     $scope.removeService = function(index) {
-      $scope.intf.services.splice(index, 1);
+      $scope.requisitionInterface.services.splice(index, 1);
     };
 
     // Initialization
 
-    RequisitionsService.getAvailableServices().then(function(services) {
+    RequisitionsService.getAvailableServices($scope.foreignSource).then(function(services) {
       $scope.availableServices = services;
     });
 

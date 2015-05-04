@@ -23,7 +23,8 @@ describe('Controller: InterfaceController', function () {
       $scope: scope,
       $modalInstance: mockModalInstance,
       RequisitionsService: mockRequisitionsService,
-      intf: node.interfaces[0]
+      foreignSource: foreignSource,
+      requisitionInterface: node.interfaces[0]
     });
   }
 
@@ -52,12 +53,12 @@ describe('Controller: InterfaceController', function () {
   it('test controller', function() {
     createController();
     scope.$digest();
-    expect(scope.intf.ipAddress).toBe(node.interfaces[0].ipAddress);
+    expect(scope.requisitionInterface.ipAddress).toBe(node.interfaces[0].ipAddress);
     expect(scope.snmpPrimaryFields[0].title).toBe('Primary');
     scope.addService();
-    expect(scope.intf.services.length).toBe(1);
+    expect(scope.requisitionInterface.services.length).toBe(1);
     scope.removeService(0);
-    expect(scope.intf.services.length).toBe(0);
+    expect(scope.requisitionInterface.services.length).toBe(0);
     expect(scope.availableServices.length).toBe(3);
     expect(scope.availableServices[0]).toBe('ICMP');
   });

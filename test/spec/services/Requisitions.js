@@ -145,6 +145,7 @@ describe('Service: RequisitionsService', function () {
   });
 
   // Testing getRequisitions
+
   it('getRequisitions', function() {
     console.log('Running tests for getRequisitions');
 
@@ -470,6 +471,153 @@ describe('Service: RequisitionsService', function () {
     expect(requisition.deployed).toBe(false);
     expect(requisition.nodes.length).toBe(nodeCount - 1);
     expect(requisition.nodesDefined).toBe(pendingCount - 1);
+  });
+
+  // Get services
+
+  it('getAvailableServices', function() {
+    console.log('Running tests for getAvailableServices');
+
+    initializeCache();
+
+    var services = ['ICMP','SNMP'];
+    var url = requisitionsService.internal.foreignSourcesConfigUrl + '/services/test-server';
+    $httpBackend.expect('GET', url).respond(services);
+
+    requisitionsService.getAvailableServices('test-server').then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.length).toBe(2);
+      expect(data[1]).toBe('SNMP');
+    });
+
+    $httpBackend.flush();
+  });
+
+  // Get assets
+
+  it('getAvailableAssets', function() {
+    console.log('Running tests for getAvailableAssets');
+
+    initializeCache();
+
+    var assets = ['address1','city','state','zip'];
+    var url = requisitionsService.internal.foreignSourcesConfigUrl + '/assets';
+    $httpBackend.expect('GET', url).respond(assets);
+
+    requisitionsService.getAvailableAssets().then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.length).toBe(4);
+      expect(data[1]).toBe('city');
+    });
+
+    $httpBackend.flush();
+  });
+
+  // Get categories
+
+  it('getAvailableCategories', function() {
+    console.log('Running tests for getAvailableCategories');
+
+    initializeCache();
+
+    var categories = ['Production','Development','Testing'];
+    var url = requisitionsService.internal.foreignSourcesConfigUrl + '/categories';
+    $httpBackend.expect('GET', url).respond(categories);
+
+    requisitionsService.getAvailableCategories().then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.length).toBe(3);
+      expect(data[1]).toBe('Development');
+    });
+
+    $httpBackend.flush();
+  });
+
+  // Get policies
+
+  it('getAvailablePolicies', function() {
+    console.log('Running tests for getAvailablePolicies');
+
+    initializeCache();
+
+    var policies = [{
+      "name": "Match IP Interface",
+      "class": "org.opennms.netmgt.provision.persist.policies.MatchingIpInterfacePolicy",
+      "parameters": [{
+        "key": "matchBehavior",
+        "required": true,
+        "options": ["ALL_PARAMETERS", "ANY_PARAMETER", "NO_PARAMETERS"]
+      }, {
+        "key": "action",
+        "required": true,
+        "options": ["DISABLE_COLLECTION", "DISABLE_SNMP_POLL", "DO_NOT_PERSIST", "ENABLE_COLLECTION", "ENABLE_SNMP_POLL", "MANAGE", "UNMANAGE"]
+      }, {
+        "key": "hostName",
+        "required": false,
+        "options": []
+      }, {
+        "key": "ipAddress",
+        "required": false,
+        "options": []
+      }]
+    }];
+
+    var url = requisitionsService.internal.foreignSourcesConfigUrl + '/policies';
+    $httpBackend.expect('GET', url).respond(policies);
+
+    requisitionsService.getAvailablePolicies().then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.length).toBe(1);
+      expect(data[0].name).toBe('Match IP Interface');
+      expect(data[0].parameters.length).toBe(4);
+    });
+
+    $httpBackend.flush();
+  });
+
+  // Get detectors
+
+  it('getAvailableDetectors', function() {
+    console.log('Running tests for getAvailableDetectors');
+
+    initializeCache();
+
+    var detectors = [{
+      "name": "ICMP",
+      "class": "org.opennms.netmgt.provision.detector.icmp.IcmpDetector",
+      "parameters": [{
+        "key": "port",
+        "required": false,
+        "options": []
+      }, {
+        "key": "ipMatch",
+        "required": false,
+        "options": []
+      }, {
+        "key": "retries",
+        "required": false,
+        "options": []
+      }, {
+        "key": "timeout",
+        "required": false,
+        "options": []
+      }, {
+        "key": "serviceName",
+        "required": false,
+        "options": []
+      }]
+    }];
+    var url = requisitionsService.internal.foreignSourcesConfigUrl + '/detectors';
+    $httpBackend.expect('GET', url).respond(detectors);
+
+    requisitionsService.getAvailableDetectors().then(function(data) {
+      expect(data).not.toBe(null);
+      expect(data.length).toBe(1);
+      expect(data[0].name).toBe('ICMP');
+      expect(data[0].parameters.length).toBe(5);
+    });
+
+    $httpBackend.flush();
   });
 
 });

@@ -200,12 +200,14 @@
     $scope.editInterface = function(index, isNew) {
       var form = this.nodeForm;
       var intfToEdit = $scope.node.interfaces[index];
+      var foreignSource = $scope.foreignSource;
 
       var modalInstance = $modal.open({
         backdrop: 'static',
         controller: 'InterfaceController',
         templateUrl: 'views/interface.html',
         resolve: {
+          foreignSource: function() { return foreignSource },
           intf: function() { return angular.copy(intfToEdit); }
         }
       });
