@@ -1,0 +1,51 @@
+
+1) If a requisition have 0 nodes deployed, it can be deleted without removing the nodes.
+
+2) Migrate from ngRoute to ui-router
+
+3) Understand why typeahead doesn't show all options when the input field is empty like:
+http://plnkr.co/edit/CutBFE?p=preview
+http://plnkr.co/edit/bZMEOx0Qwo6VzW7oSuEE?p=preview
+http://plnkr.co/edit/LXHDpL?p=preview
+http://plnkr.co/edit/Qrnat8yTvISuM1qHHDlA?p=preview
+http://plnkr.co/edit/kpl4EE?p=preview
+
+Angular version of type-ahead
+http://stackoverflow.com/questions/22459139/making-a-typeahead-with-angularjs
+
+Note: instead of using typeahead, there is another widget to deal with lists:
+https://github.com/angular-ui/ui-select
+
+The following works using unmodified versions of the libraries:
+http://plnkr.co/edit/bZMEOx0Qwo6VzW7oSuEE?p=preview
+  <head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+
+4) Use Angular Strap instead of Angular-Bootstrap-UI ?
+http://mgcrea.github.io/angular-strap/
+
+5) Dynamic templates:
+http://onehungrymind.com/angularjs-dynamic-templates/
+
+6) Provide a global flag, to force the RequisitionsService to work only with pending
+requisitions, like provision.pl. On a system with lots of requisitions/nodes that should
+accelerate the response time. In theory, there is no need to know if a node has been
+deployed or not.
+
+Provisioning Ideas
+
+1) Use a thread pool when reading requisitions to reduce the time spend on the ReST Query
+
+2) Keep the requisitions on a cache to avoid the delay of unmarshaling the XMLs.
+
+3) Create a new ReST end point to return the list of requisitions names, instead of
+retrieving all the requisitions for the same purpose. This could use a simple file reader
+and a SQL query to build the statistics (deployed/pending).
+

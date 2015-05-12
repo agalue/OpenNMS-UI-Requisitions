@@ -1,0 +1,13 @@
+/* Customizations added by agalue@opennms.org */
+
+#requisition-app {
+  font-size: 120%;
+}
+
+/* Link Cursors */
+#requisition-app .navbar-nav li:hover {
+  cursor: pointer;
+}
+#requisition-app span .input-group-addon {
+  cursor: pointer;
+}
