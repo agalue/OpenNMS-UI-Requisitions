@@ -7,9 +7,8 @@ This project was designed and implemented to work with OpenNMS 14 or greater. It
 
 Versions:
 
-* 1.0.x OpenNMS 14, 15
-
-* 1.1.x OpenNMS 16
+1.0.x OpenNMS 14, 15
+1.1.x OpenNMS 16
 
 The current implementation of the application retrieves all the configured requisitions from the OpenNMS server (deployed or not) using the ReST API, and stores the merged data on an internal cache on the browser to improve the user experience and the response time of the application. For this reason, this application is not intended to be used by several users at the same time.
 
