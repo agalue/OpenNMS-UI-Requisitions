@@ -5,6 +5,11 @@ A user interface to manage OpenNMS Requisition implemented with AngularJS and Bo
 
 This project was designed and implemented to work with OpenNMS 14 or greater. It is not going to work with 1.12 or older versions.
 
+Versions:
+
+1.0.x OpenNMS 14, 15
+1.1.x OpenNMS 16
+
 The current implementation of the application retrieves all the configured requisitions from the OpenNMS server (deployed or not) using the ReST API, and stores the merged data on an internal cache on the browser to improve the user experience and the response time of the application. For this reason, this application is not intended to be used by several users at the same time.
 
 Every time you perform a change on any of the requisitions component and a save operation is requested, the application pushes the change to the OpenNMS server using the ReST API and updates the internal cache.
