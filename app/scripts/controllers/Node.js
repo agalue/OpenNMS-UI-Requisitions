@@ -208,7 +208,7 @@
         templateUrl: 'views/interface.html',
         resolve: {
           foreignSource: function() { return foreignSource },
-          intf: function() { return angular.copy(intfToEdit); }
+          requisitionInterface: function() { return angular.copy(intfToEdit); }
         }
       });
 

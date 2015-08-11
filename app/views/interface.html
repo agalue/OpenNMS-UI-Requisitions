@@ -10,18 +10,18 @@
     <form name="intfForm">
       <div class="form-group">
         <label class="control-label" for="ipAddress">IP Address</label>
-        <input class="form-control" type="text" id="ipAddress" name="ipAddress" placeholder="IP Address" ng-model="intf.ipAddress" required></input>
+        <input class="form-control" type="text" id="ipAddress" name="ipAddress" placeholder="IP Address" ng-model="requisitionInterface.ipAddress" required></input>
       </div>
       <div class="form-group">
         <label class="control-label" for="descr">Description</label>
-        <input class="form-control" type="text" id="descr" name="descr" placeholder="Description" ng-model="intf.description"></input>
+        <input class="form-control" type="text" id="descr" name="descr" placeholder="Description" ng-model="requisitionInterface.description"></input>
       </div>
       <div class="form-group">
         <label class="control-label" for="snmpPrimary">SNMP Primary</label>
-        <input class="form-control" type="text" id="snmpPrimary" name="snmpPrimary" ng-model="intf.snmpPrimary" ng-focus="onFocus($event)" empty-typeahead typeahead-editable="false" typeahead="a.id as a.title for a in snmpPrimaryFields | filter:$viewValue:fieldComparator" required></input>
+        <input class="form-control" type="text" id="snmpPrimary" name="snmpPrimary" ng-model="requisitionInterface.snmpPrimary" ng-focus="onFocus($event)" empty-typeahead typeahead-editable="false" typeahead="a.id as a.title for a in snmpPrimaryFields | filter:$viewValue:fieldComparator" required></input>
       </div>
-      <label ng-show="intf.services.length > 0">Services</label>
-      <div class="form-group" ng-repeat="service in intf.services">
+      <label ng-show="requisitionInterface.services.length > 0">Services</label>
+      <div class="form-group" ng-repeat="service in requisitionInterface.services">
         <div class="input-group">
           <input class="form-control" type="text" placeholder="Service Name" ng-model="service.name" ng-focus="onFocus($event)" empty-typeahead typeahead="service for service in availableServices | filter:$viewValue:fieldComparator" typeahead-editable="true" required></input>
           <span class="input-group-btn">
