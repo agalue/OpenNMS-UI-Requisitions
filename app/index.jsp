@@ -44,7 +44,7 @@
 
 	<jsp:param name="link" value='<link rel="stylesheet" type="text/css" href="../../../css/bootstrap.css" media="screen" />' />
 	<jsp:param name="link" value='<link rel="stylesheet" type="text/css" href="../../../css/opennms-theme.css" media="screen" />' />
-
+    <jsp:param name="link" value='<link rel="stylesheet" type="text/css" href="../../../css/font-awesome-4.4.0/css/font-awesome.min.css" />' />
 	<jsp:param name="link" value='<link rel="stylesheet" type="text/css" href="bower_components/angular-loading-bar/src/loading-bar.css" />' />
 	<jsp:param name="link" value='<link rel="stylesheet" type="text/css" href="bower_components/angular-growl-v2/build/angular-growl.min.css" />' />
 	<jsp:param name="link" value='<link rel="stylesheet" type="text/css" href="styles/main.css" />' />
