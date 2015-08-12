@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse" id="node-navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a ng-click="goBack()"><span class="glyphicon glyphicon-remove"></span> Return</a></li>
-            <li><button type="button" class="btn btn-primary navbar-btn" ng-show="nodeForm.$dirty && nodeForm.$valid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
+            <li><button type="button" class="btn btn-danger navbar-btn" ng-show="nodeForm.$dirty && nodeForm.$valid" ng-click="save()"><span class="glyphicon glyphicon-save"></span> Save</button></li>
           </ul>
         </div>
       </div>
@@ -126,7 +126,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="asset in node.assets">
-                  <th>{{asset.name}}</th>
+                  <td>{{asset.name}}</td>
                   <td>{{asset.value}}</td>
                   <td>
                     <span class="pull-right">

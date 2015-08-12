@@ -96,3 +96,24 @@ span .input-group-addon {
   max-height: 300px;
   overflow: auto;
 }
+/* Fix brand position */
+.navbar-brand {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+/* Fix brand color */
+.navbar-brand {
+    color: #ffffff !important;
+}
+/* Remove background image from container-fluid */
+.container, .container-fluid {
+    background-image: none !important;
+}
+/* Fix link color */
+.navbar-nav > li > a {
+    color: #ffffff !important;
+}
+/* Fix navbar-right buttons */
+.navbar-right {
+    margin-right: 0 !important;
+}
