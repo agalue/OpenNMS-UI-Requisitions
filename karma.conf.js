@@ -1,50 +1,49 @@
-// Karma configuration
-// http://karma-runner.github.io/0.10/config/configuration-file.html
+var webpackConfig = require('./webpack.test');
 
-module.exports = function(config) {
+// Reference: http://karma-runner.github.io/0.12/config/configuration-file.html
+module.exports = function karmaConfig (config) {
   config.set({
-    // base path, that will be used to resolve files and exclude
-    basePath: '',
+    frameworks: [
+      // Reference: https://github.com/karma-runner/karma-jasmine
+      // Set framework to jasmine
+      'jasmine'
+    ],
 
-    // testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['jasmine'],
+    reporters: [
+      // Reference: https://github.com/mlex/karma-spec-reporter
+      // Set reporter to print detailed results to console
+      'spec',
+
+      // Reference: https://github.com/karma-runner/karma-coverage
+      // Output code coverage files
+      'coverage'
+    ],
+
+    files: [
+      // Grab all files in the app folder that contain .test.
+      'test/index.js'
+    ],
 
     preprocessors: {
-      '**/*.html': ['ng-html2js']
+      // Reference: http://webpack.github.io/docs/testing.html
+      // Reference: https://github.com/webpack/karma-webpack
+      // Convert files with webpack and load sourcemaps
+      'test/index.js': ['webpack', 'sourcemap']
     },
 
-    ngHtml2JsPreprocessor: {
-      moduleName: 'onms-requisitions'
+    browsers: [
+      // Run tests using PhantomJS
+      'PhantomJS'
+    ],
+
+    singleRun: true,
+
+    // Configure code coverage reporter
+    coverageReporter: {
+      dir: 'build/coverage/',
+      type: 'html'
     },
 
-    // list of files / patterns to exclude
-    exclude: [],
-
-    // web server port
-    port: 8080,
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-    // level of logging
-    // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
-
-    // Start these browsers, currently available:
-    // - Chrome
-    // - ChromeCanary
-    // - Firefox
-    // - Opera
-    // - Safari (only Mac)
-    // - PhantomJS
-    // - IE (only Windows)
-    browsers: ['PhantomJS'],
-
-    // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
-    singleRun: true
+    webpack: webpackConfig
   });
 };

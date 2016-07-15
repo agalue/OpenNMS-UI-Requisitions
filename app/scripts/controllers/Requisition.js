@@ -9,6 +9,9 @@
 
   'use strict';
 
+  var angular = require('angular');
+  var Requisition = require('../model/Requisition.js');
+
   angular.module('onms-requisitions')
 
   /**

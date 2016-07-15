@@ -9,6 +9,8 @@
 
   'use strict';
 
+  var angular = require('angular');
+
   angular.module('onms-requisitions')
 
   /**
@@ -126,7 +128,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'QuickAddNodeModalController',
-        templateUrl: 'views/quick-add-node.html',
+        templateUrl: require('ngtemplate!../../views/quick-add-node.html'),
         size: 'lg',
         resolve: {
           foreignSources: function() { return availableForeignSources; }
@@ -157,7 +159,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'CloneForeignSourceController',
-        templateUrl: 'views/clone-foreignsource.html',
+        templateUrl: require('ngtemplate!../../views/clone-foreignsource.html'),
         resolve: {
           foreignSource: function() { return foreignSource; },
           availableForeignSources: function() { return availableForeignSources; }

@@ -10,6 +10,9 @@
 
   'use strict';
 
+  var angular = require('angular');
+  var QuickNode = require('../model/QuickNode.js');
+
   angular.module('onms-requisitions')
 
   /**

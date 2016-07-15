@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>OpenNMS Requisitions</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="description" content="" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  </head>
+  <body role="document" ng-app="onms-requisitions">
+    <div id="menu" ng-include="'views/onms.nav.html'"></div>
+    <div class="container-fluid" ng-view></div>
+    <div growl></div>
+    <script src="onms_requisitions.bundle.js"></script>
+  </body>
+</html>

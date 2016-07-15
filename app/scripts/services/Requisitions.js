@@ -11,6 +11,12 @@
 
   'use strict';
 
+  var angular = require('angular');
+  var RequisitionsData = require('../model/RequisitionsData.js');
+  var Requisition = require('../model/Requisition.js');
+  var RequisitionNode = require('../model/RequisitionNode.js');
+  var RequisitionInterface = require('../model/RequisitionInterface.js');
+
   angular.module('onms-requisitions')
 
   /**

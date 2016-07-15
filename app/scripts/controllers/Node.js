@@ -9,6 +9,9 @@
 
   'use strict';
 
+  var angular = require('angular');
+  var RequisitionNode = require('../model/RequisitionNode.js');
+
   angular.module('onms-requisitions')
 
   /**
@@ -229,7 +232,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'AssetController',
-        templateUrl: 'views/asset.html',
+        templateUrl: require('ngtemplate!../../views/asset.html'),
         resolve: {
           asset: function() { return angular.copy(assetToEdit); },
           assetsBlackList: function() { return assetsBlackList; }
@@ -293,7 +296,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'InterfaceController',
-        templateUrl: 'views/interface.html',
+        templateUrl: require('ngtemplate!../../views/interface.html'),
         resolve: {
           foreignId: function() { return foreignId; },
           foreignSource: function() { return foreignSource; },

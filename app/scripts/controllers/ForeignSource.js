@@ -9,6 +9,8 @@
 
   'use strict';
 
+  var angular = require('angular');
+
   angular.module('onms-requisitions')
 
   /**
@@ -272,7 +274,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'PolicyController',
-        templateUrl: 'views/policy.html',
+        templateUrl: require('ngtemplate!../../views/policy.html'),
         resolve: {
           policy: function() { return angular.copy(policy); }
         }
@@ -303,7 +305,7 @@
         keyboard: false,
         size: 'sm',
         controller: 'MoveController',
-        templateUrl: 'views/move.html',
+        templateUrl: require('ngtemplate!../../views/move.html'),
         resolve: {
           label: function() { return policy.name; },
           position: function() { return pos; },
@@ -361,7 +363,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'DetectorController',
-        templateUrl: 'views/detector.html',
+        templateUrl: require('ngtemplate!../../views/detector.html'),
         resolve: {
           detector: function() { return angular.copy(detector); }
         }
@@ -392,7 +394,7 @@
         keyboard: false,
         size: 'sm',
         controller: 'MoveController',
-        templateUrl: 'views/move.html',
+        templateUrl: require('ngtemplate!../../views/move.html'),
         resolve: {
           label: function() { return detector.name; },
           position: function() { return pos; },
