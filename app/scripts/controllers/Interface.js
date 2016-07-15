@@ -15,19 +15,19 @@
   * @module onms-requisitions
   *
   * @requires $scope Angular local scope
-  * @requires $modalInstance Angular modal instance
+  * @requires $uibModalInstance Angular UI modal instance
   * @requires RequisitionsService The Requisitions Servive
-  * @requires EmptyTypeaheadService The empty typeahead Service
-  * @requires foreignSource The requisition's name (a.k.a. foreign source), use 'default' for the default foreign source.
+  * @requires foreignSource The requisition's name (a.k.a. foreign source)
+  * @requires foreignId The foreign ID of the container node
   * @requires requisitionInterface The requisition interface object
+  * @requires ipBlackList The black list of IP Addresses.
   *
   * @description The controller for manage the modal dialog for add/edit IP interfaces of requisitioned nodes
   */
-  .controller('InterfaceController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'foreignSource', 'requisitionInterface', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, foreignSource, requisitionInterface) {
+  .controller('InterfaceController', ['$scope', '$uibModalInstance', 'RequisitionsService', 'foreignSource', 'foreignId', 'requisitionInterface', 'ipBlackList', function($scope, $uibModalInstance, RequisitionsService, foreignSource, foreignId, requisitionInterface, ipBlackList) {
 
     /**
     * @description The foreign source (a.k.a the name of the requisition).
-    * The default value is obtained from the $routeParams.
     *
     * @ngdoc property
     * @name InterfaceController#foreignSource
@@ -35,6 +35,16 @@
     * @returns {object} The foreign source
     */
     $scope.foreignSource = foreignSource;
+
+    /**
+    * @description The foreign ID of the source container node
+    *
+    * @ngdoc property
+    * @name InterfaceController#foreignId
+    * @propertyOf InterfaceController
+    * @returns {object} The foreign ID
+    */
+    $scope.foreignId = foreignId;
 
     /**
     * @description The interface object
@@ -45,6 +55,16 @@
     * @returns {object} The interface object
     */
     $scope.requisitionInterface = requisitionInterface;
+
+    /**
+    * @description The black list of IP addresses. The IP defined on requisitionInterface should be contained on this black list.
+    *
+    * @ngdoc property
+    * @name InterfaceController#ipBlackList
+    * @propertyOf InterfaceController
+    * @returns {array} The black list of IP addresses.
+    */
+    $scope.ipBlackList = ipBlackList;
 
     /**
     * @description An array map with the valid values for snmp-primary
@@ -71,24 +91,6 @@
     $scope.availableServices = [];
 
     /**
-    * @description fieldComparator method from EmptyTypeaheadService
-    *
-    * @ngdoc method
-    * @name InterfaceController#fieldComparator
-    * @methodOf AssetController
-    */
-    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
-
-    /**
-    * @description onFocus method from EmptyTypeaheadService
-    *
-    * @ngdoc method
-    * @name InterfaceController#onFocus
-    * @methodOf AssetController
-    */
-    $scope.onFocus = EmptyTypeaheadService.onFocus;
-
-    /**
     * @description Saves the current interface
     *
     * @name InterfaceController:save
@@ -96,7 +98,7 @@
     * @methodOf InterfaceController
     */
     $scope.save = function () {
-      $modalInstance.close($scope.requisitionInterface);
+      $uibModalInstance.close($scope.requisitionInterface);
     };
 
     /**
@@ -107,7 +109,7 @@
     * @methodOf InterfaceController
     */
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     };
 
     /**
@@ -131,6 +133,30 @@
     */
     $scope.removeService = function(index) {
       $scope.requisitionInterface.services.splice(index, 1);
+    };
+
+    /**
+    * @description Get the unused available services
+    *
+    * @name InterfaceController:getAvailableServices
+    * @ngdoc method
+    * @methodOf InterfaceController
+    * @returns {array} the unused available services
+    */
+    $scope.getAvailableServices = function() {
+      var services = [];
+      angular.forEach($scope.availableServices, function(avail) {
+        var found = false;
+        angular.forEach($scope.requisitionInterface.services, function(svc) {
+          if (svc.name == avail) {
+            found = true;
+          }
+        });
+        if (!found) {
+          services.push(avail);
+        }
+      });
+      return services;
     };
 
     // Initialization

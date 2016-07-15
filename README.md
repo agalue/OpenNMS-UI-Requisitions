@@ -8,7 +8,10 @@ This project was designed and implemented to work with OpenNMS 14 or greater. It
 Versions:
 
 * 1.0.x OpenNMS Horizon 14 and 15; OpenNMS Meridian 2015.1.0
-* 1.1.x OpenNMS Horizon 16 and newer
+* 1.1.x OpenNMS Horizon 16
+* 1.2.x OpenNMS Horizon 17 and newer
+
+NOTE: Starting with Horizon 17, OpenNMS already includes this app to manage requisitions.
 
 The current implementation of the application retrieves all the configured requisitions from the OpenNMS server (deployed or not) using the ReST API, and stores the merged data on an internal cache on the browser to improve the user experience and the response time of the application. For this reason, this application is not intended to be used by several users at the same time.
 

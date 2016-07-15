@@ -9,6 +9,7 @@
 
   angular.module('onms-requisitions', [
     'ngRoute',
+    'ngCookies',
     'ngAnimate',
     'ui.bootstrap',
     'angular-growl',
@@ -31,7 +32,10 @@
     })
     .when('/requisitions/:foreignSource/nodes/:foreignId', {
       templateUrl: 'views/node.html',
-      //templateUrl: 'views/node-panels.html',
+      controller: 'NodeController'
+    })
+    .when('/requisitions/:foreignSource/nodes/:foreignId/vertical', {
+      templateUrl: 'views/node-panels.html',
       controller: 'NodeController'
     })
     .otherwise({
@@ -44,12 +48,12 @@
     growlProvider.globalPosition('bottom-center');
   }])
 
-  .config(['$tooltipProvider', function($tooltipProvider) {
-    $tooltipProvider.setTriggers({
+  .config(['$uibTooltipProvider', function($uibTooltipProvider) {
+    $uibTooltipProvider.setTriggers({
       'mouseenter': 'mouseleave'
     });
-    $tooltipProvider.options({
-      'placement': 'top',
+    $uibTooltipProvider.options({
+      'placement': 'left',
       'trigger': 'mouseenter'
     });
   }]);

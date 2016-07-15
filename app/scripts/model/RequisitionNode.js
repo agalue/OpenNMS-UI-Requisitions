@@ -1,5 +1,5 @@
 /*global RequisitionInterface:true */
-/*jshint unused: false, undef:false, sub:true */
+/*jshint unused:false, sub:true */
 
 /**
 * @author Alejandro Galue <agalue@opennms.org>
@@ -21,6 +21,11 @@ function RequisitionNode(foreignSource, node, isDeployed) {
 
   var self = this;
 
+  // Internal function for initialization purposes
+  var isEmpty = function(str) {
+    return (str === null || str === undefined || 0 === str.length);
+  };
+
   /**
    * @description the foreign source
    * @ngdoc property
@@ -40,6 +45,15 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   self.deployed = isDeployed;
 
   /**
+   * @description The modified flag
+   * @ngdoc property
+   * @name RequisitionNode#modified
+   * @propertyOf RequisitionNode
+   * @returns {boolean} true, if the node has been modified
+   */
+  self.modified = false;
+
+  /**
    * @description The foreign Id
    * @ngdoc property
    * @name RequisitionNode#foreignId
@@ -47,7 +61,7 @@ function RequisitionNode(foreignSource, node, isDeployed) {
    * @returns {string} The foreign Id
    */
   self.foreignId = node['foreign-id'];
-  if (self.foreignId == null || self.foreignId == undefined) {
+  if (isEmpty(self.foreignId)) {
     self.foreignId = new Date().getTime() + '';
   }
 
@@ -59,6 +73,15 @@ function RequisitionNode(foreignSource, node, isDeployed) {
    * @returns {string} the node's label
    */
   self.nodeLabel = node['node-label'];
+
+  /**
+   * @description The location of the node
+   * @ngdoc property
+   * @name RequisitionNode#location
+   * @propertyOf RequisitionNode
+   * @returns {string} The location
+   */
+  self.location = node['location'];
 
   /**
    * @description The city where the node is located
@@ -88,22 +111,24 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   self.parentForeignSource = node['parent-foreign-source'];
 
   /**
-   * @description The parent foreign ID (for path outages), to uniquely identify the parent node (can not be used if parentForeignLabel is defined)
+   * @description The parent foreign ID (for path outages), to uniquely identify the parent node (can not be used if parentNodeLabel is defined)
    * @ngdoc property
    * @name RequisitionNode#parentForeignId
    * @propertyOf RequisitionNode
    * @returns {string} The parent foreign ID
    */
-  self.parentForeignId = node['parent-foreign-id'];
+  var _parentForeignId = node['parent-foreign-id'];
+  self.parentForeignId = isEmpty(_parentForeignId) ? null : _parentForeignId;
 
   /**
-   * @description The parent foreign kavek (for path outages), to uniquely identify the parent node (can not be used if parentForeignId is defined)
+   * @description The parent node label (for path outages), to uniquely identify the parent node (can not be used if parentForeignId is defined)
    * @ngdoc property
-   * @name RequisitionNode#parentForeignLabel
+   * @name RequisitionNode#parentNodeLabel
    * @propertyOf RequisitionNode
    * @returns {string} The parent foreign Label
    */
-  self.parentForeignLabel = node['parent-foreign-label'];
+  var _parentNodeLabel = node['parent-node-label'];
+  self.parentNodeLabel = isEmpty(_parentNodeLabel) ? null : _parentNodeLabel;
 
   /**
    * @description The array of interfaces
@@ -143,6 +168,21 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   angular.forEach(node['category'], function(category) {
     self.categories.push(category);
   });
+
+  /**
+  * @description Check if the node has been changed
+  *
+  * @name RequisitionNode:isModified
+  * @ngdoc method
+  * @methodOf RequisitionNode
+  * @returns {boolean} true if the node has been changed or modified.
+  */
+  self.isModified = function() {
+    if (self.modified) {
+      return true;
+    }
+    return ! self.deployed;
+  };
 
   /**
   * @description Adds a new interface to the node
@@ -197,6 +237,45 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   };
 
   /**
+  * @description Gets the primary IP address if exist.
+  *
+  * @name RequisitionNode:getPrimaryIpAddress
+  * @ngdoc method
+  * @methodOf RequisitionNode
+  * @returns {string} the primary IP address (null if it doesn't exist)
+  */
+  self.getPrimaryIpAddress = function() {
+    var ip = null;
+    angular.forEach(self.interfaces, function(intf) {
+      if (intf.snmpPrimary == 'P') {
+        ip = intf.ipAddress;
+      }
+    });
+    return ip;
+  };
+
+  /**
+  * @description Checks if the node has parent information (for path outages).
+  *
+  * @name RequisitionNode:hasParentInformation
+  * @ngdoc method
+  * @methodOf RequisitionNode
+  * @returns {boolean} true, if the node has parent information.
+  */
+  self.hasParentInformation = function() {
+    if (self.parentForeignSource != null && self.parentForeignSource.trim() != '') {
+      return true;
+    }
+    if (self.parentForeignId != null && self.parentForeignId.trim() != '') {
+      return true;
+    }
+    if (self.parentNodeLabel != null && self.parentNodeLabel.trim() != '') {
+      return true;
+    }
+    return false;
+  };
+
+  /**
   * @description Gets the OpenNMS representation of the requisitioned node
   *
   * @name RequisitionNode:getOnmsRequisitionNode
@@ -208,12 +287,13 @@ function RequisitionNode(foreignSource, node, isDeployed) {
     var nodeObject = {
       'foreign-id': self.foreignId,
       'node-label': self.nodeLabel,
+      'location': self.location,
       'city': self.city,
       'building': self.building,
       'interface': [],
       'parent-foreign-source': self.parentForeignSource,
       'parent-foreign-id': self.parentForeignId,
-      'parent-foreign-label': self.parentForeignLabel,
+      'parent-node-label': self.parentNodeLabel,
       'asset': [],
       'category': []
     };

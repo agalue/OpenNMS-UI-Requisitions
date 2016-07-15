@@ -15,14 +15,14 @@
   * @module onms-requisitions
   *
   * @requires $scope Angular local scope
-  * @requires $modalInstance Angular modal instance
+  * @requires $uibModalInstance Angular UI modal instance
   * @requires RequisitionsService The Requisitions Servive
-  * @requires EmptyTypeaheadService The empty typeahead Service
   * @requires asset Node asset object
+  * @requires assetsBlackList The black list of asset fields
   *
   * @description The controller for manage the modal dialog for add/edit asserts of requisitioned nodes
   */
-  .controller('AssetController', ['$scope', '$modalInstance', 'RequisitionsService', 'EmptyTypeaheadService', 'asset', function($scope, $modalInstance, RequisitionsService, EmptyTypeaheadService, asset) {
+  .controller('AssetController', ['$scope', '$uibModalInstance', 'RequisitionsService', 'asset', 'assetsBlackList', function($scope, $uibModalInstance, RequisitionsService, asset, assetsBlackList) {
 
     /**
     * @description The asset object
@@ -45,22 +45,14 @@
     $scope.assetFields = [];
 
     /**
-    * @description fieldComparator method from EmptyTypeaheadService
+    * @description The black list of asset fields. 
     *
-    * @ngdoc method
-    * @name AssetController:fieldComparator
-    * @methodOf AssetController
+    * @ngdoc property
+    * @name AssetController#assetsBlackList
+    * @propertyOf AssetController
+    * @returns {array} The black list of asset fields.
     */
-    $scope.fieldComparator = EmptyTypeaheadService.fieldComparator;
-
-    /**
-    * @description onFocus method from EmptyTypeaheadService
-    *
-    * @ngdoc method
-    * @name AssetController:onFocus
-    * @methodOf AssetController
-    */
-    $scope.onFocus = EmptyTypeaheadService.onFocus;
+    $scope.assetsBlackList = assetsBlackList;
 
     /**
     * @description Saves the current asset
@@ -70,7 +62,7 @@
     * @methodOf AssetController
     */
     $scope.save = function() {
-      $modalInstance.close($scope.asset);
+      $uibModalInstance.close($scope.asset);
     };
 
     /**
@@ -81,7 +73,25 @@
     * @methodOf AssetController
     */
     $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
+    };
+
+    /**
+    * @description Get the unused available assets
+    *
+    * @name AssetController:getAvailableAssetFields
+    * @ngdoc method
+    * @methodOf AssetController
+    * @returns {array} the unused available assets
+    */
+    $scope.getAvailableAssetFields = function() {
+      var assets = [];
+      angular.forEach($scope.assetFields, function(asset) {
+        if ($scope.assetsBlackList.indexOf(asset) == -1) {
+          assets.push(asset);
+        }
+      });
+      return assets;
     };
 
     // Initialization

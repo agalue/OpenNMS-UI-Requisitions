@@ -1,4 +1,3 @@
-// Generated on 2014-05-22 using generator-angular 0.8.0
 'use strict';
 
 // # Globbing
@@ -18,11 +17,34 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+    pkg: grunt.file.readJSON('package.json'),
+
     // Project settings
     yeoman: {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
-      dist: 'dist'
+      dist: 'dist',
+
+      // Test dependencies (order is important):
+      testDependencies: [
+        // Common Dependencies
+        '<%= yeoman.app %>/bower_components/jquery/dist/jquery.js',
+        '<%= yeoman.app %>/bower_components/bootstrap/dist/js/bootstrap.js',
+        // AngularJS Dependencies
+        '<%= yeoman.app %>/bower_components/angular/angular.js',
+        '<%= yeoman.app %>/bower_components/angular-mocks/angular-mocks.js',
+        '<%= yeoman.app %>/bower_components/angular-resource/angular-resource.js',
+        '<%= yeoman.app %>/bower_components/angular-cookies/angular-cookies.js',
+        '<%= yeoman.app %>/bower_components/angular-sanitize/angular-sanitize.js',
+        '<%= yeoman.app %>/bower_components/angular-route/angular-route.js',
+        '<%= yeoman.app %>/bower_components/angular-animate/angular-animate.js',
+        // AngularJS ThirdParty Libraries
+        '<%= yeoman.app %>/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+        '<%= yeoman.app %>/bower_components/angular-loading-bar/src/loading-bar.js',
+        '<%= yeoman.app %>/bower_components/angular-growl-v2/build/angular-growl.js',
+        '<%= yeoman.app %>/bower_components/ip-address/dist/ip-address-globals.js',
+        '<%= yeoman.app %>/bower_components/bootbox/bootbox.js'
+      ]
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -40,7 +62,7 @@ module.exports = function (grunt) {
       },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'karma']
+        tasks: ['newer:jshint:test', 'karma:development']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -116,6 +138,9 @@ module.exports = function (grunt) {
     // Empties folders to start fresh
     clean: {
       dist: {
+        options: {
+          force: true
+        },
         files: [{
           dot: true,
           src: [
@@ -145,9 +170,17 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app
     bowerInstall: {
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath: '<%= yeoman.app %>/'
+      target: {
+        src: [
+          '<%= yeoman.app %>/index..html'
+        ],
+        cwd: '',
+        dependencies: true,
+        devDependencies: false,
+        exclude: [],
+        fileTypes: {},
+        ignorePath: '',
+        overrides: {}
       }
     },
 
@@ -162,34 +195,6 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/styles/fonts/*'
           ]
         }
-      }
-    },
-
-    // Reads HTML for usemin blocks to enable smart builds that automatically
-    // concat, minify and revision files. Creates configurations in memory so
-    // additional tasks can operate on them
-    useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
-      options: {
-        dest: '<%= yeoman.dist %>',
-        flow: {
-          html: {
-            steps: {
-              js: ['concat', 'uglifyjs'],
-              css: ['cssmin']
-            },
-            post: {}
-          }
-        }
-      }
-    },
-
-    // Performs rewrites based on rev and the useminPrepare configuration
-    usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      options: {
-        assetsDirs: ['<%= yeoman.dist %>']
       }
     },
 
@@ -239,27 +244,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // ngmin tries to make the code safe for minification automatically by
-    // using the Angular long form for dependency injection. It doesn't work on
-    // things like resolve or inject so those have to be done manually.
-    ngmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: '*.js',
-          dest: '.tmp/concat/scripts'
-        }]
-      }
-    },
-
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -271,7 +255,8 @@ module.exports = function (grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            '*.html',
+            'bower_components/**/*',
+            'index.prod.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'fonts/*'
@@ -306,37 +291,57 @@ module.exports = function (grunt) {
       ]
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= yeoman.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= yeoman.dist %>/scripts/scripts.js': [
-    //         '<%= yeoman.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    uglify: {
+      options: {
+        mangle: false,
+        banner: '/*! <%= pkg.name %> <%= pkg.version %> - built on <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+      },
+      dist: {
+        files: [{
+          src: '<%= yeoman.app %>/scripts/**/*.js',
+          dest: '<%= yeoman.dist %>/<%= pkg.name %>.min.js'
+        }]
+      }
+    },
+
+    concat: {
+       dist: {
+        src: ['<%= yeoman.app %>/scripts/**/*.js'],
+        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
+       }
+    },
 
     // Test settings
     karma: {
-      unit: {
+      development: {
         configFile: 'karma.conf.js',
-        singleRun: true
+        options: {
+          files: [
+            '<%= yeoman.testDependencies %>',
+            '<%= yeoman.app %>/scripts/**/*.js',
+            'test/spec/**/*.js'
+          ]
+        }
+      },
+      dist: {
+        configFile: 'karma.conf.js',
+        options: {
+          files: [
+            '<%= yeoman.testDependencies %>',
+            '<%= yeoman.dist %>/<%= pkg.name %>.js',
+            'test/spec/**/*.js'
+          ]
+        }
+      },
+      minified: {
+        configFile: 'karma.conf.js',
+        options: {
+          files: [
+            '<%= yeoman.testDependencies %>',
+            '<%= yeoman.dist %>/<%= pkg.name %>.min.js',
+            'test/spec/**/*.js'
+          ]
+        }
       }
     },
 
@@ -365,9 +370,6 @@ module.exports = function (grunt) {
 
   });
 
-  // Load the docular plugin.
-  grunt.loadNpmTasks('grunt-ngdocs');
-
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -393,24 +395,22 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma:development'
   ]);
 
   grunt.registerTask('build', [
     'clean:dist',
     'bowerInstall',
-    'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
-    'ngmin',
+    'karma:dist',
     'copy:dist',
-    'cdnify',
-    'cssmin',
     'uglify',
+    'karma:minified',
     'rev',
-    'usemin',
-    'htmlmin'
+    'htmlmin',
+    'ngdocs'
   ]);
 
   grunt.registerTask('default', [
@@ -418,4 +418,5 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
 };
