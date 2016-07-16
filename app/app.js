@@ -52,23 +52,23 @@
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
     .when('/requisitions', {
-      templateUrl: require('ngtemplate!./views/requisitions.html'),
+      templateUrl: require('./views/requisitions.html'),
       controller: 'RequisitionsController'
     })
     .when('/requisitions/:foreignSource', {
-      templateUrl: require('ngtemplate!./views/requisition.html'),
+      templateUrl: require('./views/requisition.html'),
       controller: 'RequisitionController'
     })
     .when('/requisitions/:foreignSource/foreignSource', {
-      templateUrl: require('ngtemplate!./views/foreignsource.html'),
+      templateUrl: require('./views/foreignsource.html'),
       controller: 'ForeignSourceController'
     })
     .when('/requisitions/:foreignSource/nodes/:foreignId', {
-      templateUrl: require('ngtemplate!./views/node.html'),
+      templateUrl: require('./views/node.html'),
       controller: 'NodeController'
     })
     .when('/requisitions/:foreignSource/nodes/:foreignId/vertical', {
-      templateUrl: require('ngtemplate!./views/node-panels.html'),
+      templateUrl: require('./views/node-panels.html'),
       controller: 'NodeController'
     })
     .otherwise({

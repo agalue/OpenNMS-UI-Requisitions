@@ -1,10 +1,11 @@
-/*global RequisitionInterface:true */
 /*jshint unused:false, sub:true */
 
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
 */
+
+var RequisitionInterface = require('./RequisitionInterface.js');
 
 /**
 * @ngdoc object
@@ -329,4 +330,6 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   self.className = 'RequisitionNode';
 
   return self;
-}
+};
+
+mode.exports = RequisitionNode;

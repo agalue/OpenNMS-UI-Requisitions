@@ -10,6 +10,7 @@
   'use strict';
 
   var angular = require('angular');
+  require('ip-address');
 
   angular.module('onms-requisitions')
 

@@ -1,5 +1,3 @@
-/*global RequisitionsData:true, Requisition:true, RequisitionNode:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -12,9 +10,9 @@
   'use strict';
 
   var angular = require('angular');
-  var RequisitionsData = require('../model/RequisitionsData.js');
   var Requisition = require('../model/Requisition.js');
   var RequisitionNode = require('../model/RequisitionNode.js');
+  var RequisitionsData = require('../model/RequisitionsData.js');
   var RequisitionInterface = require('../model/RequisitionInterface.js');
 
   angular.module('onms-requisitions')

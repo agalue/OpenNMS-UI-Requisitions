@@ -1,5 +1,3 @@
-/*global Requisition:true, bootbox:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -10,6 +8,7 @@
   'use strict';
 
   var angular = require('angular');
+  var bootbox = require('bootbox');
   var Requisition = require('../model/Requisition.js');
 
   angular.module('onms-requisitions')

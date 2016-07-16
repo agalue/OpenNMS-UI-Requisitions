@@ -86,4 +86,6 @@ function RequisitionInterface(intf) {
   self.className = 'RequisitionInterface';
 
   return self;
-}
+};
+
+module.exports = RequisitionInterface;

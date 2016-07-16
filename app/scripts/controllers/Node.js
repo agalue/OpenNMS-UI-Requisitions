@@ -1,5 +1,3 @@
-/*global bootbox:true, RequisitionNode:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -10,6 +8,7 @@
   'use strict';
 
   var angular = require('angular');
+  var bootbox = require('bootbox');
   var RequisitionNode = require('../model/RequisitionNode.js');
 
   angular.module('onms-requisitions')
@@ -232,7 +231,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'AssetController',
-        templateUrl: require('ngtemplate!../../views/asset.html'),
+        templateUrl: require('../../views/asset.html'),
         resolve: {
           asset: function() { return angular.copy(assetToEdit); },
           assetsBlackList: function() { return assetsBlackList; }
@@ -296,7 +295,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'InterfaceController',
-        templateUrl: require('ngtemplate!../../views/interface.html'),
+        templateUrl: require('../../views/interface.html'),
         resolve: {
           foreignId: function() { return foreignId; },
           foreignSource: function() { return foreignSource; },

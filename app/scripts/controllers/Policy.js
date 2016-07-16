@@ -8,10 +8,10 @@
   'use strict';
 
   var angular = require('angular');
-  var templatePolicyParamOptions  = require('ngtemplate!../../views/policy-param.options.html');
-  var templatePolicyParamString   = require('ngtemplate!../../views/policy-param.string.html');
-  var templatePolicyParamFixed    = require('ngtemplate!../../views/policy-param.fixed.html');
-  var templatePolicyParamEditable = require('ngtemplate!../../views/policy-param.editable.html');
+  var templatePolicyParamOptions  = require('../../views/policy-param.options.html');
+  var templatePolicyParamString   = require('../../views/policy-param.string.html');
+  var templatePolicyParamFixed    = require('../../views/policy-param.fixed.html');
+  var templatePolicyParamEditable = require('../../views/policy-param.editable.html');
 
   angular.module('onms-requisitions')
 

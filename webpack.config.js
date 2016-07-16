@@ -103,7 +103,7 @@ var options = {
       },
       {
         test: /\.html$/,
-        loader: 'html?config=htmlLoaderConfig'
+        loader: 'ngtemplate!html?config=htmlLoaderConfig'
       },
       {
         test: /\.(jpe?g|png|gif)$/i,

@@ -1,4 +1,3 @@
-/*global QuickNode:true,bootbox:true */
 /*jshint undef:false */
 
 /**
@@ -11,6 +10,7 @@
   'use strict';
 
   var angular = require('angular');
+  var bootbox = require('bootbox');
   var QuickNode = require('../model/QuickNode.js');
 
   angular.module('onms-requisitions')

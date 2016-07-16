@@ -78,4 +78,6 @@ function RequisitionsData() {
   self.className = 'RequisitionsData';
 
   return self;
-}
+};
+
+module.exports = RequisitionsData;

@@ -1,5 +1,3 @@
-/*global bootbox:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -10,6 +8,7 @@
   'use strict';
 
   var angular = require('angular');
+  var bootbox = require('bootbox');
 
   angular.module('onms-requisitions')
 
@@ -274,7 +273,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'PolicyController',
-        templateUrl: require('ngtemplate!../../views/policy.html'),
+        templateUrl: require('../../views/policy.html'),
         resolve: {
           policy: function() { return angular.copy(policy); }
         }
@@ -305,7 +304,7 @@
         keyboard: false,
         size: 'sm',
         controller: 'MoveController',
-        templateUrl: require('ngtemplate!../../views/move.html'),
+        templateUrl: require('../../views/move.html'),
         resolve: {
           label: function() { return policy.name; },
           position: function() { return pos; },
@@ -363,7 +362,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'DetectorController',
-        templateUrl: require('ngtemplate!../../views/detector.html'),
+        templateUrl: require('../../views/detector.html'),
         resolve: {
           detector: function() { return angular.copy(detector); }
         }
@@ -394,7 +393,7 @@
         keyboard: false,
         size: 'sm',
         controller: 'MoveController',
-        templateUrl: require('ngtemplate!../../views/move.html'),
+        templateUrl: require('../../views/move.html'),
         resolve: {
           label: function() { return detector.name; },
           position: function() { return pos; },
