@@ -1,48 +1,36 @@
-var webpackConfig = require('./webpack.test');
+var webpackConfig = require('./webpack.config.js');
+webpackConfig.entry = {};
+// Disabling CommonsChunkPlugin
+webpackConfig.plugins.pop();
+webpackConfig.plugins.pop();
 
-// Reference: http://karma-runner.github.io/0.12/config/configuration-file.html
-module.exports = function karmaConfig (config) {
+module.exports = function (config) {
   config.set({
+    basePath: __dirname,
+
     frameworks: [
-      // Reference: https://github.com/karma-runner/karma-jasmine
-      // Set framework to jasmine
       'jasmine'
     ],
 
     reporters: [
-      // Reference: https://github.com/mlex/karma-spec-reporter
-      // Set reporter to print detailed results to console
-      'spec',
-
-      // Reference: https://github.com/karma-runner/karma-coverage
-      // Output code coverage files
-      'coverage'
+      'progress',
     ],
 
     files: [
-      // Grab all files in the app folder that contain .test.
-      'test/index.js'
+      './app/app.js',
+      './test/spec/**/*.js'
     ],
 
     preprocessors: {
-      // Reference: http://webpack.github.io/docs/testing.html
-      // Reference: https://github.com/webpack/karma-webpack
-      // Convert files with webpack and load sourcemaps
-      'test/index.js': ['webpack', 'sourcemap']
+      './app/app.js': ['webpack'],
+      './test/spec/**/*.js': ['webpack']
     },
 
     browsers: [
-      // Run tests using PhantomJS
       'PhantomJS'
     ],
 
     singleRun: true,
-
-    // Configure code coverage reporter
-    coverageReporter: {
-      dir: 'build/coverage/',
-      type: 'html'
-    },
 
     webpack: webpackConfig
   });
