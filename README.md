@@ -10,6 +10,7 @@ Versions:
 * 1.0.x OpenNMS Horizon 14 and 15; OpenNMS Meridian 2015.1.0
 * 1.1.x OpenNMS Horizon 16
 * 1.2.x OpenNMS Horizon 17 and newer
+* 1.3.x OpenNMS Horizon 18 and newer (webpack version)
 
 NOTE: Starting with Horizon 17, OpenNMS already includes this app to manage requisitions.
 
@@ -36,15 +37,15 @@ npm install
 npm run build
 ```
 
-* Install the latest stable OpenNMS RPM from http://yum.opennms.org/stable/common/opennms/
+* Install the latest stable OpenNMS
 
-* Copy over OpenNMS-UI-Requisitions/dist/ into jetty-webapps/opennms/ as ng-requisition, for example:
+* Copy over `OpenNMS-UI-Requisitions/dist/` into `jetty-webapps/opennms/` as `ng-requisitions`, for example:
 
 ```
 sudo rsync -avr OpenNMS-UI-Requisitions/dist/ $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
 ```
 
-Or, edit $OPENNMS_HOME/jetty-webapps/WEB-INF/web.xml, find a settings called 'aliases', change its value to be 'true', and finally add a symbolic link from OpenNMS-UI-Requisitions/dist/ to $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
+Or, edit `$OPENNMS_HOME/jetty-webapps/WEB-INF/web.xml`, find a settings called 'aliases', change its value to be 'true', and finally add a symbolic link from `OpenNMS-UI-Requisitions/dist/` to `$OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/`
 
 * Start OpenNMS
 
