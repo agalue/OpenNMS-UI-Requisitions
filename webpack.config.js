@@ -23,7 +23,7 @@ module.exports = {
       'jquery'
     ],
     onms_requisitions: [
-      './app/app.js'
+      './app/app-onms-requisitions.js'
     ]
   },
   output: {
