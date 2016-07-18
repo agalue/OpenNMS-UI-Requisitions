@@ -32,13 +32,11 @@ module.exports = function (config) {
     files: [
       './app/app.js',
       './node_modules/angular-mocks/angular-mocks.js',
-//      './test/index.js',
       './test/spec/**/*.js'
     ],
 
     preprocessors: {
       './app/app.js': ['webpack'],
-   //   './test/index.js': ['webpack']
       './test/spec/**/*.js': ['webpack']
     },
 

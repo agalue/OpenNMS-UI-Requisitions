@@ -5,10 +5,9 @@
 
 'use strict';
 
+var Requisition = require('../../../app/scripts/model/Requisition.js');
 
 describe('Controller: RequisitionController', function () {
-
-  var Requisition = require('../../../app/scripts/model/Requisition.js');
 
   // Initialize testing environment
 
@@ -23,7 +22,7 @@ describe('Controller: RequisitionController', function () {
     });
   }
 
-  beforeEach(module('onms-requisitions', function($provide) {
+  beforeEach(angular.mock.module('onms-requisitions', function($provide) {
     $provide.value('$log', console);
   }));
 

@@ -5,9 +5,9 @@
 
 'use strict';
 
-describe('Controller: InterfaceController', function () {
+var RequisitionNode = require('../../../app/scripts/model/RequisitionNode.js');
 
-  var RequisitionNode = require('../../../app/scripts/model/RequisitionNode.js');
+describe('Controller: InterfaceController', function () {
 
   var scope, $q, controllerFactory, mockModalInstance, mockRequisitionsService = {};
 
@@ -30,7 +30,7 @@ describe('Controller: InterfaceController', function () {
     });
   }
 
-  beforeEach(module('onms-requisitions', function($provide) {
+  beforeEach(angular.mock.module('onms-requisitions', function($provide) {
     $provide.value('$log', console);
   }));
 

@@ -5,9 +5,10 @@
 
 'use strict';
 
-describe('Controller: RequisitionsController', function () {
+var RequisitionsData = require('../../../app/scripts/model/RequisitionsData.js');
+var Requisition = require('../../../app/scripts/model/Requisition.js');
 
-  var RequisitionsData = require('../../../app/scripts/model/RequisitionsData.js');
+describe('Controller: RequisitionsController', function () {
 
   // Initialize testing environment
 
@@ -21,7 +22,7 @@ describe('Controller: RequisitionsController', function () {
     });
   }
 
-  beforeEach(module('onms-requisitions', function($provide) {
+  beforeEach(angular.mock.module('onms-requisitions', function($provide) {
     $provide.value('$log', console);
   }));
 

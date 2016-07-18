@@ -49,7 +49,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "build": "webpack --colors --display-error-details",
+    "build": "npm run test && webpack --colors --display-error-details",
     "release": "webpack --colors --display-error-details --env production",
     "test": "karma start"
   }

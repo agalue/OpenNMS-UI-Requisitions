@@ -28,36 +28,30 @@ Follow this step-by-step guide for installing and using the UI with OpenNMS:
 
 * Install NodeJS (http://www.nodejs.org/)
 
-* Install Required Libraries through NodeJS:
-
-```
-sudo npm install -g grunt bower 
-```
-
 * Install Third-Party libraries on the project directory
 
 ```
 cd OpenNMS-UI-Requisitions/
 npm install
-bower install
+npm run build
 ```
 
 * Install the latest stable OpenNMS RPM from http://yum.opennms.org/stable/common/opennms/
 
-* Copy over OpenNMS-UI-Requisitions/ into jetty-webapps/opennms/ as ng-requisition, for example:
+* Copy over OpenNMS-UI-Requisitions/dist/ into jetty-webapps/opennms/ as ng-requisition, for example:
 
 ```
-sudo rsync -avr OpenNMS-UI-Requisitions/ $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
+sudo rsync -avr OpenNMS-UI-Requisitions/dist/ $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
 ```
 
-Or, edit $OPENNMS_HOME/jetty-webapps/WEB-INF/web.xml, find a settings called 'aliases', change its value to be 'true', and finally add a symbolic link from OpenNMS-UI-Requisitions/ to $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
+Or, edit $OPENNMS_HOME/jetty-webapps/WEB-INF/web.xml, find a settings called 'aliases', change its value to be 'true', and finally add a symbolic link from OpenNMS-UI-Requisitions/dist/ to $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
 
 * Start OpenNMS
 
 * Log in as administrator and open the following URL:
 
 ```
-http://localhost:8980/opennms/admin/ng-requisitions/app/index.html
+http://localhost:8980/opennms/admin/ng-requisitions/index.html
 ```
 
 Enjoy!

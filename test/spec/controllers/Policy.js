@@ -100,7 +100,7 @@ describe('Controller: PolicyController', function () {
     });
   }
 
-  beforeEach(module('onms-requisitions', function($provide) {
+  beforeEach(angular.mock.module('onms-requisitions', function($provide) {
     $provide.value('$log', console);    
   }));
 
