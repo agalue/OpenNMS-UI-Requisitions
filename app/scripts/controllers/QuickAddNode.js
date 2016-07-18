@@ -13,6 +13,8 @@
   var bootbox = require('bootbox');
   var QuickNode = require('../model/QuickNode.js');
 
+  require('../../views/quick-add-node-standalone.html');
+
   angular.module('onms-requisitions')
 
   /**

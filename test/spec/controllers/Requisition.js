@@ -1,5 +1,3 @@
-/*global Requisition:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -7,7 +5,10 @@
 
 'use strict';
 
+
 describe('Controller: RequisitionController', function () {
+
+  var Requisition = require('../../../app/scripts/model/Requisition.js');
 
   // Initialize testing environment
 

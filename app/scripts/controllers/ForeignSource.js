@@ -10,6 +10,10 @@
   var angular = require('angular');
   var bootbox = require('bootbox');
 
+  var policyTemplateUrl   = require('../../views/policy.html');
+  var detectorTemplateUrl = require('../../views/detector.html');
+  var moveTemplateUrl     = require('../../views/move.html');
+
   angular.module('onms-requisitions')
 
   /**
@@ -273,7 +277,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'PolicyController',
-        templateUrl: require('../../views/policy.html'),
+        templateUrl: policyTemplateUrl,
         resolve: {
           policy: function() { return angular.copy(policy); }
         }
@@ -304,7 +308,7 @@
         keyboard: false,
         size: 'sm',
         controller: 'MoveController',
-        templateUrl: require('../../views/move.html'),
+        templateUrl: moveTemplateUrl,
         resolve: {
           label: function() { return policy.name; },
           position: function() { return pos; },
@@ -362,7 +366,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'DetectorController',
-        templateUrl: require('../../views/detector.html'),
+        templateUrl: detectorTemplateUrl,
         resolve: {
           detector: function() { return angular.copy(detector); }
         }
@@ -393,7 +397,7 @@
         keyboard: false,
         size: 'sm',
         controller: 'MoveController',
-        templateUrl: require('../../views/move.html'),
+        templateUrl: moveTemplateUrl,
         resolve: {
           label: function() { return detector.name; },
           position: function() { return pos; },

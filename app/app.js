@@ -19,12 +19,70 @@
   require('angular-route');
   require('angular-cookies');
   require('angular-sanitize');
+  require('angular-animate');
   require('angular-ui-bootstrap');
   require('angular-loading-bar');
   require('angular-growl-v2');
   require('ip-address');
   require('bootbox');
   require('bootstrap');
+
+  var requisitionsTemplate = require('./views/requisitions.html');
+  var requisitionTemplate = require('./views/requisition.html');
+  var foreignSourceTemplate = require('./views/foreignsource.html');
+  var nodeHorizontalTemplate = require('./views/node.html');
+  var nodeVerticalTemplate = require('./views/node-panels.html');
+
+  angular.module('onms-requisitions', [
+    'ngRoute',
+    'ngCookies',
+    'ngAnimate',
+    'ui.bootstrap',
+    'angular-growl',
+    'angular-loading-bar'
+  ])
+
+  .config(['$routeProvider', function ($routeProvider) {
+    $routeProvider
+    .when('/requisitions', {
+      templateUrl: requisitionsTemplate,
+      controller: 'RequisitionsController'
+    })
+    .when('/requisitions/:foreignSource', {
+      templateUrl: requisitionTemplate,
+      controller: 'RequisitionController'
+    })
+    .when('/requisitions/:foreignSource/foreignSource', {
+      templateUrl: foreignSourceTemplate,
+      controller: 'ForeignSourceController'
+    })
+    .when('/requisitions/:foreignSource/nodes/:foreignId', {
+      templateUrl: nodeHorizontalTemplate,
+      controller: 'NodeController'
+    })
+    .when('/requisitions/:foreignSource/nodes/:foreignId/vertical', {
+      templateUrl: nodeVerticalTemplate,
+      controller: 'NodeController'
+    })
+    .otherwise({
+      redirectTo: '/requisitions'
+    });
+  }])
+
+  .config(['growlProvider', function(growlProvider) {
+    growlProvider.globalTimeToLive(3000);
+    growlProvider.globalPosition('bottom-center');
+  }])
+
+  .config(['$uibTooltipProvider', function($uibTooltipProvider) {
+    $uibTooltipProvider.setTriggers({
+      'mouseenter': 'mouseleave'
+    });
+    $uibTooltipProvider.options({
+      'placement': 'left',
+      'trigger': 'mouseenter'
+    });
+  }]);
 
   // Load Directives and Filters
   require('./scripts/directives/requisitionConstraints.js');
@@ -48,55 +106,9 @@
   require('./scripts/controllers/Requisition.js');
   require('./scripts/controllers/Requisitions.js');
 
-  angular.module('onms-requisitions', [
-    'ngRoute',
-    'ngCookies',
-    'ngAnimate',
-    'ui.bootstrap',
-    'angular-growl',
-    'angular-loading-bar'
-  ])
-
-  .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider
-    .when('/requisitions', {
-      templateUrl: require('./views/requisitions.html'),
-      controller: 'RequisitionsController'
-    })
-    .when('/requisitions/:foreignSource', {
-      templateUrl: require('./views/requisition.html'),
-      controller: 'RequisitionController'
-    })
-    .when('/requisitions/:foreignSource/foreignSource', {
-      templateUrl: require('./views/foreignsource.html'),
-      controller: 'ForeignSourceController'
-    })
-    .when('/requisitions/:foreignSource/nodes/:foreignId', {
-      templateUrl: require('./views/node.html'),
-      controller: 'NodeController'
-    })
-    .when('/requisitions/:foreignSource/nodes/:foreignId/vertical', {
-      templateUrl: require('./views/node-panels.html'),
-      controller: 'NodeController'
-    })
-    .otherwise({
-      redirectTo: '/requisitions'
-    });
-  }])
-
-  .config(['growlProvider', function(growlProvider) {
-    growlProvider.globalTimeToLive(3000);
-    growlProvider.globalPosition('bottom-center');
-  }])
-
-  .config(['$uibTooltipProvider', function($uibTooltipProvider) {
-    $uibTooltipProvider.setTriggers({
-      'mouseenter': 'mouseleave'
-    });
-    $uibTooltipProvider.options({
-      'placement': 'left',
-      'trigger': 'mouseenter'
-    });
-  }]);
+  // Trigger AngularJS
+  document.addEventListener('DOMContentLoaded', function() {
+    angular.bootstrap(document, ['onms-requisitions']);
+  }, false);
 
 }());

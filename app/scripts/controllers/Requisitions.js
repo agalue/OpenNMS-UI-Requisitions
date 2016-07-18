@@ -10,6 +10,9 @@
   var angular = require('angular');
   var bootbox = require('bootbox');
 
+  var quickAddNodeTemplateUrl       = require('../../views/quick-add-node.html');
+  var cloneForeignSourceTemplateUrl = require('../../views/clone-foreignsource.html');
+
   angular.module('onms-requisitions')
 
   /**
@@ -127,7 +130,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'QuickAddNodeModalController',
-        templateUrl: require('../../views/quick-add-node.html'),
+        templateUrl: quickAddNodeTemplateUrl,
         size: 'lg',
         resolve: {
           foreignSources: function() { return availableForeignSources; }
@@ -158,7 +161,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'CloneForeignSourceController',
-        templateUrl: require('../../views/clone-foreignsource.html'),
+        templateUrl: cloneForeignSourceTemplateUrl,
         resolve: {
           foreignSource: function() { return foreignSource; },
           availableForeignSources: function() { return availableForeignSources; }

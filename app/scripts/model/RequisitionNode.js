@@ -332,4 +332,4 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   return self;
 };
 
-mode.exports = RequisitionNode;
+module.exports = RequisitionNode;

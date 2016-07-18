@@ -1,5 +1,3 @@
-/*global RequisitionsData:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -8,6 +6,8 @@
 'use strict';
 
 describe('Controller: RequisitionsController', function () {
+
+  var RequisitionsData = require('../../../app/scripts/model/RequisitionsData.js');
 
   // Initialize testing environment
 

@@ -11,6 +11,15 @@
   var bootbox = require('bootbox');
   var RequisitionNode = require('../model/RequisitionNode.js');
 
+  var assetTemplateUrl     = require('../../views/asset.html');
+  var interfaceTemplateUrl = require('../../views/interface.html');
+
+  var basicPanelTemplateUrl       = require('../../views/node-basic.html');
+  var assetsPanelTemplateUrl      = require('../../views/node-assets.html');
+  var categoriesPanelTemplateUrl  = require('../../views/node-categories.html');
+  var interfacesPanelTemplateUrl  = require('../../views/node-interfaces.html');
+  var pathOutagesPanelTemplateUrl = require('../../views/node-pathoutages.html');
+
   angular.module('onms-requisitions')
 
   /**
@@ -29,6 +38,22 @@
   * @description The controller for manage requisitioned nodes (add/edit the nodes on a specific requisition)
   */
   .controller('NodeController', ['$scope', '$routeParams', '$cookies', '$window', '$uibModal', 'RequisitionsService', 'growl', function($scope, $routeParams, $cookies, $window, $uibModal, RequisitionsService, growl) {
+
+    /**
+    * @description The URL for Templates
+    *
+    * @ngdoc property
+    * @name NodeController#templateUrls
+    * @propertyOf NodeController
+    * @returns {object} The URLs object
+    */
+    $scope.templateUrls = {
+      basic: basicPanelTemplateUrl,
+      assets: assetsPanelTemplateUrl,
+      categories: categoriesPanelTemplateUrl,
+      interfaces: interfacesPanelTemplateUrl,
+      pathOutages: pathOutagesPanelTemplateUrl
+    };
 
     /**
     * @description The timing status.
@@ -231,7 +256,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'AssetController',
-        templateUrl: require('../../views/asset.html'),
+        templateUrl: assetTemplateUrl,
         resolve: {
           asset: function() { return angular.copy(assetToEdit); },
           assetsBlackList: function() { return assetsBlackList; }
@@ -295,7 +320,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'InterfaceController',
-        templateUrl: require('../../views/interface.html'),
+        templateUrl: interfaceTemplateUrl,
         resolve: {
           foreignId: function() { return foreignId; },
           foreignSource: function() { return foreignSource; },

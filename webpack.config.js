@@ -9,17 +9,13 @@ var configfile = path.join(__dirname, 'package.json');
 var configobj  = JSON.parse(fs.readFileSync(configfile, 'utf8'));
 argv.env = argv.env === 'production'? 'production':'development';
 
-/* eslint-disable no-console */
-console.log(configobj.name + ' v' + configobj.version + ' (build ' + configobj.build + ')');
-/* eslint-enable no-console */
-
 var outputDirectory = './dist';
 
 var plugins = [
   new copyWebpackPlugin([
     {
       context: 'app',
-      from: 'index.html',
+      from: 'dist',
       to: path.resolve(outputDirectory)
     }
   ]),
@@ -51,22 +47,13 @@ var plugins = [
   })
 ];
 
-if (argv.env !== 'development') {
-  plugins.push(new webpack.optimize.OccurenceOrderPlugin(true));
-  plugins.push(new webpack.optimize.DedupePlugin());
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    mangle: {
-      except: [ '$super', '$', 'jQuery', 'exports', 'require', 'angular' ]
-    }
-  }));
-}
-
 var options = {
   entry: {
     vendor: [
       'angular',
       'angular-route',
       'angular-cookies',
+      'angular-animate',
       'angular-ui-bootstrap',
       'angular-loading-bar',
       'angular-growl-v2',
@@ -92,14 +79,6 @@ var options = {
   },
   module: {
     noParse: /lie\.js$|\/leveldown\/|min\.js$/,
-    /*
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loaders: ['eslint']
-      }
-    ],
-    */
     loaders: [
       {
         test: /\.css$/,
@@ -107,7 +86,7 @@ var options = {
       },
       {
         test: /\.html$/,
-        loader: 'ngtemplate!html?config=htmlLoaderConfig'
+        loader: 'ngtemplate!html'
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
