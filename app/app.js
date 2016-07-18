@@ -1,10 +1,11 @@
+/* eslint no-undef:off */
+
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
 */
 
 (function() {
-
   'use strict';
 
   var angular = require('angular');

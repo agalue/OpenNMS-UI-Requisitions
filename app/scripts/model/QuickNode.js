@@ -1,5 +1,3 @@
-/*jshint unused:false, sub:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -87,6 +85,6 @@ function QuickNode() {
   self.className = 'QuickNode';
 
   return self;
-};
+}
 
 module.exports = QuickNode; 

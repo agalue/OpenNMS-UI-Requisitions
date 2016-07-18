@@ -1,4 +1,4 @@
-/*jshint unused:false, sub:true */
+/* eslint no-undef:off */
 
 /**
 * @author Alejandro Galue <agalue@opennms.org>
@@ -86,6 +86,6 @@ function RequisitionInterface(intf) {
   self.className = 'RequisitionInterface';
 
   return self;
-};
+}
 
 module.exports = RequisitionInterface;

@@ -1,4 +1,4 @@
-/*jshint unused: false */
+/* eslint no-undef:off */
 
 /**
 * @author Alejandro Galue <agalue@opennms.org>
@@ -201,6 +201,6 @@ function Requisition(requisition, isDeployed) {
   self.className = 'Requisition';
 
   return self;
-};
+}
 
 module.exports = Requisition;

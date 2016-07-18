@@ -1,4 +1,4 @@
-/*jshint unused:false, sub:true */
+/* eslint no-undef:off */
 
 /**
 * @author Alejandro Galue <agalue@opennms.org>
@@ -330,6 +330,6 @@ function RequisitionNode(foreignSource, node, isDeployed) {
   self.className = 'RequisitionNode';
 
   return self;
-};
+}
 
 module.exports = RequisitionNode;

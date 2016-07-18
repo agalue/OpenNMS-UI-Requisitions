@@ -39,6 +39,9 @@ module.exports = {
   },
   module: {
     noParse: /lie\.js$|\/leveldown\/|min\.js$/,
+    preLoaders: [
+      { test: /\.js$/, loaders: ['eslint'] }
+    ],
     loaders: [
       { test: /\.css$/, loader: 'style!css' },
       { test: /\.html$/, loader: 'ngtemplate!html?config=htmlLoaderConfig' },

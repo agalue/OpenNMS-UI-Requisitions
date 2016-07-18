@@ -13,7 +13,6 @@
   var Requisition = require('../model/Requisition.js');
   var RequisitionNode = require('../model/RequisitionNode.js');
   var RequisitionsData = require('../model/RequisitionsData.js');
-  var RequisitionInterface = require('../model/RequisitionInterface.js');
 
   angular.module('onms-requisitions')
 

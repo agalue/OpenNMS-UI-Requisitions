@@ -1,5 +1,3 @@
-/*jshint unused: false */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -78,6 +76,6 @@ function RequisitionsData() {
   self.className = 'RequisitionsData';
 
   return self;
-};
+}
 
 module.exports = RequisitionsData;
