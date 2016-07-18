@@ -64,13 +64,17 @@ if (argv.env !== 'development') {
 var options = {
   entry: {
     vendor: [
+      'angular',
       'angular-route',
       'angular-cookies',
       'angular-ui-bootstrap',
       'angular-loading-bar',
       'angular-growl-v2',
+      'angular-sanitize',
+      'bootbox',
+      'bootstrap',
       'ip-address',
-      'bootbox'
+      'jquery'
     ],
     onms_requisitions: [
       './app/app.js'
@@ -104,6 +108,26 @@ var options = {
       {
         test: /\.html$/,
         loader: 'ngtemplate!html?config=htmlLoaderConfig'
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/vnd.ms-fontobject'
+      },
+      {
+        test: /\.otf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/x-font-opentype'
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/font-woff'
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=image/svg+xml'
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
