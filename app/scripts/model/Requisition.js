@@ -1,10 +1,11 @@
-/*global RequisitionNode:true */
-/*jshint unused: false */
+/* eslint no-undef:off */
 
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
 */
+
+var RequisitionNode = require('./RequisitionNode.js');
 
 /**
 * @ngdoc object
@@ -201,3 +202,5 @@ function Requisition(requisition, isDeployed) {
 
   return self;
 }
+
+module.exports = Requisition;

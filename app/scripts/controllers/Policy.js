@@ -7,6 +7,12 @@
 
   'use strict';
 
+  var angular = require('angular');
+  var templatePolicyParamOptions  = require('../../views/policy-param.options.html');
+  var templatePolicyParamString   = require('../../views/policy-param.string.html');
+  var templatePolicyParamFixed    = require('../../views/policy-param.fixed.html');
+  var templatePolicyParamEditable = require('../../views/policy-param.editable.html');
+
   angular.module('onms-requisitions')
 
   /**
@@ -157,9 +163,9 @@
             if (paramCfg.key == parameter.key) { // Checking current parameter
               if (paramCfg.required) {
                 if ($scope.isNonEmptyArray(paramCfg.options)) {
-                  return 'views/policy-param.options.html';
+                  return templatePolicyParamOptions;
                 } else {
-                  return 'views/policy-param.string.html';
+                  return templatePolicyParamString;
                 }
               }
             }
@@ -170,7 +176,7 @@
         }
       }
 
-      return parameter.key ? 'views/policy-param.fixed.html' : 'views/policy-param.editable.html';
+      return parameter.key ? templatePolicyParamFixed : templatePolicyParamEditable;
     };
 
     /**

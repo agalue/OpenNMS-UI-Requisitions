@@ -1,11 +1,11 @@
-/*global RequisitionNode:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
 */
 
 'use strict';
+
+var RequisitionNode = require('../../../app/scripts/model/RequisitionNode.js');
 
 describe('Model: RequisitionsNode', function () {
 

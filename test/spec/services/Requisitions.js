@@ -1,4 +1,3 @@
-/*global RequisitionNode:true, Requisition:true, QuickNode:true */
 /*jshint sub:true */
 
 /**
@@ -7,6 +6,11 @@
 */
 
 'use strict';
+
+var RequisitionsData = require('../../../app/scripts/model/RequisitionsData.js');
+var RequisitionNode = require('../../../app/scripts/model/RequisitionNode.js');
+var Requisition = require('../../../app/scripts/model/Requisition.js');
+var QuickNode = require('../../../app/scripts/model/QuickNode.js');
 
 describe('Service: RequisitionsService', function () {
 
@@ -149,7 +153,7 @@ describe('Service: RequisitionsService', function () {
     $httpBackend.flush();
   };
 
-  beforeEach(module('onms-requisitions', function($provide) {
+  beforeEach(angular.mock.module('onms-requisitions', function($provide) {
     $provide.value('$log', console);
   }));
 

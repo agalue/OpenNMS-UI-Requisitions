@@ -1,5 +1,3 @@
-/*global bootbox:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -8,6 +6,12 @@
 (function() {
 
   'use strict';
+
+  var angular = require('angular');
+  var bootbox = require('bootbox');
+
+  var quickAddNodeTemplateUrl       = require('../../views/quick-add-node.html');
+  var cloneForeignSourceTemplateUrl = require('../../views/clone-foreignsource.html');
 
   angular.module('onms-requisitions')
 
@@ -126,7 +130,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'QuickAddNodeModalController',
-        templateUrl: 'views/quick-add-node.html',
+        templateUrl: quickAddNodeTemplateUrl,
         size: 'lg',
         resolve: {
           foreignSources: function() { return availableForeignSources; }
@@ -157,7 +161,7 @@
         backdrop: 'static',
         keyboard: false,
         controller: 'CloneForeignSourceController',
-        templateUrl: 'views/clone-foreignsource.html',
+        templateUrl: cloneForeignSourceTemplateUrl,
         resolve: {
           foreignSource: function() { return foreignSource; },
           availableForeignSources: function() { return availableForeignSources; }

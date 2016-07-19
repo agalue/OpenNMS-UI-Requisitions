@@ -1,6 +1,3 @@
-/*global QuickNode:true,bootbox:true */
-/*jshint undef:false */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -10,6 +7,18 @@
 
   'use strict';
 
+  var angular = require('angular');
+  var bootbox = require('bootbox');
+  var QuickNode = require('../model/QuickNode.js');
+
+  require('../../views/quick-add-node-standalone.html');
+
+  var quickAddNodeBasicPanelTemplateUrl      = require('../../views/quick-add-panel-basic.html');
+  var quickAddNodeCategoriesPanelTemplateUrl = require('../../views/quick-add-panel-categories.html');
+  var quickAddNodeCliAuthPanelTemplateUrl    = require('../../views/quick-add-panel-cli.html');
+  var quickAddNodeHelpPanelTemplateUrl       = require('../../views/quick-add-panel-help.html');
+  var quickAddNodeSnmpPanelTemplateUrl       = require('../../views/quick-add-panel-snmp.html');
+
   angular.module('onms-requisitions')
 
   /**
@@ -18,13 +27,30 @@
   * @module onms-requisitions
   *
   * @requires $scope Angular local scope
+  * @requires $window Document window
   * @requires foreignSources The list of available requisitions (a.k.a. foreign source)
   * @requires RequisitionsService The requisitions service
   * @requires growl The growl plugin for instant notifications
   *
   * @description The controller for manage the modal dialog for quick add a node to an existing requisition.
   */
-  .controller('QuickAddNodeController', ['$scope', 'foreignSources', 'RequisitionsService', 'growl', function($scope, foreignSources, RequisitionsService, growl) {
+  .controller('QuickAddNodeController', ['$scope', '$window', 'foreignSources', 'RequisitionsService', 'growl', function($scope, $window, foreignSources, RequisitionsService, growl) {
+
+    /**
+    * @description The URL for Templates
+    *
+    * @ngdoc property
+    * @name QuickAddNodeController#templateUrls
+    * @propertyOf QuickAddNodeController
+    * @returns {object} The URLs object
+    */
+    $scope.templateUrls = {
+      basic: quickAddNodeBasicPanelTemplateUrl,
+      categories: quickAddNodeCategoriesPanelTemplateUrl,
+      cliAuth: quickAddNodeCliAuthPanelTemplateUrl,
+      help: quickAddNodeHelpPanelTemplateUrl,
+      snmp: quickAddNodeSnmpPanelTemplateUrl
+    };
 
     /**
     * @description The available foreign sources
@@ -234,7 +260,7 @@
             $scope.errorHandler
           );
         } else {
-          window.location = '/opennms/index.jsp'; // TODO Is this the best way ?
+          $window.location.href = '/opennms/index.jsp'; // TODO Is this the best way ?
         }
       });
     };

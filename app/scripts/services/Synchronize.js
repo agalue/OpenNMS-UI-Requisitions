@@ -1,5 +1,3 @@
-/*global bootbox:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -8,6 +6,9 @@
 (function() {
 
   'use strict';
+
+  var angular = require('angular');
+  var bootbox = require('bootbox');
 
   angular.module('onms-requisitions')
 

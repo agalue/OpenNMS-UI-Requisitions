@@ -1,11 +1,11 @@
-/*global Requisition:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
 */
 
 'use strict';
+
+var Requisition = require('../../../app/scripts/model/Requisition.js');
 
 describe('Controller: RequisitionController', function () {
 
@@ -22,7 +22,7 @@ describe('Controller: RequisitionController', function () {
     });
   }
 
-  beforeEach(module('onms-requisitions', function($provide) {
+  beforeEach(angular.mock.module('onms-requisitions', function($provide) {
     $provide.value('$log', console);
   }));
 

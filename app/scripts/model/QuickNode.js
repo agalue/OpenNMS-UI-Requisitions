@@ -1,10 +1,9 @@
-/*global RequisitionNode:true */
-/*jshint unused:false, sub:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
 */
+
+var RequisitionNode = require('./RequisitionNode.js');
 
 /**
 * @ngdoc object
@@ -87,3 +86,5 @@ function QuickNode() {
 
   return self;
 }
+
+module.exports = QuickNode; 

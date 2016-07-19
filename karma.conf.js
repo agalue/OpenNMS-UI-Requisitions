@@ -1,50 +1,48 @@
-// Karma configuration
-// http://karma-runner.github.io/0.10/config/configuration-file.html
+var webpackConfig = require('./webpack.config.js');
+webpackConfig.entry = {};
+webpackConfig.output = {};
+// Disabling CommonsChunkPlugin to avoid issues with Karma
+webpackConfig.plugins.pop();
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
-    // base path, that will be used to resolve files and exclude
-    basePath: '',
 
-    // testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['jasmine'],
+    plugins: [
+      require('karma-webpack'),
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-phantomjs-launcher'),
+      require('karma-ng-html2js-preprocessor'),
+      require('karma-ng-scenario')
+    ],
+
+    basePath: __dirname,
+
+    frameworks: [
+      'jasmine'
+    ],
+
+    reporters: [
+      'progress',
+    ],
+
+    files: [
+      './app/app-onms-requisitions.js',
+      './node_modules/angular-mocks/angular-mocks.js',
+      './test/spec/**/*.js'
+    ],
 
     preprocessors: {
-      '**/*.html': ['ng-html2js']
+      './app/app-onms-requisitions.js': ['webpack'],
+      './test/spec/**/*.js': ['webpack']
     },
 
-    ngHtml2JsPreprocessor: {
-      moduleName: 'onms-requisitions'
-    },
+    browsers: [
+      'PhantomJS'
+    ],
 
-    // list of files / patterns to exclude
-    exclude: [],
+    singleRun: true,
 
-    // web server port
-    port: 8080,
-
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
-
-    // level of logging
-    // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
-
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
-
-    // Start these browsers, currently available:
-    // - Chrome
-    // - ChromeCanary
-    // - Firefox
-    // - Opera
-    // - Safari (only Mac)
-    // - PhantomJS
-    // - IE (only Windows)
-    browsers: ['PhantomJS'],
-
-    // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
-    singleRun: true
+    webpack: webpackConfig
   });
 };
