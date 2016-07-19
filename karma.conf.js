@@ -1,11 +1,8 @@
-
 var webpackConfig = require('./webpack.config.js');
 webpackConfig.entry = {};
 webpackConfig.output = {};
-// Disabling CommonsChunkPlugin
+// Disabling CommonsChunkPlugin to avoid issues with Karma
 webpackConfig.plugins.pop();
-webpackConfig.plugins.pop();
-
 
 module.exports = function (config) {
   config.set({

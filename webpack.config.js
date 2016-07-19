@@ -75,10 +75,6 @@ module.exports = {
       filename: 'vendor.bundle.js'
     })
   ],
-  externals: {
-    fs: '{}',
-    jQuery: '{}'
-  },
   htmlLoaderConfig: {
     minimize: false
   }

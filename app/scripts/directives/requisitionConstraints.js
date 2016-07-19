@@ -1,5 +1,3 @@
-/*global Address4:true, Address6:true */
-
 /**
 * @author Alejandro Galue <agalue@opennms.org>
 * @copyright 2014 The OpenNMS Group, Inc.
@@ -10,7 +8,8 @@
   'use strict';
 
   var angular = require('angular');
-  require('ip-address');
+  var Address4 = require('ip-address/lib/ipv4');
+  var Address6 = require('ip-address/lib/ipv6');
 
   angular.module('onms-requisitions')
 

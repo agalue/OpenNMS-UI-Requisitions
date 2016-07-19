@@ -9,24 +9,7 @@
   'use strict';
 
   var angular = require('angular');
-
-  // CSS
-  require('bootstrap/dist/css/bootstrap.css');
-  require('bootstrap/dist/css/bootstrap-theme.css');
-  require('angular-loading-bar/build/loading-bar.css');
-  require('angular-growl-v2/build/angular-growl.css');
-
-  // Load Libraries and Extensions
-  require('angular-route');
-  require('angular-cookies');
-  require('angular-sanitize');
-  require('angular-animate');
-  require('angular-ui-bootstrap');
-  require('angular-loading-bar');
-  require('angular-growl-v2');
-  require('ip-address');
-  require('bootbox');
-  require('bootstrap');
+  require('./dependencies.js');
 
   var requisitionsTemplate = require('./views/requisitions.html');
   var requisitionTemplate = require('./views/requisition.html');

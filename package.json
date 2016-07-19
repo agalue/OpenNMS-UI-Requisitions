@@ -5,7 +5,7 @@
   "author": "Alejandro Galue <agalue@opennms.org",
   "description": "WebUI for managing OpenNMS Requisitions",
   "readme": "README.md",
-  "license": "GPL",
+  "license": "GPL-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/agalue/OpenNMS-UI-Requisitions.git"
@@ -34,7 +34,6 @@
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.3",
     "jasmine-core": "^2.4.1",
-    "jshint-stylish": "~2.2.0",
     "karma": "^1.1.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
@@ -51,7 +50,7 @@
   },
   "scripts": {
     "build": "npm run test && webpack --colors --display-error-details",
-    "release": "webpack --colors --display-error-details --env production",
+    "release": "npm run test && webpack --colors --display-error-details --env production",
     "test": "karma start"
   }
 }
