@@ -1,7 +1,7 @@
 var path = require('path'),
     webpack = require('webpack'),
-    ngAnnotatePlugin = require('ng-annotate-webpack-plugin'),
-    copyWebpackPlugin = require('copy-webpack-plugin');
+    NgAnnotatePlugin = require('ng-annotate-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var outputDirectory = './dist';
 
@@ -24,13 +24,16 @@ module.exports = {
     ],
     onms_requisitions: [
       './app/app-onms-requisitions.js'
+    ],
+    onms_quick_add_node: [
+      './app/app-onms-quick-add-node.js'
     ]
   },
   output: {
     path: outputDirectory,
     pathinfo: true,
     filename: '[name].bundle.js',
-    chunkFilename: '[chunkhash].bundle.js'
+    chunkFilename: '[id].bundle.js'
   },
   resolve: {
     root: [
@@ -54,12 +57,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new copyWebpackPlugin([{
+    new CopyWebpackPlugin([{
       context: 'app',
       from: 'dist',
       to: path.resolve(outputDirectory)
     }]),
-    new ngAnnotatePlugin({
+    new NgAnnotatePlugin({
       add: true
     }),
     new webpack.ProvidePlugin({
@@ -69,12 +72,7 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.bundle.js',
-      minChunks: Infinity
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      children: true,
-      async: true
+      filename: 'vendor.bundle.js'
     })
   ],
   externals: {
