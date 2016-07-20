@@ -313,7 +313,9 @@
       var foreignId = $scope.foreignId;
       var ipBlackList = [];
       angular.forEach($scope.node.interfaces, function(intf) {
-        ipBlackList.push(intf.ipAddress);
+        if (intfToEdit.ipAddress != intf.ipAddress) {
+          ipBlackList.push(intf.ipAddress);
+        }
       });
 
       var modalInstance = $uibModal.open({
