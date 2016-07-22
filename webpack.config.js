@@ -5,8 +5,60 @@ var path = require('path'),
 
 var outputDirectory = './dist';
 
+// Execute: export NODE_ENV=production && webpack
+//          export NODE_ENV=test && webpack
+var debug = process.env.NODE_ENV !== 'production';
+var test  = process.env.NODE_ENV === 'test';
+
+console.log("Debug? " + debug + ", Test? " + test);
+
+// Common Plugins
+var plugins = [
+  // Copy static files from the source directory to the distribution directory
+  new CopyWebpackPlugin([{
+    context: 'app',
+    from: 'static',
+    to: path.resolve(outputDirectory)
+  }]),
+  new NgAnnotatePlugin({
+    add: true
+  }),
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery'
+  })
+];
+
+// Apply ChunkPlugin only when not running Karma
+if (!test) {
+  plugins.push(
+    // Common code shared between the applications
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'commons',
+      chunks: [ 'onms_requisitions', 'onms_quick_add_node'],
+      filename: 'onms_commons.bundle.js'
+    }),
+    // Third-party libraries only
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+  //  chunks: ['vendor', 'commons'],
+      filename: 'vendor.bundle.js'
+    })
+  );
+}
+
+if (!debug) {
+  plugins.push(
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false })
+  );
+}
+
 module.exports = {
-  devtool: 'eval',
+  devtool: debug ? 'eval' : null,
   entry: {
     vendor: [
       'angular',
@@ -52,29 +104,5 @@ module.exports = {
       { test: /\.(jpe?g|png|gif)$/i, loader: 'file' }
     ]
   },
-  plugins: [
-    new CopyWebpackPlugin([{
-      context: 'app',
-      from: 'static',
-      to: path.resolve(outputDirectory)
-    }]),
-    new NgAnnotatePlugin({
-      add: true
-    }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery'
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons',
-      chunks: [ 'onms_requisitions', 'onms_quick_add_node'],
-      filename: 'onms_commons.bundle.js'
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['vendor', 'commons'],
-      filename: 'vendor.bundle.js'
-    })
-  ]
+  plugins: plugins
 };

@@ -49,8 +49,8 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "build": "npm run test && webpack --colors --display-error-details",
-    "release": "npm run test && webpack --colors --display-error-details --env production",
-    "test": "karma start"
+    "build": "export NODE_ENV=development && webpack --colors --display-error-details",
+    "release": "export NODE_ENV=production && webpack --colors --display-error-details",
+    "test": "export NODE_ENV=test && karma start"
   }
 }

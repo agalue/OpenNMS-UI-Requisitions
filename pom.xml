@@ -51,13 +51,23 @@
             </configuration>
           </execution>
           <execution>
-            <id>execute npm run build</id>
+            <id>execute npm run test</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>run build</arguments>
+              <arguments>run test</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>execute npm run release</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run release</arguments>
             </configuration>
           </execution>
         </executions>
