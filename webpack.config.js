@@ -47,12 +47,8 @@ module.exports = {
     ],
     loaders: [
       { test: /\.css$/, loader: 'style!css' },
-      { test: /\.html$/, loader: 'ngtemplate!html?config=htmlLoaderConfig' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/vnd.ms-fontobject' },
-      { test: /\.otf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/x-font-opentype' },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/font-woff' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' },
+      { test: /\.html$/, loader: 'ngtemplate!html' },
+      { test: /\.(eot|otf|ttf|woff2?|svg)$/, loader: 'url' },
       { test: /\.(jpe?g|png|gif)$/i, loader: 'file' }
     ]
   },
@@ -74,8 +70,5 @@ module.exports = {
       name: 'vendor',
       filename: 'vendor.bundle.js'
     })
-  ],
-  htmlLoaderConfig: {
-    minimize: false
-  }
+  ]
 };
