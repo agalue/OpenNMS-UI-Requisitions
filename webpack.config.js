@@ -43,7 +43,6 @@ if (!test) {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
-  //  chunks: ['vendor', 'commons'],
       filename: 'vendor.bundle.js'
     })
   );
