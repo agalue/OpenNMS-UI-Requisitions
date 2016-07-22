@@ -55,7 +55,7 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([{
       context: 'app',
-      from: 'dist',
+      from: 'static',
       to: path.resolve(outputDirectory)
     }]),
     new NgAnnotatePlugin({
@@ -67,7 +67,13 @@ module.exports = {
       'window.jQuery': 'jquery'
     }),
     new webpack.optimize.CommonsChunkPlugin({
+      name: 'commons',
+      chunks: [ 'onms_requisitions', 'onms_quick_add_node'],
+      filename: 'onms_commons.bundle.js'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      chunks: ['vendor', 'commons'],
       filename: 'vendor.bundle.js'
     })
   ]
