@@ -48,7 +48,7 @@ module.exports = {
     loaders: [
       { test: /\.css$/, loader: 'style!css' },
       { test: /\.html$/, loader: 'ngtemplate!html' },
-      { test: /\.(eot|otf|ttf|woff2?|svg)$/, loader: 'url' },
+      { test: /\.(eot|otf|ttf|woff2?|svg)$/, loader: 'url?limit=10000' },
       { test: /\.(jpe?g|png|gif)$/i, loader: 'file' }
     ]
   },
