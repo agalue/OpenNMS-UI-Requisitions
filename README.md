@@ -39,7 +39,7 @@ npm run build
 
 * Install the latest stable OpenNMS
 
-* Copy over `OpenNMS-UI-Requisitions/dist/` into `jetty-webapps/opennms/` as `ng-requisitions`, for example:
+* Copy over `OpenNMS-UI-Requisitions/dist/` into `jetty-webapps/opennms/admin/` as `ng-requisitions`, for example:
 
 ```
 sudo rsync -avr OpenNMS-UI-Requisitions/dist/ $OPENNMS_HOME/jetty-webapps/opennms/admin/ng-requisitions/
